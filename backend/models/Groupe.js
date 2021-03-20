@@ -3,4 +3,5 @@ export default class Groupe{
     name;
     administrators;
     members;
+    createdEvents;
 }

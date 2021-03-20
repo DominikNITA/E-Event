@@ -8,4 +8,5 @@ export default class Event{
     information;
     place;
     organizer;
+    participants;
 }

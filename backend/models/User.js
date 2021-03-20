@@ -5,4 +5,5 @@ export default class User{
     nick;
     enity;
     email;
+    subscribedEvents;
 }
