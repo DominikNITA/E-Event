@@ -1,20 +1,15 @@
 const express = require('express');
 const router = express.Router();
+
 const Event = require("../models/Event");
+const EventService = require("../services/EventService")
 
 router.get('/', (req,res) => {
-    res.send("All events");
+    res.json(EventService.getAll());
 })
 
 router.get('/:id', (req,res) => {
-    //TODO: get data from DB
-    res.json({
-        id: req.params.id,
-        name: "Test Event",
-        availablePlaces: 2,
-        startDate: Date.now(),
-        price: 0
-    })
+    res.json(EventService.getOne(req.params.id))
 })
 
 module.exports = router;

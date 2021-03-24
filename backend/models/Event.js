@@ -9,6 +9,4 @@ module.exports = class Event{
     place;
     organizer;
     participants;
-
-    
 }
