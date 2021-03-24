@@ -1,5 +1,5 @@
-export default class Event{
-    id;
+module.exports = class Event{
+    id = 5;
     name;
     availablePlaces;
     startDate;
@@ -9,4 +9,6 @@ export default class Event{
     place;
     organizer;
     participants;
+
+    
 }
