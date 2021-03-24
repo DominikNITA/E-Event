@@ -1,4 +1,4 @@
-CREATE TABLE user (
+CREATE TABLE "user" (
     id INTEGER PRIMARY KEY,
     firstName text NOT NULL,
     lastName text NOT NULL,
@@ -33,19 +33,19 @@ CREATE TABLE groupe (
 );
 
 CREATE TABLE participation (
-    user_id INTEGER NOT NULL REFERENCES user (id),
+    user_id INTEGER NOT NULL REFERENCES "user" (id),
     event_id INTEGER NOT NULL REFERENCES event (id),
     UNIQUE(user_id,event_id)
 );
 
 CREATE TABLE membership (
-    user_id INTEGER NOT NULL REFERENCES user (id),
+    user_id INTEGER NOT NULL REFERENCES "user" (id),
     groupe_id INTEGER NOT NULL REFERENCES groupe (id),
     UNIQUE(user_id,groupe_id)
 );
 
 CREATE TABLE administration (
-    user_id INTEGER NOT NULL REFERENCES user (id),
+    user_id INTEGER NOT NULL REFERENCES "user" (id),
     groupe_id INTEGER NOT NULL REFERENCES groupe (id),
     UNIQUE(user_id,groupe_id)
 );
