@@ -1,5 +1,78 @@
+
 body
 {
     background-color: orange;
 }
 
+
+.im
+{
+    width:4em;
+    float:left;
+}
+
+.im2
+{
+    width:40em;
+    float:left;
+}
+
+h1
+{
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 3em;
+    text-decoration:transparent;
+    color: black;
+}
+
+ul#menulang
+{
+	height: 35px ;
+	margin: 0 ;
+	padding: 0 ;
+	list-style-type: none ;
+}
+
+ul#menulang li
+{
+	float: left ;
+	text-align: center ;
+}
+
+ul#menu li a
+{
+	width: 130px ;
+	line-height: 25px ;
+	font-size: 1.2em ;
+	font-weight: bold ;
+	letter-spacing: 2px ;
+	color: #fff ;
+	display: block ;
+	text-decoration: none ;
+	border-right: 2px solid #dea ;
+}
+
+
+/* Apparence au survol des liens */
+a:hover 
+{
+   text-decoration: solid;
+   color: black;
+}
+
+/*Quand le visiteur clique sur le lien*/ 
+a:active  
+{
+    text-decoration: solid;
+    color:green;
+}
+
+
+/*Quand le visiteur a déjà vu la page concernée */
+/*
+a:visited 
+{
+    text-decoration: solid;
+    color:red; 
+}
+*/
