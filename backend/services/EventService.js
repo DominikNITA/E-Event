@@ -2,7 +2,7 @@ const Event = require("../models/Event");
 
 
 
-exports.getOne = function(id){
+exports.getOneEvent = function(id){
     //Read from DB
     return {
         id: id,
@@ -10,7 +10,7 @@ exports.getOne = function(id){
     }
 }
 
-exports.getAll = function(){
+exports.getAllEvents = function(){
     return [{
         id: 2,
         name: "Example Event"
@@ -19,5 +19,9 @@ exports.getAll = function(){
         id: 1,
         name: "Example Event 2"
     }]
+}
+
+exports.addEvent = function(event){
+    return event;
 }
 
