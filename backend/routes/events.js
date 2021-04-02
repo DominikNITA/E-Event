@@ -18,8 +18,8 @@ router.post('/', (req,res) => {
     res.json(EventService.addEvent(req.body.event))
 })
 
-router.get('/:id', (req,res) => {
-    res.json(EventService.getOneEvent(req.params.id));
+router.get('/:id', async (req,res) => {
+    res.json(await EventService.getOneEvent(req.params.id));
 })
 
 module.exports = router;

@@ -18,7 +18,7 @@ CREATE TABLE event (
     id INTEGER PRIMARY KEY,
     name text NOT NULL,
     place_id INTEGER REFERENCES place (id),
-    organizer_id INTEGER REFERENCES event (id),
+    --organizer_id INTEGER REFERENCES groupe (id),
     availablePlaces INTEGER,
     startDate DATE NOT NULL,
     endDate DATE NOT NULL,
@@ -49,3 +49,7 @@ CREATE TABLE administration (
     groupe_id INTEGER NOT NULL REFERENCES groupe (id),
     UNIQUE(user_id,groupe_id)
 );
+
+INSERT INTO place VALUES (1,'Street 34','Honolulu','Amazing place');
+
+INSERT INTO event VALUES (1,'First Event',1,20,'2021-03-14','2021-03-14',150,'Amazing Event');

@@ -1,13 +1,16 @@
 const Event = require("../models/Event");
 
+const DBClient = require("./DBConnection");
 
-
-exports.getOneEvent = function(id){
+exports.getOneEvent = async function(id){ 
     //Read from DB
-    return {
-        id: id,
-        name: "Example Event"+id
-    }
+    const res = await DBClient.from('event').where({id: id})
+    console.log(res)
+    return res[0];
+    // return {
+    //     id: id,
+    //     name: "Example Event"+id
+    // }
 }
 
 exports.getAllEvents = function(){
