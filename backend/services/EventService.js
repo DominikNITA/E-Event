@@ -4,13 +4,15 @@ const DBClient = require("./DBConnection");
 
 exports.getOneEvent = async function(id){ 
     //Read from DB
-    const res = await DBClient.from('event').where({id: id})
-    console.log(res)
-    return res[0];
-    // return {
-    //     id: id,
-    //     name: "Example Event"+id
-    // }
+    // const testRes = await DBClient.from('user').whereIn('id',DBClient('membership').select('user_id').where('groupe_id', 1));
+    // console.log(testRes);
+    const res = await DBClient.from('event').join('groupe', function(){this.on('event.organizer_id','=','groupe.id')}).where({"event.id": id})
+    if(res.length == 0){
+        return null;
+    }
+    else{
+        return res[0];
+    }
 }
 
 exports.getAllEvents = function(){

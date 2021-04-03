@@ -19,7 +19,16 @@ router.post('/', (req,res) => {
 })
 
 router.get('/:id', async (req,res) => {
-    res.json(await EventService.getOneEvent(req.params.id));
+    const event = await EventService.getOneEvent(req.params.id);
+    if(event == null){
+        res.statusCode = 400;
+        res.statusMessage = "Invalid event id";
+        res.end();
+        return;
+    }
+    else{
+        res.json(event);
+    }
 })
 
 module.exports = router;
