@@ -1,4 +1,3 @@
-const { default: knex } = require("knex");
 const Event = require("../models/Event");
 
 const DBClient = require("./DBConnection");

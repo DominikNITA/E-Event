@@ -3,12 +3,17 @@ const app = express();
 
 require('dotenv').config()
 
-const events = require("./routes/events")
-
+const eventsRouter = require("./routes/events")
+const groupsRouter = require("./routes/groups")
+const placesRouter = require("./routes/places")
+const usersRouter = require("./routes/users")
 
 app.use(express.json())
 
-app.use("/events", events)
+app.use("/events", eventsRouter)
+app.use("/groups", groupsRouter)
+app.use("/places", placesRouter)
+app.use("/users", usersRouter)
 
 app.get('/', (req,res) => {
   res.send('Hello World');
