@@ -1,5 +1,7 @@
 require('dotenv').config()
 
+//https://devhints.io/knex Cheatsheet
+
 const knex = require('knex');
 
 const client = knex({

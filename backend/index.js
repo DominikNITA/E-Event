@@ -23,6 +23,5 @@ const hostname = 'localhost';
 const port = 3000;
 
 app.listen(port, hostname, () => {
-  console.log(`DB_USER=${process.env.DB_USER}`)
   console.log(`Server running at http://${hostname}:${port}/`);
 });
