@@ -15,8 +15,9 @@ app.use("/groups", groupsRouter)
 app.use("/places", placesRouter)
 app.use("/users", usersRouter)
 
+
 app.get('/', (req,res) => {
-  res.send('Hello World');
+  res.send("Hello World!");
 })
 // const server = http.createServer((req, res) => {
 //   res.statusCode = 200;

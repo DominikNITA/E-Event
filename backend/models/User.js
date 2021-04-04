@@ -1,9 +1,13 @@
-export default class User{
+class User{
     id;
-    firstName;
-    lastName;
+    first_name;
+    last_name;
     nick;
-    enity;
+    entity;
     email;
-    subscribedEvents;
+    subscribed_events;
 }
+
+const minimalView = ["id","first_name","last_name","nick"];
+
+module.exports = { User, minimalView }
