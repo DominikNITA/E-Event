@@ -28,7 +28,12 @@ router.get('/:id/members', async (req,res) => {
 })
 
 router.post('/:id/members', async (req,res) => {
-    const members = GroupService.addMember(req.body.userId,req.body.id)
+    const members = await GroupService.addMember(req.body.userId, req.params.id);
+    res.json(members);
+})
+
+router.delete('/:id/members', async (req,res) => {
+    const members = await GroupService.removeMember(req.body.userId, req.params.id);
     res.json(members);
 })
 
