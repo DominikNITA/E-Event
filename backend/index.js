@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const all_routes = require("express-list-endpoints")
 
 require('dotenv').config()
 
@@ -17,8 +18,10 @@ app.use("/users", usersRouter)
 
 
 app.get('/', (req,res) => {
-  res.send("Hello World!");
+  // Afficher toutes les endpoints disponibles
+  res.json(all_routes(app));
 })
+
 // const server = http.createServer((req, res) => {
 //   res.statusCode = 200;
 //   res.setHeader('Content-Type', 'text/plain');
