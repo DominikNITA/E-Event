@@ -37,4 +37,19 @@ router.delete('/:id/members', async (req,res) => {
     res.json(members);
 })
 
+router.get('/:id/administrators', async (req,res) => {
+    const administrators = await GroupService.getAdministrators(req.params.id)
+    res.json(administrators);
+})
+
+router.post('/:id/administrators', async (req,res) => {
+    const administrators = await GroupService.addAdministrator(req.body.userId, req.params.id);
+    res.json(administrators);
+})
+
+router.delete('/:id/administrators', async (req,res) => {
+    const administrators = await GroupService.removeAdministrator(req.body.userId, req.params.id);
+    res.json(administrators);
+})
+
 module.exports = router;
