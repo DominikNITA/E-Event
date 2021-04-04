@@ -24,7 +24,12 @@ router.get('/:id/members', async (req,res) => {
         endWithError(res,"Invalid group id");
         return;
     }
-    res.json(members)
+    res.json(members);
+})
+
+router.post('/:id/members', async (req,res) => {
+    const members = GroupService.addMember(req.body.userId,req.body.id)
+    res.json(members);
 })
 
 module.exports = router;

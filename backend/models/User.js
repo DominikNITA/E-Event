@@ -1,13 +1,13 @@
 class User{
     id;
-    first_name;
-    last_name;
+    firstName;
+    lastName;
     nick;
     entity;
     email;
-    subscribed_events;
+    subscribedEvents;
 }
 
-const minimalView = ["id","first_name","last_name","nick"];
+const minimalView = ["id","first_name as firstName","last_name as lastName","nick"];
 
 module.exports = { User, minimalView }
