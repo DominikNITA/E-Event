@@ -4,10 +4,64 @@ const router = express.Router();
 const Event = require("../models/Event");
 const EventService = require("../services/EventService")
 
+
+/** 
+    @swagger
+    tags:
+        name: Events
+        description: API to manage your events. 
+*/
+
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *      Event:
+ *          type: object
+ *          required:
+ *              - name
+ *              - availablePlaces
+ *          properties:
+ *              name:
+ *                  type: string
+ *                  description: Name of event
+ *              availablePlaces:
+ *                  type: integer
+ *                  description: Available places count 
+ */
+
+/**
+ * 
+ * @swagger
+ * /events/:
+ *   get:
+ *     tags: [Events]
+ *     summary: Get all events
+ *     responses:
+ *       200:
+ *         description: Returns all events
+ *         content:
+ *          application/json:
+ *              schema:
+ *                  $ref: '#/components/schemas/Event'
+ */
 router.get('/', async (req,res) => {
     res.json(await EventService.getAllEvents());
 })
 
+/**
+ * @swagger
+ * /events/:
+ *  post:
+ *      tags: [Events]
+ *      summary: Creates a new event
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#/components/schemas/Event'
+ */
 router.post('/', async (req,res) => {
     if(req.body.event == null){
         res.statusCode = 400;

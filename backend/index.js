@@ -29,6 +29,25 @@ app.get('/', (req,res) => {
   res.json(htmlResponse);
 })
 
+//Setup swagger
+const swaggerUi = require('swagger-ui-express');
+const swaggerJsdoc = require('swagger-jsdoc');
+
+const options = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'Hello World',
+      version: '1.0.0',
+    },
+  },
+  apis: ['./routes/*.js'], // files containing annotations as above
+};
+
+const swaggerSpec = swaggerJsdoc(options);
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 const hostname = 'localhost';
 const port = 3000;
 
