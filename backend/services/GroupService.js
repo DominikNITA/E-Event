@@ -1,6 +1,8 @@
 const DBClient = require("./DBConnection");
 
-var {minimalView} = require('../models/User');
+const EventService = require('./EventService');
+
+const {minimalView} = require('../models/User');
 
 
 
@@ -71,6 +73,19 @@ exports.removeAdministrator = async function(userId, groupId){
     //TODO: Check credentials to check if caller can remove person from the administrator role
     await DBClient('administration').where({'user_id' : userId, 'group_id': groupId}).del();
     return await this.getAdministrators(groupId)
+}
+
+exports.getGroupsEvents = async function(groupId){
+    if(! await doesGroupExist(groupId)){
+        throw "Invalid group id";
+    }
+    const groupsEvents = await DBClient('event').where({'organizer_id' : groupId});
+    return groupsEvents;
+}
+
+exports.addEventToGroup = async function(groupId, event){
+    event.organizer.id = groupId;
+    return await EventService.addEvent(event);
 }
 
 let doesGroupExist = async function(id){

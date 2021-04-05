@@ -3,6 +3,7 @@ const router = express.Router();
 
 const GroupService = require('../services/GroupService')
 
+//TODO: move to utility class
 const endWithError = function(res, message){
     res.statusCode = 400;
     res.statusMessage = message;
@@ -50,6 +51,16 @@ router.post('/:id/administrators', async (req,res) => {
 router.delete('/:id/administrators', async (req,res) => {
     const administrators = await GroupService.removeAdministrator(req.body.userId, req.params.id);
     res.json(administrators);
+})
+
+router.get('/:id/events', async (req,res) => {
+    const events = await GroupService.getGroupsEvents(req.params.id);
+    res.json(events);
+})
+
+router.post('/:id/events', async (req,res) => {
+    const event = await GroupService.addEventToGroup(req.params.id, req.body.event);
+    res.json(event);
 })
 
 module.exports = router;
