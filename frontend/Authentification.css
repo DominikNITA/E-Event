@@ -2,8 +2,34 @@
     font-family: 'MaPolice';
     src:    url('Rubik-Regular.ttf') format('truetype');
 }
+
+* {
+    color: black;
+    padding: 10px;
+}
+
+.container1{
+    display: flex;
+    justify-content:space-between;
+}
+
+.container2{
+    display: flex;
+    justify-content: space-around;
+}
+
+
 .logo
 {
+    color: black;
+    font-size: 1.8em;
+    font-family: 'MaPolice', 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    text-align: left;
+}
+
+.description
+{
+    justify-content: center;
     color: black;
     font-size: 1.8em;
     font-family: 'MaPolice', 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
@@ -12,8 +38,25 @@
 .pseudo
 {
     color: black;
-    font-size: 1.8em;
-    font-family: 'MaPolice', 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    border-radius: 0%;
+    font-size: 1,2em;
+    font-family: 'MaPolice' ,'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     display: flex;
     justify-content: center;
+    text-align: center;
+}
+
+.clickAuthentification
+{
+    font-size: 0.8em;
+    border-radius: 10%;
+    justify-content: space-around;
+    background-color: #ff893c;   
+}
+
+.loginBox
+{
+    background-color: whitesmoke;
+    border-radius: 0%;
+    border-color: whitesmoke;
 }
