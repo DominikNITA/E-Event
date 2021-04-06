@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        body { background-color:rgb(247, 165, 66)}
+    </style>
+    <link rel="stylesheet" href="Authentification.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentification</title>
+</head>
+<body>
+    <header>
+        <h1 class ="logo">E-Event <img src="logo_mini.png" alt="logo e-Event"/></h1>
+    </header>
+
+    <section>
+        <form class=pseudo method="post" action="traitement.java">
+            <fieldset>
+                <p>
+                    <label for="pseudo">Votre pseudo :</label>
+                    <br />
+                    <input type="text" name="pseudo" id="pseudo" required autofocus/>
+                    
+                    <br />
+                    <label for="pass">Votre mot de passe :</label>
+                    <br />
+                    <input type="password" name="pass" id="pass" required />
+                    <br />
+                    <input type="submit" value="Envoyer"/>
+                    
+                </p>
+            </fieldset>
+        </form>
+    </section>
+</body>
+</html>

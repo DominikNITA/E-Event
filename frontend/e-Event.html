@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <style>
+        body { background-color: rgba(233, 140, 35, 0.959);}
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test vueJS </title>
+
+    <script src ="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    
+</head>
+
+<body>
+    <div id="app">
+        <div class = "container">
+            <div class="row">
+                <p class="jumbotron">Login : <input type="text" v-model="user"/> Vous êtes connecté en tant que {{ user }} </p>
+            </div>
+
+            <h1 class="display-4" v-if="commandes.length > 0">Produits commandés</h1>
+            <div class="row">
+                <fiche-produit v-for="commande in commandes" v-bind:nom="commande" role="recap">{{ commande }}</fiche-produit>
+            </div>
+
+            <h1 v-bind:class="affichage">Produits disponibles</h1>
+            <div class="row">
+                <fiche-produit v-for="produits in produits" v-bind:nom="produits" v-on:commande-passee="commander" role="commande"></fiche-produit>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        Vue.component('fiche-produit',{
+            template: `
+            <div class="col-3">
+                <p class="jumbotron">{{ nom }} <br>
+                    <button v-on:click="passer_commande(nom)" v-if="role=='commande'">Commander !</button>
+                </p>  
+            </div>
+            `,
+            props: ['nom', 'role'],
+            methods:{
+                passer_commande: function(produits){
+                    this.$emit('commande-passee',produits)
+                }
+            }
+
+        })
+        var app = new Vue({
+            el: "#app",
+            data: {
+                user: "Laurie",
+                produits:["P","V","C"],
+                commandes: [],
+                affichage:"display-2"
+            },
+            methods:{
+                commander: function(produits ){
+                    this.commandes.push(produits);
+                }
+            }
+        }) 
+    </script>
+</body>
+</html> 
