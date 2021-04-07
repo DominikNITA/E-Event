@@ -2,22 +2,31 @@ const Event = require("../models/Event");
 
 const DBClient = require("./DBConnection");
 
-exports.getOneEvent = async function(id){ 
-    //Read from DB
-    // console.log(testRes);
-    const res = await DBClient('event').where({"event.id": id}).join('group', 'event.organizer_id','=','group.id')
-    console.log(res);
+const {minimalView} = require('../models/User');
+
+exports.getOneEvent = async function(id, filters = []){ 
+    const res = await DBClient('event').where({"id": id}).select(Event.select)
     if(res.length == 0){
         return null;
     }
-    else{
-        return res[0];
+    let event = res[0]
+    if(filters.includes("place")){
+        event.place = await DBClient('place').where({"id": event.placeId}).first();
+        delete event.placeId;
     }
+    if(filters.includes("organizer")){
+        event.organizer = await DBClient('group').where({"id": event.organizerId}).first();
+        delete event.organizerId;
+    }
+    if(filters.includes("participants")){
+        event.participants = await DBClient('user').whereIn('id',DBClient('participation').select('user_id').where('event_id', id)).select(minimalView)
+    }
+    return event;
 }
 
 exports.getAllEvents = async function(){
     //TODO: Send only events from groups to which user is subscribed
-    const events = await DBClient('event').join('group', 'event.organizer_id','=','group.id');
+    const events = await DBClient('event').select(Event.select)
     return events;
 }
 

@@ -19,15 +19,43 @@ const EventService = require("../services/EventService")
  *      Event:
  *          type: object
  *          required:
+ *              - id
  *              - name
  *              - availablePlaces
  *          properties:
+ *              id:
+ *                  type: integer
+ *                  description: Event identifiant
+ *                  readOnly: true
  *              name:
  *                  type: string
  *                  description: Name of event
  *              availablePlaces:
  *                  type: integer
  *                  description: Available places count 
+ *              startDate:
+ *                  type: string
+ *                  format: date-time
+ *                  description: Event start date and time
+ *              endDate:
+ *                  type: string
+ *                  format: date-time
+ *                  description: Event end date and time
+ *              price:
+ *                  type: integer
+ *                  description: Cost to enter the event
+ *              information:
+ *                  type: string
+ *                  description: Event information and description
+ *              organizer:
+ *                  oneOf:
+ *                      - type: integer
+ *                        description: iD of group organizing the event
+ *                      - type: object
+ *                        properties:
+ *                          name:
+ *                              type: string
+ *                              description: ioioio         
  */
 
 /**
@@ -43,7 +71,9 @@ const EventService = require("../services/EventService")
  *         content:
  *          application/json:
  *              schema:
- *                  $ref: '#/components/schemas/Event'
+ *                  type: array
+ *                  items:
+ *                      $ref: '#/components/schemas/Event'
  */
 router.get('/', async (req,res) => {
     res.json(await EventService.getAllEvents());
@@ -61,6 +91,13 @@ router.get('/', async (req,res) => {
  *              application/json:
  *                  schema:
  *                      $ref: '#/components/schemas/Event'
+ *      responses:
+ *          200:
+ *              description: OK
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Event'
  */
 router.post('/', async (req,res) => {
     if(req.body.event == null){
@@ -73,7 +110,32 @@ router.post('/', async (req,res) => {
     res.json(event);
 })
 
+
+/**
+ * @swagger
+ * /events/{id}:
+ *  get:
+ *      tags: [Events]
+ *      summary: Get event by id
+ *      responses:
+ *          200:
+ *              description: OK
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Event'
+ *          400:
+ *              description: Authorization error
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: integer
+ *            required: true
+ *            description: Numeric id of the event to get
+ */
 router.get('/:id', async (req,res) => {
+    console.log(req.params.id);
     const event = await EventService.getOneEvent(req.params.id);
     if(event == null){
         res.statusCode = 400;
@@ -86,6 +148,25 @@ router.get('/:id', async (req,res) => {
     }
 })
 
+/**
+ * @swagger
+ * /events/{id}:
+ *  delete:
+ *      tags: [Events]
+ *      summary: Remove event by id
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: integer
+ *            required: true
+ *            description: Numeric id of the event to delete
+ *      responses:
+ *          '200':
+ *              description: OK
+ *          '401':
+ *              description: Invalid authorization
+ */
 router.delete('/:id', async (req,res) => {
     await EventService.removeEvent(req.params.id);
     res.status(200).end();
