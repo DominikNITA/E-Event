@@ -1,65 +1,73 @@
 const express = require('express');
 const router = express.Router();
 
-const GroupService = require('../services/GroupService')
+const GroupService = require('../services/GroupService');
 
-//TODO: move to utility class
-const endWithError = function(res, message){
-    res.statusCode = 400;
-    res.statusMessage = message;
-    res.end();
+const ErrorResponse =  require('../utility/ErrorResponse');
+
+const groupExistenceMiddleware = async (req,res,next) =>{
+    console.log(req.params.groupId)
+    if(await GroupService.doesGroupExist(req.params.groupId)){
+        next();
+    }
+    else{
+        next(new ErrorResponse(ErrorResponse.notFoundStatusCode,"Invalid group id"));
+    }
 }
 
-router.get('/:id', async (req,res) => {
-    const group = await GroupService.getGroupById(req.params.id);
-    if(group == null){
-        endWithError(res,"Invalid group id");
-        return;
+
+router.get('/:groupId', groupExistenceMiddleware, async (req,res,next) => {
+    try{
+        const group = await GroupService.getGroupById(req.params.groupId);
+        res.json(group);
     }
-    res.json(group);
-})
-
-router.get('/:id/members', async (req,res) => {
-    const members = await GroupService.getMembers(req.params.id)
-    if(members.length == 0){
-        endWithError(res,"Invalid group id");
-        return;
+    catch(err){
+        next(err);
     }
+})
+
+router.get('/:groupId/members', groupExistenceMiddleware, async (req,res,next) => {
+    try{
+        const members = await GroupService.getMembers(req.params.groupId)
+        res.json(members);
+    }
+    catch(err){
+        next(err);
+    }
+})
+
+router.post('/:groupId/members', groupExistenceMiddleware, async (req,res,next) => {
+    const members = await GroupService.addMember(req.body.userId, req.params.groupId);
     res.json(members);
 })
 
-router.post('/:id/members', async (req,res) => {
-    const members = await GroupService.addMember(req.body.userId, req.params.id);
+router.delete('/:groupId/members', groupExistenceMiddleware, async (req,res,next) => {
+    const members = await GroupService.removeMember(req.body.userId, req.params.groupId);
     res.json(members);
 })
 
-router.delete('/:id/members', async (req,res) => {
-    const members = await GroupService.removeMember(req.body.userId, req.params.id);
-    res.json(members);
-})
-
-router.get('/:id/administrators', async (req,res) => {
-    const administrators = await GroupService.getAdministrators(req.params.id)
+router.get('/:groupid/administrators', groupExistenceMiddleware, async (req,res,next) => {
+    const administrators = await GroupService.getAdministrators(req.params.groupid)
     res.json(administrators);
 })
 
-router.post('/:id/administrators', async (req,res) => {
-    const administrators = await GroupService.addAdministrator(req.body.userId, req.params.id);
+router.post('/:groupId/administrators', groupExistenceMiddleware, async (req,res,next) => {
+    const administrators = await GroupService.addAdministrator(req.body.userId, req.params.groupId);
     res.json(administrators);
 })
 
-router.delete('/:id/administrators', async (req,res) => {
-    const administrators = await GroupService.removeAdministrator(req.body.userId, req.params.id);
+router.delete('/:groupId/administrators', groupExistenceMiddleware, async (req,res,next) => {
+    const administrators = await GroupService.removeAdministrator(req.body.userId, req.params.groupId);
     res.json(administrators);
 })
 
-router.get('/:id/events', async (req,res) => {
-    const events = await GroupService.getGroupsEvents(req.params.id);
+router.get('/:groupId/events', groupExistenceMiddleware, async (req,res,next) => {
+    const events = await GroupService.getGroupsEvents(req.params.groupId);
     res.json(events);
 })
 
-router.post('/:id/events', async (req,res) => {
-    const event = await GroupService.addEventToGroup(req.params.id, req.body.event);
+router.post('/:groupId/events', groupExistenceMiddleware, async (req,res,next) => {
+    const event = await GroupService.addEventToGroup(req.params.groupId, req.body.event);
     res.json(event);
 })
 

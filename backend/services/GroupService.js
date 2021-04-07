@@ -20,9 +20,6 @@ exports.addMember = async function(userId, groupId){
     if(relationAlreadyExisting.length > 0){
         throw "User already in the group";
     }
-    if(! await doesGroupExist(groupId)){
-        throw "Invalid group id";
-    }
     //TODO: Check if user exists
     await DBClient('membership').insert({'user_id' : userId, 'group_id' : groupId});
     return await this.getMembers(groupId);
@@ -32,9 +29,6 @@ exports.removeMember = async function(userId, groupId){
     const relationToRemove = await DBClient('membership').where({'user_id' : userId, 'group_id': groupId});
     if(relationToRemove.length == 0){
         throw "User is not in the group";
-    }
-    if(! await doesGroupExist(groupId)){
-        throw "Invalid group id";
     }
     //TODO: Check if user exists
     //TODO: Check credentials to check if caller can remove person from the group
@@ -52,9 +46,6 @@ exports.addAdministrator = async function(userId, groupId){
     if(relationAlreadyExisting.length > 0){
         throw "User already in the group";
     }
-    if(! await doesGroupExist(groupId)){
-        throw "Invalid group id";
-    }
     //TODO: Check if user exists
     //TODO: Check if user has rights to add new administrator
     await DBClient('administration').insert({'user_id' : userId, 'group_id' : groupId});
@@ -66,9 +57,6 @@ exports.removeAdministrator = async function(userId, groupId){
     if(relationToRemove.length == 0){
         throw "User is not the administrator of the group";
     }
-    if(! await doesGroupExist(groupId)){
-        throw "Invalid group id";
-    }
     //TODO: Check if user exists
     //TODO: Check credentials to check if caller can remove person from the administrator role
     await DBClient('administration').where({'user_id' : userId, 'group_id': groupId}).del();
@@ -76,9 +64,6 @@ exports.removeAdministrator = async function(userId, groupId){
 }
 
 exports.getGroupsEvents = async function(groupId){
-    if(! await doesGroupExist(groupId)){
-        throw "Invalid group id";
-    }
     const groupsEvents = await DBClient('event').where({'organizer_id' : groupId});
     return groupsEvents;
 }
@@ -88,6 +73,6 @@ exports.addEventToGroup = async function(groupId, event){
     return await EventService.addEvent(event);
 }
 
-let doesGroupExist = async function(id){
+exports.doesGroupExist = async function(id){
     return await exports.getGroupById(id) != null;
 }
