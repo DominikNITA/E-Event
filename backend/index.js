@@ -7,6 +7,17 @@ require('dotenv').config()
   //CORS
 const cors = require('cors')
 app.use(cors())
+// OR
+// app.all('*', function(req, res, next) {
+//   res.header('Access-Control-Allow-Origin', '*');
+//   res.header('Access-Control-Allow-Credentials', 'true');
+//   res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+//   res.header(
+//     'Access-Control-Allow-Headers',
+//     'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+//   );
+//   next();
+// });
   //Parse body json format to js object for each route
 app.use(express.json())
 
@@ -27,6 +38,18 @@ app.get('/', (req,res) => {
   let htmlResponse = "";
   all_routes(app).forEach(route => htmlResponse += `<div>${route.path} - ${route.methods.join(' ')}</div>`)
   res.json(htmlResponse);
+})
+
+//Error handling
+const ErrorResponse = require('./utility/ErrorResponse');
+app.use((err,req,res,next) => {
+  console.log(err)
+  if(err instanceof ErrorResponse){
+    res.status(err.statusCode).send(err.message);
+  }
+  else{
+    res.status(500).send("Unknown error on the server");
+  }
 })
 
 const hostname = 'localhost';
