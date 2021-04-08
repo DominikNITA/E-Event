@@ -1,0 +1,66 @@
+body {
+    background-color: #f5a254;
+    font-family: 'Rock Salt', cursive;
+}
+
+.head-page {
+  background-color: white;
+  padding: 2%;
+}
+
+/*Raccourci*/
+.raccourci {
+    list-style-type: none;
+    padding-left: 70%;
+}
+
+.raccourci a {
+  float: left;
+  color: black;
+  text-align: center;
+  padding-right: 3%;
+  text-decoration: none;
+  font-size: 120%;
+}
+
+.logo {
+  float: left;
+  font-size: 40px;
+  padding-right: 2%;
+  padding-bottom: 10px;
+}
+
+.langues {
+    padding-left: 90%;
+    padding-top: 0.8%;
+}
+
+.langues a {
+    color: black;
+    text-align: center;
+    padding: 10%;
+    text-decoration: none;
+    font-size: 120%;
+}
+
+h1 {
+  text-align: center;
+  padding: 15px 12px;
+  font-size: 400%;
+}
+
+.les_evenements {
+  padding: 2% 15%;
+}
+
+.event {
+  table-layout: fixed;
+  width: 100%;
+  border-spacing: 50%;
+  border: 3px solid grey;
+  background-color: lightgrey;
+}
+ 
+th {
+  text-align: left;
+}

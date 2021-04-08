@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8" />
+        <title>E-Event</title>
+        <!-- Import Styles -->
+        <link rel="stylesheet" href="./assets/styles.css" />
+        <!-- Import Vue.Js -->
+        <script src="https://unpkg.com/vue@next"></script>
+    </head>
+    <body>
+        <div id="app">
+            <head-page @changerLangage="changerLangage"></head-page>
+            <profil></profil>
+            <display-event></display-event>
+        </div>
+
+
+        <!-- Import App -->
+        <script src="./main.js"></script>
+
+        <!-- Import Components -->
+        <script src="./components/Head.js"></script>
+        <script src="./components/Profil.js"></script>
+        <script src="./components/Display-Event.js"></script>
+
+        <!-- Mount App -->
+        <script>const mountedApp = app.mount('#app')</script>
+    </body>
+
+</html>
