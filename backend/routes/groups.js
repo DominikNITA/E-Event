@@ -1,74 +1,390 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
-const GroupService = require('../services/GroupService');
+const GroupService = require("../services/GroupService");
 
-const ErrorResponse =  require('../utility/ErrorResponse');
+const ErrorResponse = require("../utility/ErrorResponse");
 
-const groupExistenceMiddleware = async (req,res,next) =>{
-    console.log(req.params.groupId)
-    if(await GroupService.doesGroupExist(req.params.groupId)){
+const checkGroupExistence = async (req, res, next) => {
+    if (await GroupService.doesGroupExist(req.params.groupId)) {
         next();
+    } else {
+        next(new ErrorResponse(ErrorResponse.notFoundStatusCode, "Invalid group id"));
     }
-    else{
-        next(new ErrorResponse(ErrorResponse.notFoundStatusCode,"Invalid group id"));
-    }
-}
+};
 
+router.use("/:groupId", checkGroupExistence);
 
-router.get('/:groupId', groupExistenceMiddleware, async (req,res,next) => {
-    try{
+/** 
+    @swagger
+    tags:
+        - name: Groups
+          description: API to manage your groups. 
+*/
+
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *      Group:
+ *          type: object
+ *          required:
+ *              - id
+ *              - name
+ *          properties:
+ *              id:
+ *                  type: integer
+ *                  description: Group identifiant
+ *                  readOnly: true
+ *              name:
+ *                  type: string
+ *                  description: Name of group
+ *              members:
+ *                  type: array
+ *                  items:
+ *                      $ref: '#/components/schemas/User'
+ *              administrators:
+ *                  type: array
+ *                  items:
+ *                      $ref: '#/components/schemas/User'
+ *              events:
+ *                  type: array
+ *                  items:
+ *                      $ref: '#/components/schemas/Event'
+ */
+
+/**
+ * @swagger
+ * /groups/{id}:
+ *  get:
+ *      tags: [Groups]
+ *      summary: Get group by id
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: integer
+ *            required: true
+ *            description: Numeric id of the group
+ *      responses:
+ *          200:
+ *              description: OK
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Group'
+ *          404:
+ *              description: Resource not found
+ */
+router.get("/:groupId", async (req, res, next) => {
+    try {
         const group = await GroupService.getGroupById(req.params.groupId);
         res.json(group);
-    }
-    catch(err){
+    } catch (err) {
         next(err);
     }
-})
+});
 
-router.get('/:groupId/members', groupExistenceMiddleware, async (req,res,next) => {
-    try{
-        const members = await GroupService.getMembers(req.params.groupId)
+/**
+ * @swagger
+ * /groups/{id}/members:
+ *  get:
+ *      tags: [Groups]
+ *      summary: Get members of group with given id
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: integer
+ *            required: true
+ *            description: Numeric id of the group
+ *      responses:
+ *          200:
+ *              description: OK
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: array
+ *                          items:
+ *                              $ref: '#/components/schemas/User'
+ *          404:
+ *              description: Resource not found
+ */
+router.get("/:groupId/members", async (req, res, next) => {
+    try {
+        const members = await GroupService.getMembers(req.params.groupId);
         res.json(members);
-    }
-    catch(err){
+    } catch (err) {
         next(err);
     }
-})
+});
 
-router.post('/:groupId/members', groupExistenceMiddleware, async (req,res,next) => {
-    const members = await GroupService.addMember(req.body.userId, req.params.groupId);
-    res.json(members);
-})
+/**
+ * @swagger
+ * /groups/{id}/members:
+ *  post:
+ *      tags: [Groups]
+ *      summary: Add new member to the group
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: integer
+ *            required: true
+ *            description: Numeric id of the group
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      required:
+ *                          - userId
+ *                      properties:
+ *                          userId:
+ *                              type: integer
+ *      responses:
+ *          200:
+ *              description: OK
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: array
+ *                          items:
+ *                              $ref: '#/components/schemas/User'
+ */
+router.post("/:groupId/members", async (req, res, next) => {
+    try {
+        const members = await GroupService.addMember(req.body.userId, req.params.groupId);
+        res.json(members);
+    } catch (err) {
+        next(err);
+    }
+});
 
-router.delete('/:groupId/members', groupExistenceMiddleware, async (req,res,next) => {
-    const members = await GroupService.removeMember(req.body.userId, req.params.groupId);
-    res.json(members);
-})
+/**
+ * @swagger
+ * /groups/{id}/members:
+ *  delete:
+ *      tags: [Groups]
+ *      summary: Remove member by id
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: integer
+ *            required: true
+ *            description: Numeric id of the group
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      required:
+ *                          - userId
+ *                      properties:
+ *                          userId:
+ *                              type: integer
+ *      responses:
+ *          '200':
+ *              description: OK
+ *          '401':
+ *              description: Invalid authorization
+ */
+router.delete("/:groupId/members", async (req, res, next) => {
+    try {
+        const members = await GroupService.removeMember(req.body.userId, req.params.groupId);
+        res.json(members);
+    } catch (err) {
+        next(err);
+    }
+});
 
-router.get('/:groupid/administrators', groupExistenceMiddleware, async (req,res,next) => {
-    const administrators = await GroupService.getAdministrators(req.params.groupid)
-    res.json(administrators);
-})
+/**
+ * @swagger
+ * /groups/{id}/administrators:
+ *  get:
+ *      tags: [Groups]
+ *      summary: Get administrators of group with given id
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: integer
+ *            required: true
+ *            description: Numeric id of the group
+ *      responses:
+ *          200:
+ *              description: OK
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: array
+ *                          items:
+ *                              $ref: '#/components/schemas/User'
+ *          404:
+ *              description: Resource not found
+ */
+router.get("/:groupid/administrators", async (req, res, next) => {
+    try {
+        const administrators = await GroupService.getAdministrators(req.params.groupid);
+        res.json(administrators);
+    } catch (err) {
+        next(err);
+    }
+});
 
-router.post('/:groupId/administrators', groupExistenceMiddleware, async (req,res,next) => {
-    const administrators = await GroupService.addAdministrator(req.body.userId, req.params.groupId);
-    res.json(administrators);
-})
+/**
+ * @swagger
+ * /groups/{id}/administrators:
+ *  post:
+ *      tags: [Groups]
+ *      summary: Add new administrator to the group
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: integer
+ *            required: true
+ *            description: Numeric id of the group
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      required:
+ *                          - userId
+ *                      properties:
+ *                          userId:
+ *                              type: integer
+ *      responses:
+ *          200:
+ *              description: OK
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: array
+ *                          items:
+ *                              $ref: '#/components/schemas/User'
+ */
+router.post("/:groupId/administrators", async (req, res, next) => {
+    try {
+        const administrators = await GroupService.addAdministrator(req.body.userId, req.params.groupId);
+        res.json(administrators);
+    } catch (err) {
+        next(err);
+    }
+});
 
-router.delete('/:groupId/administrators', groupExistenceMiddleware, async (req,res,next) => {
-    const administrators = await GroupService.removeAdministrator(req.body.userId, req.params.groupId);
-    res.json(administrators);
-})
+/**
+ * @swagger
+ * /groups/{id}/members:
+ *  delete:
+ *      tags: [Groups]
+ *      summary: Remove from administrator role but left in group
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: integer
+ *            required: true
+ *            description: Numeric id of the group
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      required:
+ *                          - userId
+ *                      properties:
+ *                          userId:
+ *                              type: integer
+ *      responses:
+ *          '200':
+ *              description: OK
+ *          '401':
+ *              description: Invalid authorization
+ */
+router.delete("/:groupId/administrators", async (req, res, next) => {
+    try {
+        const administrators = await GroupService.removeAdministrator(req.body.userId, req.params.groupId);
+        res.json(administrators);
+    } catch (err) {
+        next(err);
+    }
+});
 
-router.get('/:groupId/events', groupExistenceMiddleware, async (req,res,next) => {
-    const events = await GroupService.getGroupsEvents(req.params.groupId);
-    res.json(events);
-})
+/**
+ * @swagger
+ * /groups/{id}/events:
+ *  get:
+ *      tags: [Groups]
+ *      summary: Get events organized by group with given id
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: integer
+ *            required: true
+ *            description: Numeric id of the group
+ *      responses:
+ *          200:
+ *              description: OK
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: array
+ *                          items:
+ *                              $ref: '#/components/schemas/Event'
+ *          404:
+ *              description: Resource not found
+ */
+router.get("/:groupId/events", async (req, res, next) => {
+    try {
+        const events = await GroupService.getGroupsEvents(req.params.groupId);
+        res.json(events);
+    } catch (err) {
+        next(err);
+    }
+});
 
-router.post('/:groupId/events', groupExistenceMiddleware, async (req,res,next) => {
-    const event = await GroupService.addEventToGroup(req.params.groupId, req.body.event);
-    res.json(event);
-})
+/**
+ * @swagger
+ * /groups/{id}/events:
+ *  post:
+ *      tags: [Groups]
+ *      summary: Creates a new event for given group
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: integer
+ *            required: true
+ *            description: Numeric id of the group
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#/components/schemas/Event'
+ *      responses:
+ *          200:
+ *              description: OK
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Event'
+ */
+router.post("/:groupId/events", async (req, res, next) => {
+    try {
+        const event = await GroupService.addEventToGroup(req.params.groupId, req.body.event);
+        res.json(event);
+    } catch (err) {
+        next(err);
+    }
+});
 
 module.exports = router;

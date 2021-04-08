@@ -4,6 +4,8 @@ const EventService = require('./EventService');
 
 const {minimalView} = require('../models/User');
 
+const ErrorResponse = require('../utility/ErrorResponse')
+
 
 
 exports.getGroupById = async function(groupId){
@@ -18,7 +20,7 @@ exports.getMembers = async function(groupId){
 exports.addMember = async function(userId, groupId){
     const relationAlreadyExisting = await DBClient('membership').where({'user_id' : userId, 'group_id': groupId});
     if(relationAlreadyExisting.length > 0){
-        throw "User already in the group";
+        throw new ErrorResponse(ErrorResponse.badRequestStatusCode, "User already in the group");
     }
     //TODO: Check if user exists
     await DBClient('membership').insert({'user_id' : userId, 'group_id' : groupId});
@@ -28,7 +30,7 @@ exports.addMember = async function(userId, groupId){
 exports.removeMember = async function(userId, groupId){
     const relationToRemove = await DBClient('membership').where({'user_id' : userId, 'group_id': groupId});
     if(relationToRemove.length == 0){
-        throw "User is not in the group";
+        throw new ErrorResponse(ErrorResponse.badRequestStatusCode, "User is not in the group");
     }
     //TODO: Check if user exists
     //TODO: Check credentials to check if caller can remove person from the group
@@ -44,7 +46,7 @@ exports.getAdministrators = async function(groupId){
 exports.addAdministrator = async function(userId, groupId){
     const relationAlreadyExisting = await DBClient('administration').where({'user_id' : userId, 'group_id': groupId});
     if(relationAlreadyExisting.length > 0){
-        throw "User already in the group";
+        throw new ErrorResponse(ErrorResponse.badRequestStatusCode, "User already in the group");
     }
     //TODO: Check if user exists
     //TODO: Check if user has rights to add new administrator
@@ -55,7 +57,7 @@ exports.addAdministrator = async function(userId, groupId){
 exports.removeAdministrator = async function(userId, groupId){
     const relationToRemove = await DBClient('administration').where({'user_id' : userId, 'group_id': groupId});
     if(relationToRemove.length == 0){
-        throw "User is not the administrator of the group";
+        throw new ErrorResponse(ErrorResponse.badRequestStatusCode, "User is not the administrator of the group");
     }
     //TODO: Check if user exists
     //TODO: Check credentials to check if caller can remove person from the administrator role
