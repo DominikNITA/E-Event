@@ -1,15 +1,14 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
 const Event = require("../models/Event");
-const EventService = require("../services/EventService")
-
+const EventService = require("../services/EventService");
 
 /** 
     @swagger
     tags:
-        name: Events
-        description: API to manage your events. 
+        - name: Events
+          description: API to manage your events. 
 */
 
 /**
@@ -22,6 +21,10 @@ const EventService = require("../services/EventService")
  *              - id
  *              - name
  *              - availablePlaces
+ *              - startDate
+ *              - endDate
+ *              - price
+ *              - information
  *          properties:
  *              id:
  *                  type: integer
@@ -32,7 +35,7 @@ const EventService = require("../services/EventService")
  *                  description: Name of event
  *              availablePlaces:
  *                  type: integer
- *                  description: Available places count 
+ *                  description: Available places count
  *              startDate:
  *                  type: string
  *                  format: date-time
@@ -47,19 +50,24 @@ const EventService = require("../services/EventService")
  *              information:
  *                  type: string
  *                  description: Event information and description
+ *              place:
+ *                  oneOf:
+ *                      - type: integer
+ *                        description: Id of place where event takes places
+ *                      - $ref: '#/components/schemas/Place'
  *              organizer:
  *                  oneOf:
  *                      - type: integer
- *                        description: iD of group organizing the event
- *                      - type: object
- *                        properties:
- *                          name:
- *                              type: string
- *                              description: ioioio         
+ *                        description: Id of group organizing the event
+ *                      - $ref: '#/components/schemas/Group'
+ *              participants:
+ *                  type: array
+ *                  items:
+ *                      $ref: '#/components/schemas/User'
  */
 
 /**
- * 
+ *
  * @swagger
  * /events/:
  *   get:
@@ -75,9 +83,9 @@ const EventService = require("../services/EventService")
  *                  items:
  *                      $ref: '#/components/schemas/Event'
  */
-router.get('/', async (req,res) => {
+router.get("/", async (req, res) => {
     res.json(await EventService.getAllEvents());
-})
+});
 
 /**
  * @swagger
@@ -99,8 +107,8 @@ router.get('/', async (req,res) => {
  *                      schema:
  *                          $ref: '#/components/schemas/Event'
  */
-router.post('/', async (req,res) => {
-    if(req.body.event == null){
+router.post("/", async (req, res) => {
+    if (req.body.event == null) {
         res.statusCode = 400;
         res.statusMessage = "No event passed";
         res.end();
@@ -108,8 +116,7 @@ router.post('/', async (req,res) => {
     }
     const event = await EventService.addEvent(req.body.event);
     res.json(event);
-})
-
+});
 
 /**
  * @swagger
@@ -134,19 +141,18 @@ router.post('/', async (req,res) => {
  *            required: true
  *            description: Numeric id of the event to get
  */
-router.get('/:id', async (req,res) => {
+router.get("/:id", async (req, res) => {
     console.log(req.params.id);
     const event = await EventService.getOneEvent(req.params.id);
-    if(event == null){
+    if (event == null) {
         res.statusCode = 400;
         res.statusMessage = "Invalid event id";
         res.end();
         return;
-    }
-    else{
+    } else {
         res.json(event);
     }
-})
+});
 
 /**
  * @swagger
@@ -167,9 +173,9 @@ router.get('/:id', async (req,res) => {
  *          '401':
  *              description: Invalid authorization
  */
-router.delete('/:id', async (req,res) => {
+router.delete("/:id", async (req, res) => {
     await EventService.removeEvent(req.params.id);
     res.status(200).end();
-})
+});
 
 module.exports = router;
