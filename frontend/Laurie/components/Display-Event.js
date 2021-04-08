@@ -4,17 +4,15 @@ app.component('display-event', {
     `
     <div class="les_evenements">
         <div class="event">
-        <table>  
-            <tbody>
+        <table>
             <tr>
-                <th scope="row">
+                <td scope="row">
                     <div>Evenement 1</div>
                     <div>Date : </div>
                     <div>Description :</div>
-                </th>
-                <td><img classe="image_event" src="./assets/images/exemple.png" /></td>
+                </td>
+                <td id="image_event"><img src="./assets/images/exemple.png"/></td>
             </tr>
-            </tbody>
         </table>
             
         </div>

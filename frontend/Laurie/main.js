@@ -2,7 +2,10 @@ const app = Vue.createApp({
     data() {
         return {
             langue: "fr",
-            url_courrant: "file:///C:/Users/User/Documents/ET4/Projet_Spe/Site/index.html"
+            url_courrant: "C:\\Users\\User\\Documents\\GitHub\\E-Event\\frontend\\e-Event_accueil.html",
+            url_accueil: "C:\\Users\\User\\Documents\\GitHub\\E-Event\\frontend\\e-Event_accueil.html",
+            url_evenements: "C:\\Users\\User\\Documents\\GitHub\\E-Event\\frontend\\page_event.html",
+            url_gdp:"C:\\Users\\User\\Documents\\GitHub\\E-Event\\frontend\\gdp.html"
         }
     },
 
