@@ -6,7 +6,6 @@ const GroupService = require("../services/GroupService");
 const ErrorResponse = require("../utility/ErrorResponse");
 
 const checkGroupExistence = async (req, res, next) => {
-    console.log(req.params.groupId);
     if (await GroupService.doesGroupExist(req.params.groupId)) {
         next();
     } else {
@@ -60,6 +59,13 @@ router.use("/:groupId", checkGroupExistence);
  *  get:
  *      tags: [Groups]
  *      summary: Get group by id
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: integer
+ *            required: true
+ *            description: Numeric id of the group
  *      responses:
  *          200:
  *              description: OK
@@ -67,15 +73,8 @@ router.use("/:groupId", checkGroupExistence);
  *                  application/json:
  *                      schema:
  *                          $ref: '#/components/schemas/Group'
- *          400:
- *              description: Authorization error
- *      parameters:
- *          - in: path
- *            name: id
- *            schema:
- *              type: integer
- *            required: true
- *            description: Numeric id of the group to get
+ *          404:
+ *              description: Resource not found
  */
 router.get("/:groupId", async (req, res, next) => {
     try {
@@ -86,6 +85,31 @@ router.get("/:groupId", async (req, res, next) => {
     }
 });
 
+/**
+ * @swagger
+ * /groups/{id}/members:
+ *  get:
+ *      tags: [Groups]
+ *      summary: Get members of group with given id
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: integer
+ *            required: true
+ *            description: Numeric id of the group
+ *      responses:
+ *          200:
+ *              description: OK
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: array
+ *                          items:
+ *                              $ref: '#/components/schemas/User'
+ *          404:
+ *              description: Resource not found
+ */
 router.get("/:groupId/members", async (req, res, next) => {
     try {
         const members = await GroupService.getMembers(req.params.groupId);
@@ -95,6 +119,40 @@ router.get("/:groupId/members", async (req, res, next) => {
     }
 });
 
+/**
+ * @swagger
+ * /groups/{id}/members:
+ *  post:
+ *      tags: [Groups]
+ *      summary: Add new member to the group
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: integer
+ *            required: true
+ *            description: Numeric id of the group
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      required:
+ *                          - userId
+ *                      properties:
+ *                          userId:
+ *                              type: integer
+ *      responses:
+ *          200:
+ *              description: OK
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: array
+ *                          items:
+ *                              $ref: '#/components/schemas/User'
+ */
 router.post("/:groupId/members", async (req, res, next) => {
     try {
         const members = await GroupService.addMember(req.body.userId, req.params.groupId);
@@ -104,6 +162,36 @@ router.post("/:groupId/members", async (req, res, next) => {
     }
 });
 
+/**
+ * @swagger
+ * /groups/{id}/members:
+ *  delete:
+ *      tags: [Groups]
+ *      summary: Remove member by id
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: integer
+ *            required: true
+ *            description: Numeric id of the group
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      required:
+ *                          - userId
+ *                      properties:
+ *                          userId:
+ *                              type: integer
+ *      responses:
+ *          '200':
+ *              description: OK
+ *          '401':
+ *              description: Invalid authorization
+ */
 router.delete("/:groupId/members", async (req, res, next) => {
     try {
         const members = await GroupService.removeMember(req.body.userId, req.params.groupId);
@@ -113,6 +201,31 @@ router.delete("/:groupId/members", async (req, res, next) => {
     }
 });
 
+/**
+ * @swagger
+ * /groups/{id}/administrators:
+ *  get:
+ *      tags: [Groups]
+ *      summary: Get administrators of group with given id
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: integer
+ *            required: true
+ *            description: Numeric id of the group
+ *      responses:
+ *          200:
+ *              description: OK
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: array
+ *                          items:
+ *                              $ref: '#/components/schemas/User'
+ *          404:
+ *              description: Resource not found
+ */
 router.get("/:groupid/administrators", async (req, res, next) => {
     try {
         const administrators = await GroupService.getAdministrators(req.params.groupid);
@@ -122,6 +235,40 @@ router.get("/:groupid/administrators", async (req, res, next) => {
     }
 });
 
+/**
+ * @swagger
+ * /groups/{id}/administrators:
+ *  post:
+ *      tags: [Groups]
+ *      summary: Add new administrator to the group
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: integer
+ *            required: true
+ *            description: Numeric id of the group
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      required:
+ *                          - userId
+ *                      properties:
+ *                          userId:
+ *                              type: integer
+ *      responses:
+ *          200:
+ *              description: OK
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: array
+ *                          items:
+ *                              $ref: '#/components/schemas/User'
+ */
 router.post("/:groupId/administrators", async (req, res, next) => {
     try {
         const administrators = await GroupService.addAdministrator(req.body.userId, req.params.groupId);
@@ -131,6 +278,36 @@ router.post("/:groupId/administrators", async (req, res, next) => {
     }
 });
 
+/**
+ * @swagger
+ * /groups/{id}/members:
+ *  delete:
+ *      tags: [Groups]
+ *      summary: Remove from administrator role but left in group
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: integer
+ *            required: true
+ *            description: Numeric id of the group
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      required:
+ *                          - userId
+ *                      properties:
+ *                          userId:
+ *                              type: integer
+ *      responses:
+ *          '200':
+ *              description: OK
+ *          '401':
+ *              description: Invalid authorization
+ */
 router.delete("/:groupId/administrators", async (req, res, next) => {
     try {
         const administrators = await GroupService.removeAdministrator(req.body.userId, req.params.groupId);
@@ -140,6 +317,31 @@ router.delete("/:groupId/administrators", async (req, res, next) => {
     }
 });
 
+/**
+ * @swagger
+ * /groups/{id}/events:
+ *  get:
+ *      tags: [Groups]
+ *      summary: Get events organized by group with given id
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: integer
+ *            required: true
+ *            description: Numeric id of the group
+ *      responses:
+ *          200:
+ *              description: OK
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: array
+ *                          items:
+ *                              $ref: '#/components/schemas/Event'
+ *          404:
+ *              description: Resource not found
+ */
 router.get("/:groupId/events", async (req, res, next) => {
     try {
         const events = await GroupService.getGroupsEvents(req.params.groupId);
@@ -149,6 +351,33 @@ router.get("/:groupId/events", async (req, res, next) => {
     }
 });
 
+/**
+ * @swagger
+ * /groups/{id}/events:
+ *  post:
+ *      tags: [Groups]
+ *      summary: Creates a new event for given group
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: integer
+ *            required: true
+ *            description: Numeric id of the group
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#/components/schemas/Event'
+ *      responses:
+ *          200:
+ *              description: OK
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Event'
+ */
 router.post("/:groupId/events", async (req, res, next) => {
     try {
         const event = await GroupService.addEventToGroup(req.params.groupId, req.body.event);
