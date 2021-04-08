@@ -1,0 +1,45 @@
+body {
+    background-color: #f5a254;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+/*Raccourci*/
+ul {
+    list-style-type: none;
+    padding-left:1000px;
+}
+
+ul a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding-right: 10px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.logo {
+  float: left;
+  margin: 10px;
+  font-size: 40px;
+  padding-right: 10px;
+}
+
+.langues {
+    padding-left: 1200px;
+    padding-top: 20px;
+}
+
+.langues a {
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+h1 {
+  text-align: center;
+  padding: 15px 12px;
+  font-size: 400%;
+}
