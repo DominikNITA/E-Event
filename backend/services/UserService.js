@@ -1,3 +1,7 @@
 const DBClient = require("./DBConnection");
 
-module.exports = {}
+let getAllUsers = async function(){
+    
+}
+
+module.exports = {getAllUsers}

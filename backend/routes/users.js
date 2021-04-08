@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
+const UserService = require("../services/UserService");
+
 /** 
     @swagger
     tags:
@@ -30,5 +32,14 @@ const router = express.Router();
  *                  type: string
  *                  description: User's last name
  */
+
+router.get("/", async (req, res, next) => {
+    try {
+        // a faire
+        let result = await UserService.getAllUsers();
+    } catch (err) {
+        next(err);
+    }
+});
 
 module.exports = router;
