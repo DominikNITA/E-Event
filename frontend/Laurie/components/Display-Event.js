@@ -3,11 +3,21 @@ app.component('display-event', {
     /*html*/
     `
     <div class="les_evenements">
-        <ul class="event">
-            <li>Evenement 1</li>
-            <li>Date : </li>
-            <li>Description</li>
-        </ul>
+        <div class="event">
+        <table>  
+            <tbody>
+            <tr>
+                <th scope="row">
+                    <div>Evenement 1</div>
+                    <div>Date : </div>
+                    <div>Description :</div>
+                </th>
+                <td><img classe="image_event" src="./assets/images/exemple.png" /></td>
+            </tr>
+            </tbody>
+        </table>
+            
+        </div>
     </div>
     `
 })

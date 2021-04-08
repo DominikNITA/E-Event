@@ -9,12 +9,10 @@ app.component('head-page', {
         </div>
         <div class = "logo"> E-Event </div>
             <img src="./assets/images/logo.png" />
-        <div class = "racourci">
-            <ul>
-                <li><a href='url_accueil'> Accueil </a></li>
-                <li><a href='url_evenements'> Evenements </a></li>
-                <li><a href='url_gdp'> Gestion du profil </a></li>
-            </ul>
+        <div class = "raccourci">
+            <a href='url_accueil'> Accueil </a>
+            <a href='url_evenements'> Evenements </a>
+            <a href='url_gdp'> Gestion du profil </a>
         </div>
     </div>
     `,
