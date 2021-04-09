@@ -3,6 +3,7 @@ const router = express.Router();
 
 const Event = require("../models/Event");
 const EventService = require("../services/EventService");
+const ErrorResponse = require("../utility/ErrorResponse");
 
 /** 
     @swagger
@@ -115,15 +116,16 @@ router.get("/", async (req, res, next) => {
  *                      schema:
  *                          $ref: '#/components/schemas/Event'
  */
-router.post("/", async (req, res) => {
-    if (req.body.event == null) {
-        res.statusCode = 400;
-        res.statusMessage = "No event passed";
-        res.end();
-        return;
+router.post("/", async (req, res, next) => {
+    try {
+        if (req.body.event == null) {
+            throw new ErrorResponse(ErrorResponse.badRequestStatusCode, "No event passed in body!");
+        }
+        const event = await EventService.addEvent(req.body.event);
+        res.json(event);
+    } catch (err) {
+        next(err);
     }
-    const event = await EventService.addEvent(req.body.event);
-    res.json(event);
 });
 
 /**
@@ -149,16 +151,16 @@ router.post("/", async (req, res) => {
  *            required: true
  *            description: Numeric id of the event to get
  */
-router.get("/:id", async (req, res) => {
-    console.log(req.params.id);
-    const event = await EventService.getOneEvent(req.params.id);
-    if (event == null) {
-        res.statusCode = 400;
-        res.statusMessage = "Invalid event id";
-        res.end();
-        return;
-    } else {
-        res.json(event);
+router.get("/:id", async (req, res, next) => {
+    try {
+        const event = await EventService.getOneEvent(req.params.id);
+        if (event == null) {
+            throw new ErrorResponse(ErrorResponse.notFoundStatusCode, "Event not found!");
+        } else {
+            res.json(event);
+        }
+    } catch (err) {
+        next(err);
     }
 });
 
@@ -181,9 +183,13 @@ router.get("/:id", async (req, res) => {
  *          '401':
  *              description: Invalid authorization
  */
-router.delete("/:id", async (req, res) => {
-    await EventService.removeEvent(req.params.id);
-    res.status(200).end();
+router.delete("/:id", async (req, res, next) => {
+    try {
+        await EventService.removeEvent(req.params.id);
+        res.status(200).end();
+    } catch (err) {
+        next(err);
+    }
 });
 
 module.exports = router;

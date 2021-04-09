@@ -6,21 +6,21 @@ const { minimalView } = require("../models/User");
 
 const ErrorResponse = require("../utility/ErrorResponse");
 
-exports.getOneEvent = async function (id, filters = []) {
+exports.getOneEvent = async function (id, includeFilter = []) {
     const res = await DBClient("event").where({ id: id }).select(Event.select);
     if (res.length == 0) {
         return null;
     }
     let event = res[0];
-    if (filters.includes("place")) {
+    if (includeFilter.includes("place")) {
         event.place = await DBClient("place").where({ id: event.placeId }).first();
         delete event.placeId;
     }
-    if (filters.includes("organizer")) {
+    if (includeFilter.includes("organizer")) {
         event.organizer = await DBClient("group").where({ id: event.organizerId }).first();
         delete event.organizerId;
     }
-    if (filters.includes("participants")) {
+    if (includeFilter.includes("participants")) {
         event.participants = await DBClient("user")
             .whereIn("id", DBClient("participation").select("user_id").where("event_id", id))
             .select(minimalView);
@@ -56,6 +56,13 @@ exports.searchEvents = async function (searchQuery) {
     return [];
 };
 
+exports.doesEventExist = async function (eventId) {
+    return (await DBClient("event").where({ id: eventId }).first()) != null;
+};
+
 exports.removeEvent = async function (id) {
+    if (!this.doesEventExist(id)) {
+        throw new ErrorResponse(ErrorResponse.notFoundStatusCode, "Event not found!");
+    }
     await DBClient("event").where({ id: id }).del();
 };
