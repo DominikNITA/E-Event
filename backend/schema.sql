@@ -7,6 +7,11 @@ CREATE TABLE "user" (
     email text NOT NULL
 );
 
+CREATE TABLE authData (
+    user_id INTEGER PRIMARY KEY NOT NULL REFERENCES "user" (id),
+    password_hash text
+);
+
 CREATE TABLE place (
     id SERIAL PRIMARY KEY,
     address TEXT NOT NULL,
@@ -20,7 +25,7 @@ CREATE TABLE "group"(
 );
 
 CREATE TABLE event (
-    id SERIAL PRIMARY KEY,
+    id SERIAL PRIMARY KEY,IN
     event_name text NOT NULL,
     place_id INTEGER REFERENCES place (id),
     organizer_id INTEGER REFERENCES "group"(id),
