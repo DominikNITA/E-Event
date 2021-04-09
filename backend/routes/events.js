@@ -83,8 +83,16 @@ const EventService = require("../services/EventService");
  *                  items:
  *                      $ref: '#/components/schemas/Event'
  */
-router.get("/", async (req, res) => {
-    res.json(await EventService.getAllEvents());
+router.get("/", async (req, res, next) => {
+    try {
+        if (req.query.search) {
+            res.json(await EventService.searchEvents(req.query.search));
+        } else {
+            res.json(await EventService.getAllEvents());
+        }
+    } catch (err) {
+        next(err);
+    }
 });
 
 /**

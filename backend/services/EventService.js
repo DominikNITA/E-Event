@@ -52,6 +52,10 @@ exports.addEvent = async function (event) {
     return eventResponse;
 };
 
+exports.searchEvents = async function (searchQuery) {
+    return [];
+};
+
 exports.removeEvent = async function (id) {
     await DBClient("event").where({ id: id }).del();
 };

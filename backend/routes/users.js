@@ -38,7 +38,7 @@ const UserService = require("../services/UserService");
 /**
  *
  * @swagger
- * /events/:
+ * /users/:
  *   get:
  *     tags: [Users]
  *     summary: Get all users
@@ -85,7 +85,7 @@ router.get("/", async (req, res) => {
  */
  router.get("/:id", async (req, res) => {
     console.log(req.params.id);
-    const user = await EventService.getUserbById(req.params.id);
+    const user = await EventService.getUserById(req.params.id);
     if (user == null) {
         res.statusCode = 400;
         res.statusMessage = "Invalid user id";
