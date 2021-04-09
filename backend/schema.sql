@@ -2,9 +2,9 @@ CREATE TABLE "user" (
     id SERIAL PRIMARY KEY,
     first_name text NOT NULL,
     last_name text NOT NULL,
-    nick text,
+    nick text UNIQUE,
     entity text,
-    email text NOT NULL
+    email text NOT NULL UNIQUE
 );
 
 CREATE TABLE authData (
@@ -61,6 +61,9 @@ INSERT INTO "group"VALUES (DEFAULT, 'E-Event');
 
 INSERT INTO "user" VALUES (DEFAULT, 'UserOne', 'Ricky', 'RickiBoi', 'Polytech-Bots','rickyboi@gmail.com');
 INSERT INTO "user" VALUES (DEFAULT, 'UserTwo', 'Marco', 'polo', 'Polytech-Bots','marco@gmail.com');
+
+INSERT INTO authdata VALUES(1,'3628b592447c13efba1ec3b7d6af3e8a31580a540fefe9a38c6358961e29a1d8')
+INSERT INTO authdata VALUES(2,'860fa34c373ebe2f7ece2295c0521ef9deb71ffc7ea34e48ed11c086d6907805')
 
 INSERT into membership VALUES (1,1);
 INSERT into membership VALUES (2,1);
