@@ -22,16 +22,18 @@ app.use(cors());
 app.use(express.json());
 
 //Routes/Endpoints setup
+const authRouter = require("./routes/auth");
 const eventsRouter = require("./routes/events");
 const groupsRouter = require("./routes/groups");
 const placesRouter = require("./routes/places");
 const usersRouter = require("./routes/users");
-const authRouter = require("./routes/auth");
+app.use("/auth", authRouter);
+const { authenticateToken } = require("./utility/Middlewares");
+app.use(authenticateToken);
 app.use("/events", eventsRouter);
 app.use("/groups", groupsRouter);
 app.use("/places", placesRouter);
 app.use("/users", usersRouter);
-app.use("/auth", authRouter);
 
 const all_routes = require("express-list-endpoints");
 app.get("/", (req, res) => {

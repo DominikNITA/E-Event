@@ -4,6 +4,8 @@ const ErrorResponse = require("../utility/ErrorResponse");
 
 const crypto = require("crypto");
 
+const UserService = require("./UserService");
+
 function getHash(password) {
     return crypto.createHmac("sha256", process.env.HASHING_SECRET).update(password).digest("hex");
 }
@@ -23,16 +25,22 @@ function validateEmail(email) {
 }
 
 exports.verifyCredentials = async function (email, password) {
+    if (email == null || password == null) {
+        throw new ErrorResponse(ErrorResponse.badRequestStatusCode, "Password or email not passed!");
+    }
+
     const user = await DBClient("user").where({ email: email }).first();
     if (user == null) {
         throw new ErrorResponse(ErrorResponse.badRequestStatusCode, "Password or email not valid!");
     }
+
     const userId = user.id;
     const hash = getHash(password);
     const userHash = await DBClient("authdata")
         .where({ user_id: userId })
         .select("password_hash as passwordHash")
         .first();
+
     if (userHash == null) {
         throw new ErrorResponse(
             ErrorResponse.internalServerError,
@@ -51,8 +59,10 @@ exports.registerUser = async function (user) {
     if (!user || !user.firstName || !user.lastName || !user.nick || !user.email || !user.password) {
         throw new ErrorResponse(ErrorResponse.badRequestStatusCode, "Invalid user content!");
     }
+
     validatePassword(user.password);
     validateEmail(user.email);
+
     //Check if email is available
     if ((await DBClient("user").where({ email: user.email }).first()) != null) {
         throw new ErrorResponse(ErrorResponse.badRequestStatusCode, "Email already taken!");
@@ -61,15 +71,18 @@ exports.registerUser = async function (user) {
     if ((await DBClient("user").where({ nick: user.nick }).first()) != null) {
         throw new ErrorResponse(ErrorResponse.badRequestStatusCode, "Nickname already taken!");
     }
-    const userId = (await DBClient("user")
-        .insert({
-            first_name: user.firstName,
-            last_name: user.lastName,
-            nick: user.nick,
-            entity: user.entity ?? "None",
-            email: user.email,
-        })
-        .returning("id"))[0];
+    
+    const userId = (
+        await DBClient("user")
+            .insert({
+                first_name: user.firstName,
+                last_name: user.lastName,
+                nick: user.nick,
+                entity: user.entity ?? "None",
+                email: user.email,
+            })
+            .returning("id")
+    )[0];
     console.log(userId);
     try {
         await DBClient("authdata").insert({

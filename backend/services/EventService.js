@@ -6,6 +6,8 @@ const { minimalView } = require("../models/User");
 
 const ErrorResponse = require("../utility/ErrorResponse");
 
+const GroupService = require("./GroupService");
+
 exports.getOneEvent = async function (id, includeFilter = []) {
     const res = await DBClient("event").where({ id: id }).select(Event.select);
     if (res.length == 0) {
