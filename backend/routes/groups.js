@@ -280,7 +280,7 @@ router.post("/:groupId/administrators", async (req, res, next) => {
 
 /**
  * @swagger
- * /groups/{id}/members:
+ * /groups/{id}/administrators:
  *  delete:
  *      tags: [Groups]
  *      summary: Remove from administrator role but left in group

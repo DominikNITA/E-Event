@@ -3,6 +3,9 @@ const app = express();
 
 require("dotenv").config();
 
+const hostname = "localhost";
+const port = 3000;
+
 //Middlewares setup
 //CORS
 const cors = require("cors");
@@ -35,13 +38,10 @@ app.use("/groups", groupsRouter);
 app.use("/places", placesRouter);
 app.use("/users", usersRouter);
 
-const all_routes = require("express-list-endpoints");
 app.get("/", (req, res) => {
-    res.set("Content-Type", "text/html");
     // Afficher toutes les endpoints disponibles
     let htmlResponse = "";
-    all_routes(app).forEach((route) => (htmlResponse += `<div>${route.path} - ${route.methods.join(" ")}</div>`));
-    res.json(htmlResponse);
+    res.send(`Go to http://${hostname}:${port}/api-docs to see the server documentation`);
 });
 
 //Error handling
@@ -74,9 +74,8 @@ const swaggerSpec = swaggerJsdoc(options);
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-const hostname = "localhost";
-const port = 3000;
 
+// Launch server
 app.listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}/`);
 });

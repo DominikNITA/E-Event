@@ -15,6 +15,18 @@ const ErrorResponse = require("../utility/ErrorResponse");
 /**
  * @swagger
  * components:
+ *  parameters:
+ *      EventIncludeQuery:
+ *          in: query
+ *          name: include
+ *          style: form
+ *          explode: false
+ *          schema:
+ *            type: array
+ *            items:
+ *                type: string
+ *                enum: ["place","organizer","participants"]
+ *
  *  schemas:
  *      Event:
  *          type: object
@@ -74,6 +86,13 @@ const ErrorResponse = require("../utility/ErrorResponse");
  *   get:
  *     tags: [Events]
  *     summary: Get all events
+ *     parameters:
+ *          - in: query
+ *            name: search
+ *            schema:
+ *              type: string
+ *            description: Searched string
+ *          - $ref: '#/components/parameters/EventIncludeQuery'
  *     responses:
  *       200:
  *         description: Returns all events
@@ -150,10 +169,12 @@ router.post("/", async (req, res, next) => {
  *              type: integer
  *            required: true
  *            description: Numeric id of the event to get
+ *          - $ref: '#/components/parameters/EventIncludeQuery'
  */
 router.get("/:id", async (req, res, next) => {
     try {
-        const event = await EventService.getOneEvent(req.params.id);
+        let includeQuery = req.query.include?.split(",") ?? [];
+        const event = await EventService.getOneEvent(req.params.id, includeQuery);
         if (event == null) {
             throw new ErrorResponse(ErrorResponse.notFoundStatusCode, "Event not found!");
         } else {
