@@ -88,20 +88,30 @@ exports.removeEvent = async function (eventId) {
     await DBClient("event").where({ id: eventId }).del();
 };
 
-exports.getParticipants = async function (eventId) {
+exports.getParticipants = async function (eventId, includeQuery = []) {
     return await DBClient("user")
         .whereIn("id", DBClient("participation").select("user_id").where("event_id", eventId))
         .select(minimalView);
 };
 
-exports.getOrganizer = async function (eventId) {
+exports.addParticipant = async function (eventId, userId){
+    const relationAlreadyExisting = await DBClient("participation").where({ user_id: userId, event_id: eventId });
+    if (relationAlreadyExisting.length > 0) {
+        throw new ErrorResponse(ErrorResponse.badRequestStatusCode, "User already participating in the event!");
+    }
+    //TODO: Check if user exists
+    await DBClient("participation").insert({ user_id: userId, event_id: eventId });
+    return await this.getParticipants(eventId);
+}
+
+exports.getOrganizer = async function (eventId, includeQuery = []) {
+    //TODO: Refactor
     let event = await this.getEventById(eventId);
     let organizer = await GroupService.getGroupById(event.organizerId);
     return organizer;
 };
 
 exports.getPlace = async function (eventId) {
-    let event = await this.getEventById(eventId);
     let place = "TODO"; //implement this -> await PlaceService.getPlaceById(event.placeId);
     return place;
 };

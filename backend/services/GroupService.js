@@ -77,6 +77,10 @@ exports.addEventToGroup = async function (groupId, event) {
     return await EventService.addEvent(event);
 };
 
-exports.doesGroupExist = async function (id) {
-    return (await exports.getGroupById(id)) != null;
+exports.doesGroupExist = async function (groupId) {
+    return (await exports.getGroupById(groupId)) != null;
+};
+
+exports.isAdministrator = async function(userId, groupId){
+    return this.getAdministrators.some(admin => admin.id === userId);
 };

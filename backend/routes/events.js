@@ -3,6 +3,7 @@ const router = express.Router();
 
 const Event = require("../models/Event");
 const EventService = require("../services/EventService");
+const GroupService = require("../services/GroupService");
 const ErrorResponse = require("../utility/ErrorResponse");
 
 /** 
@@ -26,6 +27,14 @@ const ErrorResponse = require("../utility/ErrorResponse");
  *            items:
  *                type: string
  *                enum: ["place","organizer","participants"]
+ *      EventPathId:
+ *          in: path
+ *          name: eventId
+ *          schema:
+ *            type: integer
+ *          required: true
+ *          description: Numeric id of the event to get
+ *
  *
  *  schemas:
  *      Event:
@@ -152,7 +161,7 @@ router.post("/", async (req, res, next) => {
 
 /**
  * @swagger
- * /events/{id}:
+ * /events/{eventId}:
  *  get:
  *      tags: [Events]
  *      summary: Get event by id
@@ -166,18 +175,13 @@ router.post("/", async (req, res, next) => {
  *          400:
  *              description: Authorization error
  *      parameters:
- *          - in: path
- *            name: id
- *            schema:
- *              type: integer
- *            required: true
- *            description: Numeric id of the event to get
+ *          - $ref: '#/components/parameters/EventPathId'
  *          - $ref: '#/components/parameters/EventIncludeQuery'
  */
-router.get("/:id", async (req, res, next) => {
+router.get("/:eventId", async (req, res, next) => {
     try {
         let includeQuery = req.query.include?.split(",") ?? [];
-        const event = await EventService.getEventById(req.params.id, includeQuery);
+        const event = await EventService.getEventById(req.params.eventId, includeQuery);
         if (event == null) {
             throw new ErrorResponse(ErrorResponse.notFoundStatusCode, "Event not found!");
         } else {
@@ -190,27 +194,158 @@ router.get("/:id", async (req, res, next) => {
 
 /**
  * @swagger
- * /events/{id}:
+ * /events/{eventId}:
  *  delete:
  *      tags: [Events]
  *      summary: Remove event by id
  *      parameters:
- *          - in: path
- *            name: id
- *            schema:
- *              type: integer
- *            required: true
- *            description: Numeric id of the event to delete
+ *          - $ref: '#/components/parameters/EventPathId'
  *      responses:
  *          '200':
  *              description: OK
  *          '401':
  *              description: Invalid authorization
  */
-router.delete("/:id", async (req, res, next) => {
+router.delete("/:eventId", async (req, res, next) => {
     try {
-        await EventService.removeEvent(req.params.id);
+        await EventService.removeEvent(req.params.eventId);
         res.status(200).end();
+    } catch (err) {
+        next(err);
+    }
+});
+
+/**
+ * @swagger
+ * /events/{eventId}/organizer:
+ *  get:
+ *      tags: [Events]
+ *      summary: Get organizer from event's id
+ *      responses:
+ *          200:
+ *              description: OK
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Group'
+ *          400:
+ *              description: Authorization error
+ *      parameters:
+ *          - $ref: '#/components/parameters/EventPathId'
+ *          - $ref: '#/components/parameters/GroupIncludeQuery'
+ */
+router.get("/:eventId/organizer", async (req, res, next) => {
+    try {
+        let includeQuery = req.query.include?.split(",") ?? [];
+        const organizer = await EventService.getOrganizer(req.params.eventId, includeQuery);
+        if (organizer == null) {
+            throw new ErrorResponse(ErrorResponse.notFoundStatusCode, "Event's organizer not found!");
+        } else {
+            res.json(organizer);
+        }
+    } catch (err) {
+        next(err);
+    }
+});
+
+/**
+ * @swagger
+ * /events/{eventId}/participants:
+ *  get:
+ *      tags: [Events]
+ *      summary: Get participants from event's id
+ *      responses:
+ *          200:
+ *              description: OK
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: array
+ *                          items:
+ *                              $ref: '#/components/schemas/User'
+ *          400:
+ *              description: Authorization error
+ *      parameters:
+ *          - $ref: '#/components/parameters/EventPathId'
+ */
+router.get("/:eventId/participants", async (req, res, next) => {
+    try {
+        let includeQuery = req.query.include?.split(",") ?? [];
+        const participants = await EventService.getParticipants(req.params.eventId, includeQuery);
+        if (participants == null) {
+            throw new ErrorResponse(ErrorResponse.notFoundStatusCode, "Event's participants not found!");
+        } else {
+            res.json(participants);
+        }
+    } catch (err) {
+        next(err);
+    }
+});
+
+/**
+ * @swagger
+ * /events/{eventId}/place:
+ *  get:
+ *      tags: [Events]
+ *      summary: Get place where event is organized
+ *      responses:
+ *          200:
+ *              description: OK
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Place'
+ *          400:
+ *              description: Authorization error
+ *      parameters:
+ *          - $ref: '#/components/parameters/EventPathId'
+ */
+router.get("/:eventId/place", async (req, res, next) => {
+    try {
+        let includeQuery = req.query.include?.split(",") ?? [];
+        const place = await EventService.getPlace(req.params.eventId, includeQuery);
+        if (place == null) {
+            throw new ErrorResponse(ErrorResponse.notFoundStatusCode, "Event's place not found!");
+        } else {
+            res.json(place);
+        }
+    } catch (err) {
+        next(err);
+    }
+});
+
+/**
+ * @swagger
+ * /events/{eventId}/participants:
+ *  post:
+ *      tags: [Events]
+ *      summary: Add participant
+ *      responses:
+ *          200:
+ *              description: OK
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: array
+ *                          items:
+ *                              $ref: '#/components/schemas/Group'
+ *          400:
+ *              description: Authorization error
+ *      parameters:
+ *          - $ref: '#/components/parameters/EventPathId'
+ */
+router.post("/:eventId/participants", async (req, res, next) => {
+    try {
+        const organizer = await EventService.getOrganizer((await EventService.getEventById(req.params.eventId)).id);
+        if(!(await GroupService.isAdministrator(req.body.user.id,organizer.id))){
+            throw new ErrorResponse(ErrorResponse.forbiddenStatusCode, "You are not an administrator of this event!")
+        }
+        const participants = await EventService.addParticipant(req.params.eventId, req.body.userId);
+        if (participants == null) {
+            throw new ErrorResponse(ErrorResponse.notFoundStatusCode, "Couldn't add user as participant!");
+        } else {
+            res.json(participants);
+        }
     } catch (err) {
         next(err);
     }

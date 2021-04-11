@@ -25,6 +25,17 @@ router.use("/:groupId", checkGroupExistence);
 /**
  * @swagger
  * components:
+ *  parameters:
+ *      GroupIncludeQuery:
+ *          in: query
+ *          name: include
+ *          style: form
+ *          explode: false
+ *          schema:
+ *            type: array
+ *            items:
+ *                type: string
+ *                enum: ["members","administrators","events"]
  *  schemas:
  *      Group:
  *          type: object
