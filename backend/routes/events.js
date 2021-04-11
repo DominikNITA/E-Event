@@ -38,6 +38,8 @@ const ErrorResponse = require("../utility/ErrorResponse");
  *              - endDate
  *              - price
  *              - information
+ *              - placeId
+ *              - organizerId
  *          properties:
  *              id:
  *                  type: integer
@@ -63,16 +65,16 @@ const ErrorResponse = require("../utility/ErrorResponse");
  *              information:
  *                  type: string
  *                  description: Event information and description
+ *              placeId:
+ *                  type: integer
+ *                  description: Id of place where event takes places
  *              place:
- *                  oneOf:
- *                      - type: integer
- *                        description: Id of place where event takes places
- *                      - $ref: '#/components/schemas/Place'
+ *                  $ref: '#/components/schemas/Place'
+ *              organizerId:
+ *                  type: integer
+ *                  description: Id of group organizing the event
  *              organizer:
- *                  oneOf:
- *                      - type: integer
- *                        description: Id of group organizing the event
- *                      - $ref: '#/components/schemas/Group'
+ *                  $ref: '#/components/schemas/Group'
  *              participants:
  *                  type: array
  *                  items:
@@ -105,10 +107,11 @@ const ErrorResponse = require("../utility/ErrorResponse");
  */
 router.get("/", async (req, res, next) => {
     try {
+        let includeQuery = req.query.include?.split(",") ?? [];
         if (req.query.search) {
-            res.json(await EventService.searchEvents(req.query.search));
+            res.json(await EventService.searchEvents(req.query.search, includeQuery));
         } else {
-            res.json(await EventService.getAllEvents());
+            res.json(await EventService.getAllEvents(includeQuery));
         }
     } catch (err) {
         next(err);
