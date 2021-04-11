@@ -1,13 +1,13 @@
 const DBClient = require("./DBConnection");
 
-const { minimalView } = require("../models/User");
+const UserModel = require("../models/User");
 
 exports.getAllUsers = async function () {
-    return await DBClient("user").select(minimalView);
+    return await DBClient("user").select(UserModel.minimalView);
 };
 
 exports.getUserById = async function (clientId) {
-    const userResponse = await DBClient("user").where({ id: clientId }).select(User.select);
+    const userResponse = await DBClient("user").where({ id: clientId }).select(UserModel.select);
     return userResponse.length == 0 ? null : userResponse[0];
 };
 

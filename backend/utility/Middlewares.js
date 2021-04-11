@@ -6,7 +6,7 @@ const UserService = require("../services/UserService");
 
 async function authenticateToken(req, res, next) {
     try {
-        const authHeader = req.headers["authorization"];
+        const authHeader = req.headers["auth"];
         const token = authHeader; // && authHeader.split(' ')[1] //uncomment when using Bearer token
         if (token == null) {
             //throw new ErrorResponse(ErrorResponse.unauthorizedStatusCode, "Auth token not passed");

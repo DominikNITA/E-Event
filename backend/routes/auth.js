@@ -1,16 +1,27 @@
 const express = require("express");
 const router = express.Router();
 
-const jwt = require("jsonwebtoken");
-
 const AuthService = require("../services/AuthService");
 const ErrorResponse = require("../utility/ErrorResponse");
+
+const Middlewares = require("../utility/Middlewares");
 /** 
     @swagger
     tags:
         - name: Auth
           description: API to manage authentication. 
 */
+/**
+ *  @swagger
+ *  components:
+ *      securitySchemes:
+ *          basicAuth:     # <-- arbitrary name for the security scheme
+ *              type: apiKey
+ *              in: header
+ *              name: auth
+ */
+
+
 
 /**
  * @swagger
@@ -48,7 +59,7 @@ const ErrorResponse = require("../utility/ErrorResponse");
 router.post("/login", async (req, res, next) => {
     try {
         const userId = await AuthService.verifyCredentials(req.body.email, req.body.password);
-        const accessToken = jwt.sign({ userId: userId }, process.env.ACCESS_TOKEN_SECRET);
+        const accessToken = await AuthService.generateAccessToken(userId);
         res.json({ accessToken: accessToken });
     } catch (err) {
         next(err);
@@ -87,6 +98,48 @@ router.post("/register", async (req, res, next) => {
     try {
         const user = await AuthService.registerUser(req.body.user);
         res.json(user);
+    } catch (err) {
+        next(err);
+    }
+});
+
+/**
+ * @swagger
+ * /auth/changePassword:
+ *  post:
+ *      tags: [Auth]
+ *      summary: Change user's password
+ *      security:
+ *          - basicAuth: []
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      required:
+ *                          - password
+ *                      properties:
+ *                          password:
+ *                              type: string
+ *      responses:
+ *          200:
+ *              description: Password changed successfully
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          required:
+ *                              - authToken
+ *                          properties:
+ *                              authToken:
+ *                                  type: string
+ */
+router.post("/changePassword", Middlewares.authenticateToken, async (req, res, next) => {
+    try {
+        console.log(req.headers);
+        const newAccessToken = await AuthService.changePassword(req.body.password, req.user.id);
+        res.json(newAccessToken);
     } catch (err) {
         next(err);
     }

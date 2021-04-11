@@ -2,9 +2,9 @@ CREATE TABLE "user" (
     id SERIAL PRIMARY KEY,
     first_name text NOT NULL,
     last_name text NOT NULL,
-    nick text UNIQUE,
+    nick text,
     entity text,
-    email text NOT NULL UNIQUE
+    email text NOT NULL
 );
 
 CREATE TABLE authData (
@@ -78,7 +78,7 @@ INSERT into administration VALUES (2,1);
 INSERT into administration VALUES (3,2);
 
 INSERT INTO event VALUES (DEFAULT,'Parrainage',1,1,20,'2021-03-14','2021-03-14',0,'C''est genial!');
-INSERT INTO event VALUES (DEFAULT,'Maraton',2,2,500,'2021-04-30','2021-04-30',10,'Venez courir!');
+INSERT INTO event VALUES (DEFAULT,'Marathon',2,2,500,'2021-04-30','2021-04-30',10,'Venez courir!');
 
 INSERT INTO participation VALUES(1,1);
 INSERT INTO participation VALUES(2,1);

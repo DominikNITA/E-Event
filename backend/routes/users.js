@@ -42,6 +42,8 @@ const UserService = require("../services/UserService");
  *   get:
  *     tags: [Users]
  *     summary: Get all users
+ *     security:
+ *          - basicAuth: []
  *     responses:
  *       200:
  *         description: Returns all users
@@ -62,6 +64,8 @@ router.get("/", async (req, res) => {
  *  get:
  *      tags: [Users]
  *      summary: Get user by id
+ *      security:
+ *          - basicAuth: []
  *      responses:
  *          200:
  *              description: OK
@@ -85,7 +89,7 @@ router.get("/", async (req, res) => {
  */
  router.get("/:id", async (req, res) => {
     console.log(req.params.id);
-    const user = await EventService.getUserById(req.params.id);
+    const user = await UserService.getUserById(req.params.id);
     if (user == null) {
         res.statusCode = 400;
         res.statusMessage = "Invalid user id";
@@ -103,6 +107,8 @@ router.get("/", async (req, res) => {
  *  post:
  *      tags: [Users]
  *      summary: Creates new user
+ *      security:
+ *          - basicAuth: []
  *      requestBody:
  *          required: true
  *          content:
@@ -140,6 +146,8 @@ router.get("/", async (req, res) => {
  *  post:
  *      tags: [Users]
  *      summary: Anonymise user
+ *      security:
+ *          - basicAuth: []
  *      responses:
  *          200:
  *              description: OK

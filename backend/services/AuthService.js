@@ -4,6 +4,8 @@ const ErrorResponse = require("../utility/ErrorResponse");
 
 const crypto = require("crypto");
 
+const jwt = require("jsonwebtoken");
+
 const UserService = require("./UserService");
 
 function getHash(password) {
@@ -71,7 +73,7 @@ exports.registerUser = async function (user) {
     if ((await DBClient("user").where({ nick: user.nick }).first()) != null) {
         throw new ErrorResponse(ErrorResponse.badRequestStatusCode, "Nickname already taken!");
     }
-    
+
     const userId = (
         await DBClient("user")
             .insert({
@@ -83,7 +85,6 @@ exports.registerUser = async function (user) {
             })
             .returning("id")
     )[0];
-    console.log(userId);
     try {
         await DBClient("authdata").insert({
             user_id: userId,
@@ -96,4 +97,18 @@ exports.registerUser = async function (user) {
     }
 
     return await DBClient("user").where({ id: userId }).first();
+};
+
+exports.generateAccessToken = async function (userId) {
+    return jwt.sign({ userId: userId }, process.env.ACCESS_TOKEN_SECRET);
+};
+
+exports.changePassword = async function (password, userId) {
+    validatePassword(password);
+
+    await DBClient("authdata").where({user_id: userId}).update({
+        password_hash: getHash(password),
+    });
+
+    return this.generateAccessToken(userId)
 };
