@@ -8,61 +8,44 @@ const ErrorResponse = require("../utility/ErrorResponse");
 
 const GroupService = require("./GroupService");
 
-exports.getOneEvent = async function (id, includeFilter = []) {
+exports.applyIncludeFilter = async function (event, includeFilter) {
+    if (includeFilter.includes("place")) {
+        event.place = await DBClient("place").where({ id: event.placeId }).first();
+    }
+    if (includeFilter.includes("organizer")) {
+        event.organizer = await GroupService.getGroupById(event.organizerId);
+    }
+    if (includeFilter.includes("participants")) {
+        event.participants = await this.getParticipants(event.id);
+    }
+    return event;
+};
+
+exports.applyIncludeFilterToManyEvents = async function (events, includeFilter) {
+    await Promise.all(
+        events.map(async (event) => {
+            event = await this.applyIncludeFilter(event, includeFilter);
+            return event;
+        }, events)
+    );
+
+    return events;
+};
+
+exports.getEventById = async function (id, includeFilter = []) {
     const res = await DBClient("event").where({ id: id }).select(Event.select);
     if (res.length == 0) {
         return null;
     }
     let event = res[0];
-
-    if (includeFilter.includes("place")) {
-        event.place = await DBClient("place").where({ id: event.placeId }).first();
-        //delete event.placeId;
-    }
-    if (includeFilter.includes("organizer")) {
-        event.organizer = await DBClient("group").where({ id: event.organizerId }).first();
-        //delete event.organizerId;
-    }
-    if (includeFilter.includes("participants")) {
-        event.participants = await DBClient("user")
-            .whereIn("id", DBClient("participation").select("user_id").where("event_id", id))
-            .select(minimalView);
-    }
+    event = await this.applyIncludeFilter(event, includeFilter);
     return event;
 };
 
 exports.getAllEvents = async function (includeFilter = []) {
     //TODO: Send only events from groups to which user is subscribed
-    const events = await DBClient("event").select(Event.select);
-
-    if (includeFilter.includes("place")) {
-        await Promise.all(
-            events.map(async (event) => {
-                event.place = await DBClient("place").where({ id: event.placeId }).first();
-                //delete event.placeId;
-                return event;
-            }, events)
-        );
-    }
-    if (includeFilter.includes("organizer")) {
-        await Promise.all(
-            events.map(async (event) => {
-                event.organizer = await DBClient("group").where({ id: event.organizerId }).first();
-                //delete event.organizerId;
-                return event;
-            }, events)
-        );
-    }
-    if (includeFilter.includes("participants")) {
-        await Promise.all(
-            events.map(async (event) => {
-                event.participants = await DBClient("user")
-                    .whereIn("id", DBClient("participation").select("user_id").where("event_id", event.id))
-                    .select(minimalView);
-                return event;
-            })
-        );
-    }
+    let events = await DBClient("event").select(Event.select);
+    events = await this.applyIncludeFilterToManyEvents(events, includeFilter);
     return events;
 };
 
@@ -80,7 +63,7 @@ exports.addEvent = async function (event) {
             information: event.information,
         })
         .returning("id");
-    const eventResponse = await this.getOneEvent(eventId[0]);
+    const eventResponse = await this.getEventById(eventId[0]);
     return eventResponse;
 };
 
@@ -90,34 +73,7 @@ exports.searchEvents = async function (searchQuery, includeFilter = []) {
         .orWhere("information", "ILIKE", `%${searchQuery}%`)
         .select(Event.select);
     // `ILIKE` in Postgres means case Insensitive
-    if (includeFilter.includes("place")) {
-        await Promise.all(
-            foundEvents.map(async (event) => {
-                event.place = await DBClient("place").where({ id: event.placeId }).first();
-                //delete event.placeId;
-                return event;
-            }, foundEvents)
-        );
-    }
-    if (includeFilter.includes("organizer")) {
-        await Promise.all(
-            foundEvents.map(async (event) => {
-                event.organizer = await DBClient("group").where({ id: event.organizerId }).first();
-                //delete event.organizerId;
-                return event;
-            }, foundEvents)
-        );
-    }
-    if (includeFilter.includes("participants")) {
-        await Promise.all(
-            foundEvents.map(async (event) => {
-                event.participants = await DBClient("user")
-                    .whereIn("id", DBClient("participation").select("user_id").where("event_id", event.id))
-                    .select(minimalView);
-                return foundEvents;
-            })
-        );
-    }
+    foundEvents = await this.applyIncludeFilterToManyEvents(foundEvents, includeFilter);
     return foundEvents;
 };
 
@@ -125,9 +81,27 @@ exports.doesEventExist = async function (eventId) {
     return (await DBClient("event").where({ id: eventId }).first()) != null;
 };
 
-exports.removeEvent = async function (id) {
+exports.removeEvent = async function (eventId) {
     if (!this.doesEventExist(id)) {
         throw new ErrorResponse(ErrorResponse.notFoundStatusCode, "Event not found!");
     }
-    await DBClient("event").where({ id: id }).del();
+    await DBClient("event").where({ id: eventId }).del();
+};
+
+exports.getParticipants = async function (eventId) {
+    return await DBClient("user")
+        .whereIn("id", DBClient("participation").select("user_id").where("event_id", eventId))
+        .select(minimalView);
+};
+
+exports.getOrganizer = async function (eventId) {
+    let event = await this.getEventById(eventId);
+    let organizer = await GroupService.getGroupById(event.organizerId);
+    return organizer;
+};
+
+exports.getPlace = async function (eventId) {
+    let event = await this.getEventById(eventId);
+    let place = "TODO"; //implement this -> await PlaceService.getPlaceById(event.placeId);
+    return place;
 };

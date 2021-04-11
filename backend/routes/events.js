@@ -177,7 +177,7 @@ router.post("/", async (req, res, next) => {
 router.get("/:id", async (req, res, next) => {
     try {
         let includeQuery = req.query.include?.split(",") ?? [];
-        const event = await EventService.getOneEvent(req.params.id, includeQuery);
+        const event = await EventService.getEventById(req.params.id, includeQuery);
         if (event == null) {
             throw new ErrorResponse(ErrorResponse.notFoundStatusCode, "Event not found!");
         } else {

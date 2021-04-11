@@ -16,8 +16,7 @@ async function authenticateToken(req, res, next) {
 
         jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, async (err, userFromToken) => {
             if (err) throw new ErrorResponse(ErrorResponse.forbiddenStatusCode, "Problem with token");
-            const userId = userFromToken.userId;
-            const user = await UserService.getUserById(userId);
+            const user = await UserService.getUserById(userFromToken.userId);
             if (user == null)
                 throw new ErrorResponse(ErrorResponse.badRequestStatusCode, "Token signed for not existing user");
             req.user = user;
