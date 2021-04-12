@@ -21,6 +21,8 @@ const UserService = require("../services/UserService");
  *              - id
  *              - firstName
  *              - lastName
+ *              - nick
+ *              - email
  *          properties:
  *              id:
  *                  type: integer
@@ -32,6 +34,13 @@ const UserService = require("../services/UserService");
  *              lastName:
  *                  type: string
  *                  description: User's last name
+ *              nick:
+ *                  type: string
+ *                  description: User's nickname
+ *              email:
+ *                  type: string
+ *                  format: email
+ *                  description: User's email
  */
 
 

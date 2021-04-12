@@ -77,14 +77,19 @@ const ErrorResponse = require("../utility/ErrorResponse");
  *              placeId:
  *                  type: integer
  *                  description: Id of place where event takes places
- *              place:
- *                  $ref: '#/components/schemas/Place'
  *              organizerId:
  *                  type: integer
  *                  description: Id of group organizing the event
+ *              place:
+ *                  readOnly: true
+ *                  allOf:
+ *                      - $ref: '#/components/schemas/Place'
  *              organizer:
- *                  $ref: '#/components/schemas/Group'
+ *                  readOnly: true
+ *                  allOf:
+ *                      - $ref: '#/components/schemas/Group'
  *              participants:
+ *                  readOnly: true
  *                  type: array
  *                  items:
  *                      $ref: '#/components/schemas/User'
@@ -320,15 +325,29 @@ router.get("/:eventId/place", async (req, res, next) => {
  *  post:
  *      tags: [Events]
  *      summary: Add participant
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      required:
+ *                          - userId
+ *                      properties:
+ *                          userId:
+ *                              type: integer
  *      responses:
  *          200:
  *              description: OK
  *              content:
  *                  application/json:
  *                      schema:
- *                          type: array
- *                          items:
- *                              $ref: '#/components/schemas/Group'
+ *                          type: object
+ *                          required:
+ *                              - userId
+ *                          properties:
+ *                              userId:
+ *                                  type: integer
  *          400:
  *              description: Authorization error
  *      parameters:
@@ -337,8 +356,8 @@ router.get("/:eventId/place", async (req, res, next) => {
 router.post("/:eventId/participants", async (req, res, next) => {
     try {
         const organizer = await EventService.getOrganizer((await EventService.getEventById(req.params.eventId)).id);
-        if(!(await GroupService.isAdministrator(req.body.user.id,organizer.id))){
-            throw new ErrorResponse(ErrorResponse.forbiddenStatusCode, "You are not an administrator of this event!")
+        if (!(await GroupService.isAdministrator(req.body.userId, organizer.id))) {
+            throw new ErrorResponse(ErrorResponse.forbiddenStatusCode, "You are not an administrator of this event!");
         }
         const participants = await EventService.addParticipant(req.params.eventId, req.body.userId);
         if (participants == null) {

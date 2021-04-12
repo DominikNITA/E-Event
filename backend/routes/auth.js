@@ -43,6 +43,7 @@ const Middlewares = require("../utility/Middlewares");
  *                              type: string
  *                          password:
  *                              type: string
+ *                              format: password
  *      responses:
  *          200:
  *              description: Authentication successful
@@ -86,6 +87,7 @@ router.post("/login", async (req, res, next) => {
  *                              $ref: '#/components/schemas/User'
  *                          password:
  *                              type: string
+ *                              format: password
  *      responses:
  *          200:
  *              description: Registration successful
@@ -96,7 +98,7 @@ router.post("/login", async (req, res, next) => {
  */
 router.post("/register", async (req, res, next) => {
     try {
-        const user = await AuthService.registerUser(req.body.user);
+        const user = await AuthService.registerUser(req.body.user, req.body.password);
         res.json(user);
     } catch (err) {
         next(err);
@@ -122,6 +124,7 @@ router.post("/register", async (req, res, next) => {
  *                      properties:
  *                          password:
  *                              type: string
+ *                              format: password
  *      responses:
  *          200:
  *              description: Password changed successfully
@@ -138,6 +141,87 @@ router.post("/register", async (req, res, next) => {
 router.post("/changePassword", Middlewares.authenticateToken, async (req, res, next) => {
     try {
         console.log(req.headers);
+        const newAccessToken = await AuthService.changePassword(req.body.password, req.user.id);
+        res.json(newAccessToken);
+    } catch (err) {
+        next(err);
+    }
+});
+
+
+
+/**
+ * @swagger
+ * /auth/demandPasswordRecovery:
+ *  post:
+ *      tags: [Auth]
+ *      summary: Change user's password
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      required:
+ *                          - email
+ *                      properties:
+ *                          email:
+ *                              type: string
+ *                              format: email
+ *      responses:
+ *          200:
+ *              description: Password changed successfully
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          required:
+ *                              - authToken
+ *                          properties:
+ *                              authToken:
+ *                                  type: string
+ */
+ router.post("/demandPasswordRecovery", async (req, res, next) => {
+    try {
+        const newAccessToken = await AuthService.changePassword(req.body.password, req.user.id);
+        res.json(newAccessToken);
+    } catch (err) {
+        next(err);
+    }
+});
+
+/**
+ * @swagger
+ * /auth/recoverPassword:
+ *  post:
+ *      tags: [Auth]
+ *      summary: Change user's password
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      required:
+ *                          - secretKey
+ *                      properties:
+ *                          secretKey:
+ *                              type: string
+ *      responses:
+ *          200:
+ *              description: Password changed successfully
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          required:
+ *                              - authToken
+ *                          properties:
+ *                              authToken:
+ *                                  type: string
+ */
+ router.post("/recoverPassword", async (req, res, next) => {
+    try {
         const newAccessToken = await AuthService.changePassword(req.body.password, req.user.id);
         res.json(newAccessToken);
     } catch (err) {

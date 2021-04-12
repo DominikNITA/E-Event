@@ -11,12 +11,18 @@ exports.getUserById = async function (clientId) {
     return userResponse.length == 0 ? null : userResponse[0];
 };
 
+exports.getUserByEmail = async function (email) {
+    if(!email) throw new ErrorResponse(ErrorResponse.badRequestStatusCode,"Email not passed");
+    const userResponse = await DBClient("user").where({ email: email }).select(UserModel.select);
+    return userResponse.length == 0 ? null : userResponse[0];
+};
+
 exports.addUser = async function (user) {
     //TODO : CHECK USER GOOD CONSTRUCTION
     const userId = await DBClient("user")
         .insert({
-            first_name: user.first_name,
-            last_name: user.last_name,
+            first_name: user.firstName,
+            last_name: user.lastName,
             nick: user.nick,
             entity: user.entity,
             email: user.email,

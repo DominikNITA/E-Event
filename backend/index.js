@@ -41,7 +41,7 @@ app.use("/users", usersRouter);
 app.get("/", (req, res) => {
     // Afficher toutes les endpoints disponibles
     let htmlResponse = "";
-    res.send(`Go to http://${hostname}:${port}/api-docs to see the server documentation`);
+    res.send(`Go to <a href="http://${hostname}:${port}/api-docs?tryItOutEnabled=true">http://${hostname}:${port}/api-docs</a> to see the server documentation`);
 });
 
 //Error handling
@@ -73,7 +73,6 @@ const options = {
 const swaggerSpec = swaggerJsdoc(options);
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-
 
 // Launch server
 app.listen(port, hostname, () => {

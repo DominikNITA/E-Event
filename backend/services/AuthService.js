@@ -57,12 +57,14 @@ exports.verifyCredentials = async function (email, password) {
     return userId;
 };
 
-exports.registerUser = async function (user) {
-    if (!user || !user.firstName || !user.lastName || !user.nick || !user.email || !user.password) {
+exports.registerUser = async function (user, password) {
+    if (!user || !user.firstName || !user.lastName || !user.nick || !user.email || !password) {
+        console.log(user);
+        console.log(password);
         throw new ErrorResponse(ErrorResponse.badRequestStatusCode, "Invalid user content!");
     }
 
-    validatePassword(user.password);
+    validatePassword(password);
     validateEmail(user.email);
 
     //Check if email is available
@@ -88,7 +90,7 @@ exports.registerUser = async function (user) {
     try {
         await DBClient("authdata").insert({
             user_id: userId,
-            password_hash: getHash(user.password),
+            password_hash: getHash(password),
         });
     } catch (err) {
         //Remove user if problems with adding password occur
@@ -106,9 +108,32 @@ exports.generateAccessToken = async function (userId) {
 exports.changePassword = async function (password, userId) {
     validatePassword(password);
 
-    await DBClient("authdata").where({user_id: userId}).update({
-        password_hash: getHash(password),
-    });
+    await DBClient("authdata")
+        .where({ user_id: userId })
+        .update({
+            password_hash: getHash(password),
+        });
 
-    return this.generateAccessToken(userId)
+    return this.generateAccessToken(userId);
 };
+
+//Password recovery
+const recoverPasswordTimeLimit = 15 * 60 * 1000; // In milliseconds => 15min
+
+exports.demandPasswordRecovery = async function (email) {
+    //Validate email
+    if(!email) throw new ErrorResponse(ErrorResponse.badRequestStatusCode,"Email not passed");
+    validateEmail(email);
+
+    //Check email existence
+    const user = await UserService.getUserByEmail(email);
+
+    if(!user) return;
+    //Create secret key
+    const recoverToken = jwt.sign({ email: email, timestamp: Date.now() }, process.env.RECOVER_PASSWORD_SECRET);
+    //return secret key
+};
+
+exports.recoverPassword = async function(secretKey){
+    throw new Error("Not implemented");
+}
