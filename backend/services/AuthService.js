@@ -13,9 +13,13 @@ function getHash(password) {
 }
 
 function validatePassword(password) {
+    if (!password) {
+        throw new ErrorResponse(ErrorResponse.badRequestStatusCode, "Password not passed!");
+    }
     if (password.length < 5) {
         throw new ErrorResponse(ErrorResponse.badRequestStatusCode, "Password is too short");
-    } else if (password.length > 64) {
+    }
+    if (password.length > 64) {
         throw new ErrorResponse(ErrorResponse.badRequestStatusCode, "Password is too long");
     }
 }
@@ -117,23 +121,32 @@ exports.changePassword = async function (password, userId) {
     return this.generateAccessToken(userId);
 };
 
-//Password recovery
-const recoverPasswordTimeLimit = 15 * 60 * 1000; // In milliseconds => 15min
-
 exports.demandPasswordRecovery = async function (email) {
     //Validate email
-    if(!email) throw new ErrorResponse(ErrorResponse.badRequestStatusCode,"Email not passed");
+    if (!email) throw new ErrorResponse(ErrorResponse.badRequestStatusCode, "Email not passed");
     validateEmail(email);
 
     //Check email existence
     const user = await UserService.getUserByEmail(email);
+    if (!user) return;
 
-    if(!user) return;
     //Create secret key
-    const recoverToken = jwt.sign({ email: email, timestamp: Date.now() }, process.env.RECOVER_PASSWORD_SECRET);
-    //return secret key
+    const recoveryToken = jwt.sign({ userId: user.id }, process.env.RECOVERY_PASSWORD_SECRET, {
+        expiresIn: "1h",
+    });
+
+    //TODO: Send recovery token via email
 };
 
-exports.recoverPassword = async function(secretKey){
-    throw new Error("Not implemented");
-}
+exports.recoverPassword = async function (recoveryToken, password) {
+    jwt.verify(recoveryToken, process.env.RECOVERY_PASSWORD_SECRET, async (err, decodedToken) => {
+        if (err) throw new ErrorResponse(ErrorResponse.forbiddenStatusCode, "Problem with token: " + err.message);
+
+        const user = await UserService.getUserById(decodedToken.userId);
+        if (user == null)
+            throw new ErrorResponse(ErrorResponse.badRequestStatusCode, "Token signed for not existing user");
+
+        this.changePassword(password, user.id);
+        //TODO: make recoverytokens only one time use
+    });
+};

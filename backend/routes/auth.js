@@ -21,8 +21,6 @@ const Middlewares = require("../utility/Middlewares");
  *              name: auth
  */
 
-
-
 /**
  * @swagger
  * /auth/login:
@@ -140,15 +138,12 @@ router.post("/register", async (req, res, next) => {
  */
 router.post("/changePassword", Middlewares.authenticateToken, async (req, res, next) => {
     try {
-        console.log(req.headers);
         const newAccessToken = await AuthService.changePassword(req.body.password, req.user.id);
         res.json(newAccessToken);
     } catch (err) {
         next(err);
     }
 });
-
-
 
 /**
  * @swagger
@@ -170,21 +165,12 @@ router.post("/changePassword", Middlewares.authenticateToken, async (req, res, n
  *                              format: email
  *      responses:
  *          200:
- *              description: Password changed successfully
- *              content:
- *                  application/json:
- *                      schema:
- *                          type: object
- *                          required:
- *                              - authToken
- *                          properties:
- *                              authToken:
- *                                  type: string
+ *              description: Password recovery demand accepted
  */
- router.post("/demandPasswordRecovery", async (req, res, next) => {
+router.post("/demandPasswordRecovery", async (req, res, next) => {
     try {
-        const newAccessToken = await AuthService.changePassword(req.body.password, req.user.id);
-        res.json(newAccessToken);
+        await AuthService.demandPasswordRecovery(req.body.email);
+        res.status(200).end();
     } catch (err) {
         next(err);
     }
@@ -203,27 +189,22 @@ router.post("/changePassword", Middlewares.authenticateToken, async (req, res, n
  *                  schema:
  *                      type: object
  *                      required:
- *                          - secretKey
+ *                          - recoveryToken
+ *                          - password
  *                      properties:
- *                          secretKey:
+ *                          recoveryToken:
  *                              type: string
+ *                          password:
+ *                              type: string
+ *                              format: password
  *      responses:
  *          200:
  *              description: Password changed successfully
- *              content:
- *                  application/json:
- *                      schema:
- *                          type: object
- *                          required:
- *                              - authToken
- *                          properties:
- *                              authToken:
- *                                  type: string
  */
- router.post("/recoverPassword", async (req, res, next) => {
+router.post("/recoverPassword", async (req, res, next) => {
     try {
-        const newAccessToken = await AuthService.changePassword(req.body.password, req.user.id);
-        res.json(newAccessToken);
+        await AuthService.recoverPassword(req.body.recoverToken, req.body.password);
+        res.status(200).end();
     } catch (err) {
         next(err);
     }
