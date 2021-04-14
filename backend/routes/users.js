@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
+const ErrorResponse = require("../utility/ErrorResponse");
+
 const User = require ("../models/user");
 const UserService = require("../services/UserService");
 
@@ -45,7 +47,6 @@ const UserService = require("../services/UserService");
 
 
 /**
- *
  * @swagger
  * /users/:
  *   get:
@@ -131,28 +132,23 @@ router.get("/", async (req, res) => {
  *                  application/json:
  *                      schema:
  *                          $ref: '#/components/schemas/User'
- *          400:
- *              description: User creation error
- *              content:
- *                  application/json:
- *                      schema:
- *                          $ref: '#/components/schemas/User'
  */
- router.post("/", async (req, res) => {
-    if (req.body.user == null) {
-        res.statusCode = 400;
-        res.statusMessage = "Failed to create user";
-        res.end();
-        return;
+ router.post("/", async (req, res, next) => {
+    try {
+        if (req.body.user == null) {
+            throw new ErrorResponse(ErrorResponse.badRequestStatusCode, "Failed to create user : body is null");
+        }
+        const user = await UserService.addUser(req.body.user);
+        res.json(user);
+    } catch (err) {
+        next(err);
     }
-    const user = await UserService.addUser(req.body.user);
-    res.json(user);
 });
 
 /**
  * @swagger
  * /users/{Id}:
- *  post:
+ *  put:
  *      tags: [Users]
  *      summary: Anonymise user
  *      security:
@@ -178,7 +174,7 @@ router.get("/", async (req, res) => {
  *            required: true
  *            description: Numeric id of the user to anonymise
  */
- router.post("/:id", async (req, res) => {
+ router.put("/:id", async (req, res) => {
     console.log(req.params.id);
     const user = await UserService.anonymizeUser(req.params.id);
     if (user == null) {
@@ -189,5 +185,19 @@ router.get("/", async (req, res) => {
     }
     res.json(user);
 });
+
+
+router.put("/", async (req, res) => {
+    //TODO : CHECK IF USER EXISTS AND GOOD CONSTRUCTION
+    if (req.body.user == null) {
+        res.statusCode = 400;
+        res.statusMessage = "Failed to modify user";
+        res.end();
+        return;
+    }
+    const user = await UserService.modifyUser(req.body.user);
+    res.json(user);
+});
+
 
 module.exports = router;
