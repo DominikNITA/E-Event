@@ -5,7 +5,7 @@ body {
 
 .head-page {
   background-color: white;
-  padding: 2%;
+  height: 150px;
 }
 
 /*Raccourci*/
@@ -18,7 +18,7 @@ body {
   float: left;
   color: black;
   text-align: center;
-  padding-right: 3%;
+  padding-right: 5%;
   text-decoration: none;
   font-size: 120%;
 }

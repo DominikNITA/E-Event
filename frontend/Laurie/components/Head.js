@@ -20,7 +20,7 @@ app.component('head-page', {
     template:
     /*html*/
     `
-    <div class="head-page">
+    <div class="container-fluid head-page">
         <div class = "langues">
             <a :href="url_courrant" @click="langue('fr')"> FR </a>
             <a :href="url_courrant" @click="langue('eng')"> ENG </a>
