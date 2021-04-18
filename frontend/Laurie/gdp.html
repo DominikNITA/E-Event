@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8" />
+        <title>E-Event</title>
+        <!-- Import Styles -->
+        <link rel="stylesheet" href="./assets/styles.css" />
+        <!-- Import Vue.Js -->
+        <script src="https://unpkg.com/vue@next"></script>
+    </head>
+    <body>
+        <div id="app">
+            <head-page 
+                :url_courrant="url_courrant"
+                :url_accueil="url_accueil"
+                :url_evenements="url_evenements" 
+                :url_gdp="url_gdp"
+                :changerLangage="changerLangage">
+            </head-page>
+            <plus-info
+                :url_profil="url_profil">
+            </plus-info>
+        </div>
+
+
+        <!-- Import App -->
+        <script src="./main.js"></script>
+
+        <!-- Import Components -->
+        <script src="./components/Head.js"></script>
+        <script src="./components/Plus-Information.js"></script>
+
+        <!-- Mount App -->
+        <script>const mountedApp = app.mount('#app')</script>
+    </body>
+
+</html>
