@@ -25,6 +25,17 @@ router.use("/:groupId", checkGroupExistence);
 /**
  * @swagger
  * components:
+ *  parameters:
+ *      GroupIncludeQuery:
+ *          in: query
+ *          name: include
+ *          style: form
+ *          explode: false
+ *          schema:
+ *            type: array
+ *            items:
+ *                type: string
+ *                enum: ["members","administrators","events"]
  *  schemas:
  *      Group:
  *          type: object
@@ -280,7 +291,7 @@ router.post("/:groupId/administrators", async (req, res, next) => {
 
 /**
  * @swagger
- * /groups/{id}/members:
+ * /groups/{id}/administrators:
  *  delete:
  *      tags: [Groups]
  *      summary: Remove from administrator role but left in group

@@ -16,8 +16,9 @@ const router = express.Router();
  *          type: object
  *          required:
  *              - id
- *              - firstName
- *              - lastName
+ *              - name
+ *              - description
+ *              - address
  *          properties:
  *              id:
  *                  type: integer
