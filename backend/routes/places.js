@@ -97,7 +97,7 @@ router.get("/", async (req, res) => {
   const place = await PlaceService.getPlaceById(req.params.id);
   if (place == null) {
       res.statusCode = 400;
-      res.statusMessage = "Invalid place id";
+      res.statusMessage = "Place with id #" + req.params.id + " not found";
       res.end();
       return;
   } else {
@@ -175,17 +175,27 @@ router.get("/", async (req, res) => {
  *            required: true
  *            description: Numeric id of the place to modify
  */
- router.put("/:id", async (req, res) => {
+ router.put("/:id", async (req, res, next) => {
   console.log(req.params.id);
-  //TODO : CHECK IF USER EXISTS AND GOOD CONSTRUCTION
   if (req.body == null) {
       res.statusCode = 400;
-      res.statusMessage = "Failed to modify place";
+      res.statusMessage = "Failed to modify place : request body is null";
       res.end();
       return;
   }
-  const user = await PlaceService.modifyPlace(req.params.id,req.body);
-  res.json(user);
+  if (await PlaceService.getPlaceById(req.params.id) == null) {
+    res.statusCode = 400;
+    res.statusMessage = "Place with id #" + req.params.id + " not found";
+    res.end();
+    return;
+  }
+
+  try {
+    const user = await PlaceService.modifyPlace(req.params.id,req.body);
+    res.json(user);
+  } catch (err) {
+    next(err);
+  }
 });
 
 

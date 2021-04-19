@@ -4,6 +4,10 @@ const UserModel = require("../models/User");
 
 const ErrorResponse = require("../utility/ErrorResponse");
 
+const isUserOk = function (user) {
+    return (user.lastName.length != 0 && user.firstName.length != 0 && user.email.length != 0);
+};
+
 exports.getAllUsers = async function () {
     return await DBClient("user").select(UserModel.minimalView);
 };
@@ -20,7 +24,7 @@ exports.getUserByEmail = async function (email) {
 };
 
 exports.addUser = async function (user) {
-    //TODO : CHECK USER GOOD CONSTRUCTION
+    if (!isUserOk(user)) throw new ErrorResponse(ErrorResponse.badRequestStatusCode," Failed to create user : bad user construction");
     const userId = await DBClient("user")
         .insert({
             first_name : user.firstName,
@@ -44,7 +48,7 @@ exports.anonymizeUser = async function (idUser) {
 };
 
 exports.modifyUser = async function (idUser, user) {
-    //TODO : CHECK IF USER.ID EXISTS AND GOOD CONSTRUCT
+    if (!isUserOk(user)) throw new ErrorResponse(ErrorResponse.badRequestStatusCode," Failed to modify user : bad user construction");
     await DBClient("user").where({ id: idUser })
         .update({
             first_name: user.firstName,

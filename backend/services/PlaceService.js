@@ -2,6 +2,12 @@ const DBClient = require("./DBConnection");
 
 const PlaceModel = require("../models/Place");
 
+const ErrorResponse = require("../utility/ErrorResponse");
+
+const isPlaceOk = function (place) {
+    return (place.address.length != 0 && place.name.length != 0);
+};
+
 exports.getAllPlaces = async function () {
     return await DBClient("place").select(PlaceModel.select);
 };
@@ -12,7 +18,7 @@ exports.getPlaceById = async function (placeId) {
 };
 
 exports.addPlace = async function (place) {
-    //TODO: CHECK PLACE GOOD CONSTRUCTION
+    if (!isPlaceOk(place)) throw new ErrorResponse(ErrorResponse.badRequestStatusCode," Failed to create place : bad place construction");
     const placeId = await DBClient("place")
         .insert({ 
             address : place.address,
@@ -24,7 +30,7 @@ exports.addPlace = async function (place) {
 };
 
 exports.modifyPlace = async function (placeId, place) {
-    //TODO: CHECK PLACE GOOD CONSTRUCTION
+    if (!isPlaceOk(place)) throw new ErrorResponse(ErrorResponse.badRequestStatusCode," Failed to modify place : bad place construction");
     await DBClient("place").where({ id : placeId })
         .update({
             address : place.address,

@@ -180,23 +180,34 @@ router.get("/", async (req, res) => {
  *            required: true
  *            description: Numeric id of the user to modify
  */
-router.put("/:id", async (req, res) => {
+router.put("/:id", async (req, res, next) => {
     console.log(req.params.id);
-    //TODO : CHECK IF USER EXISTS AND GOOD CONSTRUCTION
     if (req.body == null) {
         res.statusCode = 400;
-        res.statusMessage = "Failed to modify user";
+        res.statusMessage = "Failed to modify user : request body is null";
         res.end();
         return;
     }
-    const user = await UserService.modifyUser(req.params.id,req.body);
-    res.json(user);
+
+    if (await UserService.getUserById(req.params.id) == null) {
+        res.statusCode = 400;
+        res.statusMessage = "User with id #" + req.params.id + " not found";
+        res.end();
+        return;
+    }
+
+    try {
+        const user = await UserService.modifyUser(req.params.id,req.body);
+        res.json(user);
+    } catch (err) {
+        next(err);
+    }
 });
 
 
 /**
  * @swagger
- * /users/{id}:
+ * /users/{id}/anonymise:
  *  put:
  *      tags: [Users]
  *      summary: Anonymise user
@@ -223,7 +234,7 @@ router.put("/:id", async (req, res) => {
  *            required: true
  *            description: Numeric id of the user to anonymise
  */
- router.put("/:id", async (req, res) => {
+ router.put("/:id/anonymise", async (req, res) => {
     console.log(req.params.id);
     const user = await UserService.anonymizeUser(req.params.id);
     if (user == null) {
@@ -232,6 +243,7 @@ router.put("/:id", async (req, res) => {
         res.end();
         return;
     }
+
     res.json(user);
 });
 
