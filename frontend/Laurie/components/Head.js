@@ -12,7 +12,7 @@ app.component('head-page', {
             type: String,
             required: true
         },
-        url_gdp: {
+        url_profil: {
             type: String,
             required: true
         }
@@ -21,16 +21,35 @@ app.component('head-page', {
     /*html*/
     `
     <div class="container-fluid head-page">
-        <div class = "langues">
-            <a :href="url_courrant" @click="langue('fr')"> FR </a>
-            <a :href="url_courrant" @click="langue('eng')"> ENG </a>
+        <div class = "row langues">
+            <ul class="nav justify-content-end">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" :href="url_courrant" @click="langue('fr')">FR</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" :href="url_courrant" @click="langue('eng')">ENG</a>
+                </li>
+            </ul>
         </div>
-        <div class = "logo"> E-Event </div>
-            <img src="./assets/images/logo.png" />
+        <nav class="navbar navbar-light">
+            <div class="container-fluid">
+                <a class="navbar-brand fs-2" :href="url_accueil"> E-Event
+                <img src="./assets/images/logo.png" height="50" class="d-inline-block align-text-center">
+                </a>
+            </div>
+        </nav>
         <div class = "raccourci">
-            <a :href="url_accueil"> Accueil </a>
-            <a :href='url_evenements'> Evenements </a>
-            <a :href='url_gdp'> Gestion du profil </a>
+            <ul class="nav justify-content-end">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" :href="url_accueil">Accueil</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" :href="url_evenements">Evenements</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" :href="url_profil">Gestion du profil</a>
+                </li>
+            </ul>
         </div>
     </div>
     `,
