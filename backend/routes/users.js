@@ -135,10 +135,10 @@ router.get("/", async (req, res) => {
  */
  router.post("/", async (req, res, next) => {
     try {
-        if (req.body.user == null) {
+        if (req.body == null) {
             throw new ErrorResponse(ErrorResponse.badRequestStatusCode, "Failed to create user : body is null");
         }
-        const user = await UserService.addUser(req.body.user);
+        const user = await UserService.addUser(req.body);
         res.json(user);
     } catch (err) {
         next(err);
@@ -147,7 +147,56 @@ router.get("/", async (req, res) => {
 
 /**
  * @swagger
- * /users/{Id}:
+ * /users/{id}:
+ *  put:
+ *      tags: [Users]
+ *      summary: Modify user infos
+ *      security:
+ *          - basicAuth: []
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#/components/schemas/User'
+ *      responses:
+ *          200:
+ *              description: OK
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/User'
+ *          400:
+ *              description: User modification error
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/User'
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: integer
+ *            required: true
+ *            description: Numeric id of the user to modify
+ */
+router.put("/:id", async (req, res) => {
+    console.log(req.params.id);
+    //TODO : CHECK IF USER EXISTS AND GOOD CONSTRUCTION
+    if (req.body == null) {
+        res.statusCode = 400;
+        res.statusMessage = "Failed to modify user";
+        res.end();
+        return;
+    }
+    const user = await UserService.modifyUser(req.params.id,req.body);
+    res.json(user);
+});
+
+
+/**
+ * @swagger
+ * /users/{id}:
  *  put:
  *      tags: [Users]
  *      summary: Anonymise user
@@ -183,19 +232,6 @@ router.get("/", async (req, res) => {
         res.end();
         return;
     }
-    res.json(user);
-});
-
-
-router.put("/", async (req, res) => {
-    //TODO : CHECK IF USER EXISTS AND GOOD CONSTRUCTION
-    if (req.body.user == null) {
-        res.statusCode = 400;
-        res.statusMessage = "Failed to modify user";
-        res.end();
-        return;
-    }
-    const user = await UserService.modifyUser(req.body.user);
     res.json(user);
 });
 

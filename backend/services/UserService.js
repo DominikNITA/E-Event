@@ -23,10 +23,10 @@ exports.addUser = async function (user) {
     //TODO : CHECK USER GOOD CONSTRUCTION
     const userId = await DBClient("user")
         .insert({
-            first_name: user.first_name,
-            last_name: user.last_name,
-            nick: user.nick,
-            email: user.email,
+            first_name : user.firstName,
+            last_name : user.lastName,
+            nick : user.nick,
+            email : user.email,
         })
         .returning("id");
     const userResponse = await this.getUserById(userId[0]);
@@ -34,19 +34,23 @@ exports.addUser = async function (user) {
 };
 
 exports.anonymizeUser = async function (idUser) {
-    await DBClient("user").where({ id: idUser }).update({ first_name: "anonymized", last_name: "anonymized", nick: "anonymised", email: "anonymised" });
+    await DBClient("user").where({ id : idUser }).update({ 
+        first_name: 'anonymized', 
+        last_name: 'anonymized', 
+        nick: 'anonymised', 
+        email: 'anonymised' 
+    });
     return await this.getUserById(idUser);
 };
 
-exports.modifyUser = async function (user) {
+exports.modifyUser = async function (idUser, user) {
     //TODO : CHECK IF USER.ID EXISTS AND GOOD CONSTRUCT
-    await DBClient("user").where({ id: user.id })
+    await DBClient("user").where({ id: idUser })
         .update({
             first_name: user.firstName,
             last_name: user.lastName,
             nick: user.nick,
-            entity: user.entity,
             email: user.email,
         })
-    return await this.getUserById(user.id);
+    return await this.getUserById(idUser);
 }
