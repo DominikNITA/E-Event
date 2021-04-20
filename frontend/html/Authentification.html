@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        body { background-color:#f5a254}
+    </style>
+    <link rel="stylesheet" href="Authentification.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentification</title>
+</head>
+<body>
+    <header>
+        <div><img src= "logo.png"></div>
+        <div><h1 class ="logo">E-Event</h1></div>
+    </header>
+
+    <section class=container>
+
+        <section class=description>
+            <p>
+            E-Event est une plateforme de gestion des événements 
+            .............................
+            .............................
+            .............................
+            ........................
+            .............................
+            ..............................
+            ...................
+            </p>
+        </section>
+
+        <section >
+            <form class=pseudo method="post" action="traitement.java">
+                <fieldset class= loginBox>
+                    <h2>
+                        <input type="text" name="pseudo" id="pseudo" placeholder="E-mail" required autofocus/>
+                        <br /><br />
+                        <input type="password" name="pass" id="pass" placeholder="Mot de passe" required />
+                        <br /><br />
+                        <input class="clickAuthentification" type="submit" value="Connexion"/>
+                        
+                    </h2>
+                </fieldset>
+            </form>
+        </section>
+
+    </section>
+
+    <br/>
+
+    <footer>
+        <nav class="clickLearnMore">
+            <a id="btnlearn">Learn More !</a>
+        </nav>
+    </footer>
+
+    <script src="Test.js">
+
+    </script>
+</body>
+</html>

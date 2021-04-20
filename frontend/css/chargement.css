@@ -1,0 +1,23 @@
+@font-face {
+    font-family: 'MaPolice';
+    src:    url('Rubik-Italic.ttf') format('truetype');
+}
+
+* {
+    color: black;
+    padding: 10px;
+    font-family: 'MaPolice' ,'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+
+conteneur
+{
+    display: flex;
+    justify-content: center;
+
+}
+
+img
+{
+    width: 100px;
+}
