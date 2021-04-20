@@ -1,6 +1,10 @@
-export default class Place{
+class Place{
     id;
     address;
-    name;
+    place_name;
     description;
 }
+
+const select = ["id", "address", "place_name", "description"];
+
+module.exports = { Place, select };
