@@ -1,0 +1,120 @@
+body {
+    background-color: #f5a254;
+    font-family: 'Rock Salt', cursive;
+}
+
+.head-page {
+    /*background-image: linear-gradient(to bottom, rgba(255,255,0,0.5), #f5a254), url('./images/city.png');*/
+    background-color : white;
+    height: 180px;
+}
+
+.langues {
+    padding-top: 0.8%;
+}
+
+.langues a {
+    color: black;
+    font-size: 120%;
+}
+
+/*Raccourci*/
+.raccourci a {
+    color: black;
+    font-size: 120%;
+}
+  
+.les_evenements {
+    padding: 2% 15%;
+}
+  
+.event {
+    cursor: pointer;
+}
+
+
+
+/* Bouton rechercher */
+
+label {
+    display: block;
+    font: 1rem 'Fira Sans', sans-serif;
+}
+
+input,
+label {
+    margin: .4rem 0;
+}
+
+input:invalid ~ span:after {
+    content: '✖';
+    padding-left: 5px;
+    position: absolute;
+}
+  
+input:valid ~ span:after {
+    content: '✓';
+    padding-left: 5px;
+    position: absolute
+}
+
+
+/* slider d'images */
+
+.slider {
+    width: 600px;
+    margin: 30px auto;
+    position: relative;
+}
+  
+.slider-viewport {
+    width: 600px;
+    height: 400px;
+    overflow: hidden;
+}
+  
+.slider-content {
+    display: grid;
+    grid-auto-flow: column;
+    transition: 1s all;
+}
+.slider-content img {
+    width: 600px;
+    height: 400px;
+}
+  
+.slider-nav {
+    position: absolute;
+    width: 100%;
+    bottom: -30px;
+    margin-top: 10px;
+    text-align: center;
+}
+.slider-nav a {
+    box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.3);
+    display: inline-block;
+    background-color: #adafbc;
+    width: 15px;
+    height: 15px;
+    margin: 0 3px;
+}
+.slider-nav a:hover {
+    background-color: #fff;
+    box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.8);
+}
+  
+#img2:target .slider-content {
+    transform: translateX(-600px);
+}
+  
+#img3:target .slider-content {
+    transform: translateX(-1200px);
+}
+  
+#img4:target .slider-content {
+    transform: translateX(-1800px);
+}
+  
+#img5:target .slider-content {
+    transform: translateX(-2400px);
+}
