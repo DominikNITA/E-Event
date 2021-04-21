@@ -61,7 +61,7 @@ exports.modifyUser = async function (idUser, user) {
 };
 
 exports.removeUser = async function (userId) {
-    await DBClient("user").where({ id: userResponse.id }).del();
+    await DBClient("user").where({ id: userId }).del();
 };
 
 exports.doesUserExist = async function (userId) {

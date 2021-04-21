@@ -81,6 +81,6 @@ exports.doesGroupExist = async function (groupId) {
     return (await exports.getGroupById(groupId)) != null;
 };
 
-exports.isAdministrator = async function(userId, groupId){
-    return this.getAdministrators.some(admin => admin.id === userId);
+exports.isAdministrator = async function (userId, groupId) {
+    return this.getAdministrators(groupId).some((admin) => admin.id === userId);
 };
