@@ -4,7 +4,7 @@ const app = Vue.createApp({
             langue: "fr",
             url_courrant: "../html/e-Event_accueil.html",
             url_accueil: "../html/e-Event_accueil.html",
-            url_evenements: "../html/page_event.html",
+            url_evenements: "../html/page_event_v2.html",
             url_gdp:"../html/gdp.html",
             url_profil:"../html/profil.html"
         }
