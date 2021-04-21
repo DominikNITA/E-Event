@@ -34,7 +34,7 @@ app.component('head-page', {
         <nav class="navbar navbar-light">
             <div class="container-fluid">
                 <a class="navbar-brand fs-2" :href="url_accueil"> E-Event
-                <img src="./assets/images/logo.png" height="50" class="d-inline-block align-text-center justify-content-center logo">
+                <img src="../images/logo.png" height="50" class="d-inline-block align-text-center justify-content-center logo">
                 </a>
             </div>
         </nav>

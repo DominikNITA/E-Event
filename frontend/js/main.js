@@ -2,11 +2,11 @@ const app = Vue.createApp({
     data() {
         return {
             langue: "fr",
-            url_courrant: "../../frontend/e-Event_accueil.html",
-            url_accueil: "../../frontend/e-Event_accueil.html",
-            url_evenements: "../../frontend/page_event.html",
-            url_gdp:"./gdp.html",
-            url_profil:"./profil.html"
+            url_courrant: "../html/e-Event_accueil.html",
+            url_accueil: "../html/e-Event_accueil.html",
+            url_evenements: "../html/page_event.html",
+            url_gdp:"../html/gdp.html",
+            url_profil:"../html/profil.html"
         }
     },
 
