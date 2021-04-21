@@ -80,29 +80,19 @@ exports.registerUser = async function (user, password) {
         throw new ErrorResponse(ErrorResponse.badRequestStatusCode, "Nickname already taken!");
     }
 
-    const userId = (
-        await DBClient("user")
-            .insert({
-                first_name: user.firstName,
-                last_name: user.lastName,
-                nick: user.nick,
-                entity: user.entity ?? "None",
-                email: user.email,
-            })
-            .returning("id")
-    )[0];
+    const userResponse = await UserService.addUser(user);
     try {
         await DBClient("authdata").insert({
-            user_id: userId,
+            user_id: userResponse.id,
             password_hash: getHash(password),
         });
     } catch (err) {
         //Remove user if problems with adding password occur
-        await DBClient("user").where({ id: userId }).del();
+        await UserService.removeUser(userResponse.id);
         throw new Error();
     }
 
-    return await DBClient("user").where({ id: userId }).first();
+    return userResponse;
 };
 
 exports.generateAccessToken = async function (userId) {
