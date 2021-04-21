@@ -34,20 +34,20 @@ app.component('head-page', {
         <nav class="navbar navbar-light">
             <div class="container-fluid">
                 <a class="navbar-brand fs-2" :href="url_accueil"> E-Event
-                <img src="./assets/images/logo.png" height="50" class="d-inline-block align-text-center">
+                <img src="./assets/images/logo.png" height="50" class="d-inline-block align-text-center justify-content-center logo">
                 </a>
             </div>
         </nav>
         <div class = "raccourci">
-            <ul class="nav justify-content-end">
+            <ul class="nav nav-tabs justify-content-end">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" :href="url_accueil">Accueil</a>
+                    <a class="nav-link" aria-current="page" :href="url_accueil">Accueil</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" :href="url_evenements">Evenements</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" :href="url_profil">Gestion du profil</a>
+                    <a class="nav-link active" :href="url_profil">Gestion du profil</a>
                 </li>
             </ul>
         </div>
