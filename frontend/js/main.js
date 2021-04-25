@@ -5,8 +5,8 @@ const app = Vue.createApp({
             url_courrant: "../html/liste_events.html",
             url_accueil: "../html/liste_events.html",
             url_evenements: "../html/page_event.html",
-            url_gdp:"../html/gdp.html",
-            url_profil:"../html/profil.html"
+            url_profil:"../html/profil.html",
+            url_mes_evenements:"../html/mes_evenements.html"
         }
     },
 
