@@ -39,7 +39,7 @@ const ErrorResponse = require("../utility/ErrorResponse");
  * @swagger
  * /categories:
  *  get:
- *      tags: [Category]
+ *      tags: [Categories]
  *      summary: Get all categories
  *      responses:
  *          200:
@@ -62,6 +62,37 @@ router.get("/", async (req, res, next) => {
     try {
         const categories = await CategoryService.getAllCategories();
         res.json({ categories: categories, count: categories.length });
+    } catch (err) {
+        next(err);
+    }
+});
+
+/**
+ * @swagger
+ * /categories:
+ *  post:
+ *      tags: [Categories]
+ *      summary: Add new category
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#/components/schemas/Category'
+ *      responses:
+ *          200:
+ *              description: OK
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          ref: '#/components/schemas/Category'
+ *          400:
+ *              description: Resource not found
+ */
+router.post("/", async (req, res, next) => {
+    try {
+        const category = await CategoryService.addNewCategory(req.body);
+        res.json({ category: category });
     } catch (err) {
         next(err);
     }
