@@ -91,7 +91,7 @@ INSERT INTO "user" VALUES (DEFAULT, 'UserOne', 'Ricky', 'RickiBoi', 'Polytech-Bo
 INSERT INTO "user" VALUES (DEFAULT, 'UserTwo', 'Marco', 'polo', 'Polytech-Bots','marco@gmail.com');
 INSERT INTO "user" VALUES (DEFAULT, 'UserThree', 'ui', 'oioioi', 'Polytech-Bots','ui@gmail.com');
 
-INSERT INTO authdata VALUES(1,'3628b592447c13efba1ec3b7d6af3e8a31580a540fefe9a38c6358961e29a1d8');
+INSERT INTO authdata VALUES(1,'1534d2d6a2d2f27d1a2af9a41d063e5890c3ea8dc2aadd82ca978eb5a21eb692');
 INSERT INTO authdata VALUES(2,'860fa34c373ebe2f7ece2295c0521ef9deb71ffc7ea34e48ed11c086d6907805');
 INSERT INTO authdata VALUES(3,'860fa34c373ebe2f7ece2295c0521ef9deb71ffc7ea34e48ed11c086d6907805');
 
