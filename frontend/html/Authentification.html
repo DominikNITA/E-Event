@@ -4,16 +4,52 @@
     <style>
         body { background-color:#f5a254}
     </style>
-    <link rel="stylesheet" href="Authentification.css" />
+    <link rel="stylesheet" href="../css/Authentification.css" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+
     <title>Authentification</title>
 </head>
 <body>
+    
+    
     <header>
-        <div><img src= "logo.png"></div>
+        <div><img src= "../images/logo.png"></div>
         <div><h1 class ="logo">E-Event</h1></div>
     </header>
+    
+
+    <div id="app">
+        <head-page 
+            :url_courrant="url_courrant"
+            :url_accueil="url_accueil"
+            :url_evenements="url_evenements" 
+            :url_profil="url_profil"
+            :changerLangage="changerLangage">
+        </head-page>
+        <profil></profil>
+        <display-event></display-event>
+        <display-event></display-event>
+        <display-event></display-event>
+        <display-event></display-event>
+    </div>      
+
+    <!-- 
+        <input type="search" id="site-search" name="q" placeholder="Rechercher un événément…">
+        <button>Recherche</button> 
+    -->
+    
+
+    <nav class="navbar navbar-light bg-light">
+        <div class="container-fluid  recherche">
+            <form class="d-flex">
+                <input class="form-control me-2" type="search" placeholder="Recherche..." aria-label="Recherche...">
+            <button class="btn btn-outline-success" type="submit">Valider</button>
+            </form>
+        </div>
+    </nav>
+
 
     <section class=container>
 
@@ -55,8 +91,17 @@
         </nav>
     </footer>
 
-    <script src="Test.js">
+    <script src="Test.js"></script>
+    
+    <!-- Import App -->
+    <script src="../js/main.js"></script>
 
-    </script>
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+    <script src="../js/components/Head.js"></script>
+
+    <!-- Mount App -->
+    <script>const mountedApp = app.mount('#app')</script>
+
 </body>
 </html>

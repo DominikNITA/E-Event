@@ -2,36 +2,14 @@ app.component('display-event', {
     template:
     /*html*/
     `
-    <!--
-    <div class="container">
-        <div class="row">
-            <span class="border border-secondary border border-4 text-warning bg-light">
-                <div class="col-md-6">
-                    <div>Evenement 1</div>
-                    <div>Date : </div>
-                    <div>Description :</div>
-                </div>
-                <div class="col-md-6">
-                    <img src="./assets/images/exemple.png" height="50">
-                </div>
-            </span>
-        </div>
-    </div>
-
-    -->
-
-
-        <table>
-            <tr>
-                <td scope="row">
-                    <div>Evenement 1</div>
-                    <div>Date : </div>
-                    <div>Description :</div>
-                </td>
-                <td id="image_event"><img src="./assets/images/exemple.png"/></td>
-            </tr>
-        </table>
-            
+    <div class="container les_evenements">
+        <div class="card mb-3">
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">Event's name</h5>
+                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+            </div>
         </div>
     </div>
     `

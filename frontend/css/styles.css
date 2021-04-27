@@ -32,6 +32,10 @@ h2 {
     font-size: 120%;
 }
 
+.liste_evenements {
+  padding: 3%;
+}
+
 .logo {
   padding-left: 140%;
 }
@@ -44,6 +48,14 @@ h2 {
 
 .recherche {
   background-color: #d8d8d8;
+}
+
+.retour {
+  padding: 2%;
+}
+
+.retour path{
+  padding: 5%;
 }
 
 .les_evenements {

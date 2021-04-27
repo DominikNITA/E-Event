@@ -12,7 +12,7 @@ app.component('head-page', {
             type: String,
             required: true
         },
-        url_profil: {
+        url_mes_evenements: {
             type: String,
             required: true
         }
@@ -20,11 +20,12 @@ app.component('head-page', {
     template:
     /*html*/
     `
+    {{update_url}}
     <div class="container-fluid head-page">
         <div class = "row langues">
             <ul class="nav justify-content-end">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" :href="url_courrant" @click="langue('fr')">FR</a>
+                    <a class="nav-link" aria-current="page" :href="url_courrant" @click="langue('fr')">FR</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" :href="url_courrant" @click="langue('eng')">ENG</a>
@@ -41,22 +42,46 @@ app.component('head-page', {
         <div class = "raccourci">
             <ul class="nav nav-tabs justify-content-end">
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" :href="url_accueil">Accueil</a>
+                    <a class="nav-link" :class="{ active: isActive(url_accueil) }" aria-current="page" :href="url_accueil">Accueil</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" :href="url_evenements">Evenements</a>
+                    <a class="nav-link" :class="{active: isActive(url_evenements)}" :href="url_evenements">Evenements</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" :href="url_profil">Gestion du profil</a>
+                    <a class="nav-link" :class="{active: isActive(url_mes_evenements)}" :href="url_mes_evenements">Mes évènements</a>
                 </li>
             </ul>
         </div>
     </div>
     `,
 
+    computed: {
+        update_url() {
+            var urlcourant = document.location.href; 
+            // Supprimons l'éventuel dernier slash de l'URL
+            var urlcourant = urlcourant.replace("/", "");
+            // Gardons dans la variable queue_url uniquement la portion derrière le dernier slash de urlcourante
+            url = urlcourant.substring (urlcourant.lastIndexOf( "/" )+1 );
+            this.url_courrant = ("../html/") + url
+        }
+    },
     methods: {
         langue(lg) {
             this.$emit('changerLangage', lg)
+        },
+        isActive(autreURL) {
+            var urlcourant = document.location.href; 
+            // Supprimons l'éventuel dernier slash de l'URL
+            var urlcourant = urlcourant.replace("/", "");
+            // Gardons dans la variable queue_url uniquement la portion derrière le dernier slash de urlcourante
+            url = urlcourant.substring (urlcourant.lastIndexOf( "/" )+1 );
+            url = ("../html/") + url
+            if(autreURL == url) {
+                return true
+            }
+            else {
+                return false
+            }
         }
     }
 })

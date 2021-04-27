@@ -4,8 +4,8 @@
         <meta charset="UTF-8" />
         <title>E-Event</title>
         <!-- Import Styles -->
-        <link rel="stylesheet" href="../css/bootstrap.min.css" />
-        <link rel="stylesheet" href="../css/styles.css" />
+        <link rel="stylesheet" href="../css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="../css/styles.css"/>
         <!-- Import Vue.Js -->
         <script src="https://unpkg.com/vue@next"></script>
     </head>
@@ -15,16 +15,13 @@
                 :url_courrant="url_courrant"
                 :url_accueil="url_accueil"
                 :url_evenements="url_evenements" 
-                :url_profil="url_profil"
+                :url_mes_evenements="url_mes_evenements"
                 :changerLangage="changerLangage">
             </head-page>
-            <profil></profil>
-            <display-event></display-event>
-            <display-event></display-event>
-            <display-event></display-event>
-            <display-event></display-event>
+            <profil
+                :url_mes_evenements="url_mes_evenements">
+        </profil>
         </div>
-
 
         <!-- Import App -->
         <script src="../js/main.js"></script>
@@ -32,7 +29,6 @@
         <!-- Import Components -->
         <script src="../js/components/Head.js"></script>
         <script src="../js/components/Profil.js"></script>
-        <script src="../js/components/Display-Event.js"></script>
 
         <!-- Mount App -->
         <script>const mountedApp = app.mount('#app')</script>
