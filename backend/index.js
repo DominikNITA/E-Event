@@ -26,22 +26,27 @@ app.use(express.json());
 
 //Routes/Endpoints setup
 const authRouter = require("./routes/auth");
+app.use("/auth", authRouter);
+const { authenticateToken } = require("./utility/Middlewares");
+app.use(authenticateToken);
+
 const eventsRouter = require("./routes/events");
 const groupsRouter = require("./routes/groups");
 const placesRouter = require("./routes/places");
 const usersRouter = require("./routes/users");
-app.use("/auth", authRouter);
-const { authenticateToken } = require("./utility/Middlewares");
-app.use(authenticateToken);
+const categoriesRouter = require("./routes/categories");
 app.use("/events", eventsRouter);
 app.use("/groups", groupsRouter);
 app.use("/places", placesRouter);
 app.use("/users", usersRouter);
+app.use("/categories", categoriesRouter);
 
 app.get("/", (req, res) => {
     // Afficher toutes les endpoints disponibles
     let htmlResponse = "";
-    res.send(`Go to <a href="http://${hostname}:${port}/api-docs?tryItOutEnabled=true">http://${hostname}:${port}/api-docs</a> to see the server documentation`);
+    res.send(
+        `Go to <a href="http://${hostname}:${port}/api-docs?tryItOutEnabled=true">http://${hostname}:${port}/api-docs</a> to see the server documentation`
+    );
 });
 
 //Error handling
