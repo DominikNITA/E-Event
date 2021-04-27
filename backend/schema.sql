@@ -12,6 +12,12 @@ CREATE TABLE authData (
     password_hash text
 );
 
+CREATE TABLE category(
+    id SERIAL PRIMARY KEY,
+    title TEXT UNIQUE NOT NULL,
+    description TEXT
+);
+
 CREATE TABLE place (
     id SERIAL PRIMARY KEY,
     address TEXT NOT NULL,
@@ -45,15 +51,35 @@ CREATE TABLE participation (
 
 CREATE TABLE membership (
     user_id INTEGER NOT NULL REFERENCES "user" (id),
-    group_id INTEGER NOT NULL REFERENCES "group"(id),
+    group_id INTEGER NOT NULL REFERENCES "group" (id),
     UNIQUE(user_id,group_id)
 );
 
 CREATE TABLE administration (
     user_id INTEGER NOT NULL REFERENCES "user" (id),
-    group_id INTEGER NOT NULL REFERENCES "group"(id),
+    group_id INTEGER NOT NULL REFERENCES "group" (id),
     UNIQUE(user_id,group_id)
 );
+
+CREATE TABLE user_category(
+    user_id INTEGER NOT NULL REFERENCES "user" (id),
+    category_id INTEGER NOT NULL REFERENCES "category" (id),
+    UNIQUE(user_id,category_id)
+);
+
+CREATE TABLE group_category(
+    group_id INTEGER NOT NULL REFERENCES "group" (id),
+    category_id INTEGER NOT NULL REFERENCES "category" (id),
+    UNIQUE(group_id,category_id)
+);
+
+CREATE TABLE event_category(
+    event_id INTEGER NOT NULL REFERENCES "event" (id),
+    category_id INTEGER NOT NULL REFERENCES "category" (id),
+    UNIQUE(event_id,category_id)
+);
+
+-- Seeding the database
 
 INSERT INTO place VALUES (DEFAULT,'Rue Louis de Broglie, 91190 Orsay','Maison de l''Ingénieur','Batiment 620. Polytech Paris-Saclay');
 INSERT INTO place VALUES (DEFAULT,'Chatelet, 74001 Paris','Paris','Châtelet in Paris');
@@ -83,3 +109,19 @@ INSERT INTO event VALUES (DEFAULT,'Marathon',2,2,500,'2021-04-30','2021-04-30',1
 INSERT INTO participation VALUES(1,1);
 INSERT INTO participation VALUES(2,1);
 INSERT INTO participation VALUES(2,2);
+
+INSERT INTO category VALUES (DEFAULT, 'Sport', 'Une description trop cool!');
+INSERT INTO category VALUES (DEFAULT, 'Cuisine', 'Une autre description trop cool!');
+INSERT INTO category VALUES (DEFAULT, 'Culture', 'Aucune idee :(');
+
+INSERT INTO event_category VALUES (1,3);
+INSERT INTO event_category VALUES (2,1);
+
+INSERT INTO user_category VALUES (1,1);
+INSERT INTO user_category VALUES (1,2);
+INSERT INTO user_category VALUES (2,2);
+INSERT INTO user_category VALUES (3,3);
+
+INSERT INTO group_category VALUES (1,1);
+INSERT INTO group_category VALUES (1,2);
+INSERT INTO group_category VALUES (2,3);
