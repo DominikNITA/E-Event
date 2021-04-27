@@ -116,7 +116,9 @@ exports.getOrganizer = async function (eventId, includeQuery = []) {
 };
 
 exports.getPlace = async function (eventId) {
-    let place = await PlaceService.getPlaceById();
+    const event = exports.getEventById(eventId);
+    if (event == null) return null;
+    let place = await PlaceService.getPlaceById(event.placeId);
     return place;
 };
 
