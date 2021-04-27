@@ -26,7 +26,7 @@ const ErrorResponse = require("../utility/ErrorResponse");
  *            type: array
  *            items:
  *                type: string
- *                enum: ["place","organizer","participants"]
+ *                enum: ["place","organizer","participants","categories"]
  *      EventPathId:
  *          in: path
  *          name: eventId
@@ -93,6 +93,10 @@ const ErrorResponse = require("../utility/ErrorResponse");
  *                  type: array
  *                  items:
  *                      $ref: '#/components/schemas/User'
+ *              categories:
+ *                  type: array
+ *                  items:
+ *                      $ref: '#/components/schemas/Category'
  */
 
 /**

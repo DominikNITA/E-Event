@@ -11,6 +11,11 @@ exports.getCategoryById = async function (categoryId) {
     return categoriesFound.length == 0 ? null : categoriesFound[0];
 };
 
+exports.getCategoryByTitle = async function (categoryTitle){
+    const categoriesFound = await DBClient("category").where({ title: categoryTitle });
+    return categoriesFound.length == 0 ? null : categoriesFound[0];
+}
+
 exports.addNewCategory = async function (category) {
     if (category.title == null || category.title == "")
         throw new ErrorResponse(ErrorResponse.badRequestStatusCode, "Title property cannot be null or empty");

@@ -7,6 +7,7 @@ const { minimalView } = require("../models/User");
 const ErrorResponse = require("../utility/ErrorResponse");
 
 const GroupService = require("./GroupService");
+const PlaceService = require("./PlaceService");
 
 exports.applyIncludeFilter = async function (event, includeFilter) {
     if (includeFilter.includes("place")) {
@@ -16,7 +17,10 @@ exports.applyIncludeFilter = async function (event, includeFilter) {
         event.organizer = await GroupService.getGroupById(event.organizerId);
     }
     if (includeFilter.includes("participants")) {
-        event.participants = await this.getParticipants(event.id);
+        event.participants = await exports.getParticipants(event.id);
+    }
+    if (includeFilter.includes("categories")) {
+        event.categories = await exports.getCategories(event.id);
     }
     return event;
 };
@@ -94,7 +98,7 @@ exports.getParticipants = async function (eventId, includeQuery = []) {
         .select(minimalView);
 };
 
-exports.addParticipant = async function (eventId, userId){
+exports.addParticipant = async function (eventId, userId) {
     const relationAlreadyExisting = await DBClient("participation").where({ user_id: userId, event_id: eventId });
     if (relationAlreadyExisting.length > 0) {
         throw new ErrorResponse(ErrorResponse.badRequestStatusCode, "User already participating in the event!");
@@ -102,7 +106,7 @@ exports.addParticipant = async function (eventId, userId){
     //TODO: Check if user exists
     await DBClient("participation").insert({ user_id: userId, event_id: eventId });
     return await this.getParticipants(eventId);
-}
+};
 
 exports.getOrganizer = async function (eventId, includeQuery = []) {
     //TODO: Refactor
@@ -112,6 +116,11 @@ exports.getOrganizer = async function (eventId, includeQuery = []) {
 };
 
 exports.getPlace = async function (eventId) {
-    let place = "TODO"; //implement this -> await PlaceService.getPlaceById(event.placeId);
+    let place = await PlaceService.getPlaceById();
     return place;
+};
+
+exports.getCategories = async function (eventId) {
+    const categories = await DBClient("event_category").Where({ event_id: eventId });
+    return categories;
 };
