@@ -123,6 +123,11 @@ exports.getPlace = async function (eventId) {
 };
 
 exports.getCategories = async function (eventId) {
-    const categories = await DBClient("event_category").Where({ event_id: eventId });
+    if (!(await exports.doesEventExist(eventId)))
+        throw new ErrorResponse(ErrorResponse.badRequestStatusCode, "Event does not exist");
+    const categories = await DBClient("category").whereIn(
+        "id",
+        DBClient("event_category").select("category_id").where({ event_id: eventId })
+    );
     return categories;
 };

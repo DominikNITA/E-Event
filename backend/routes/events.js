@@ -6,6 +6,14 @@ const EventService = require("../services/EventService");
 const GroupService = require("../services/GroupService");
 const ErrorResponse = require("../utility/ErrorResponse");
 
+const checkEventExistence = async (req, res, next) => {
+    if (await EventService.doesEventExist(req.params.eventId)) {
+        next();
+    } else {
+        next(new ErrorResponse(ErrorResponse.notFoundStatusCode, "Invalid event id"));
+    }
+};
+
 /** 
     @swagger
     tags:
@@ -215,7 +223,7 @@ router.get("/:eventId", async (req, res, next) => {
  *          '401':
  *              description: Invalid authorization
  */
-router.delete("/:eventId", async (req, res, next) => {
+router.delete("/:eventId", checkEventExistence, async (req, res, next) => {
     try {
         await EventService.removeEvent(req.params.eventId);
         res.status(200).end();
@@ -243,7 +251,7 @@ router.delete("/:eventId", async (req, res, next) => {
  *          - $ref: '#/components/parameters/EventPathId'
  *          - $ref: '#/components/parameters/GroupIncludeQuery'
  */
-router.get("/:eventId/organizer", async (req, res, next) => {
+router.get("/:eventId/organizer", checkEventExistence, async (req, res, next) => {
     try {
         let includeQuery = req.query.include?.split(",") ?? [];
         const organizer = await EventService.getOrganizer(req.params.eventId, includeQuery);
@@ -277,7 +285,7 @@ router.get("/:eventId/organizer", async (req, res, next) => {
  *      parameters:
  *          - $ref: '#/components/parameters/EventPathId'
  */
-router.get("/:eventId/participants", async (req, res, next) => {
+router.get("/:eventId/participants", checkEventExistence, async (req, res, next) => {
     try {
         let includeQuery = req.query.include?.split(",") ?? [];
         const participants = await EventService.getParticipants(req.params.eventId, includeQuery);
@@ -309,7 +317,7 @@ router.get("/:eventId/participants", async (req, res, next) => {
  *      parameters:
  *          - $ref: '#/components/parameters/EventPathId'
  */
-router.get("/:eventId/place", async (req, res, next) => {
+router.get("/:eventId/place", checkEventExistence, async (req, res, next) => {
     try {
         let includeQuery = req.query.include?.split(",") ?? [];
         const place = await EventService.getPlace(req.params.eventId, includeQuery);
@@ -318,6 +326,40 @@ router.get("/:eventId/place", async (req, res, next) => {
         } else {
             res.json(place);
         }
+    } catch (err) {
+        next(err);
+    }
+});
+
+/**
+ * @swagger
+ * /events/{eventId}/categories:
+ *  get:
+ *      tags: [Events]
+ *      summary: Get categories to which event is saved
+ *      responses:
+ *          200:
+ *              description: OK
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              categories:
+ *                                  type: array
+ *                                  items:
+ *                                      $ref: '#/components/schemas/Category'
+ *                              count:
+ *                                  type: integer
+ *          400:
+ *              description: Authorization error
+ *      parameters:
+ *          - $ref: '#/components/parameters/EventPathId'
+ */
+router.get("/:eventId/categories", checkEventExistence, async (req, res, next) => {
+    try {
+        const categories = (await EventService.getCategories(req.params.eventId)) ?? [];
+        res.json({ categories: categories, count: categories.length });
     } catch (err) {
         next(err);
     }
@@ -357,7 +399,7 @@ router.get("/:eventId/place", async (req, res, next) => {
  *      parameters:
  *          - $ref: '#/components/parameters/EventPathId'
  */
-router.post("/:eventId/participants", async (req, res, next) => {
+router.post("/:eventId/participants", checkEventExistence, async (req, res, next) => {
     try {
         const organizer = await EventService.getOrganizer((await EventService.getEventById(req.params.eventId)).id);
         if (!(await GroupService.isAdministrator(req.body.userId, organizer.id))) {
