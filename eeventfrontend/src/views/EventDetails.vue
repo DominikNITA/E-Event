@@ -1,18 +1,6 @@
 <template>
   <div>
-    <nav class="navbar navbar-light bg-light">
-      <div class="container-fluid recherche">
-        <form class="d-flex">
-          <input
-            class="form-control me-2"
-            type="search"
-            placeholder="Recherche..."
-            aria-label="Recherche..."
-          />
-          <button class="btn btn-outline-success" type="submit">Valider</button>
-        </form>
-      </div>
-    </nav>
+    <search-event-bar></search-event-bar>
 
     <div class="container-fluid" v-if="event != null">
       <div class="container">
@@ -44,7 +32,10 @@
 </template>
 
 <script>
+import SearchEventBar from "../components/SearchEventBar.vue";
+
 export default {
+  components: { SearchEventBar },
   props: {
     eventId: {
       type: Number,
