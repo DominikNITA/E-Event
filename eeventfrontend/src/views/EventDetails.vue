@@ -1,0 +1,76 @@
+<template>
+  <div>
+    <nav class="navbar navbar-light bg-light">
+      <div class="container-fluid recherche">
+        <form class="d-flex">
+          <input
+            class="form-control me-2"
+            type="search"
+            placeholder="Recherche..."
+            aria-label="Recherche..."
+          />
+          <button class="btn btn-outline-success" type="submit">Valider</button>
+        </form>
+      </div>
+    </nav>
+
+    <div class="container-fluid" v-if="event != null">
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <h1>{{ event.name }}</h1>
+          </div>
+
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+            <p>{{ event.information }}</p>
+
+            <p id="linkPlace">
+              <a href="https://google.com/maps">Lieu</a>
+            </p>
+
+            <p>
+              <!-- Inscription link button -->
+              <button
+                onclick="window.location.href = 'https://www.google.com';"
+              >
+                S'inscire à l'événement
+              </button>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  props: {
+    eventId: {
+      type: Number,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      event: null,
+    };
+  },
+  mounted() {
+    this.$http
+      .get(`http://localhost:3000/events/${this.$props.eventId}`, {
+        params: {
+          include: "place,organizer,participants,categories",
+        },
+      })
+      .then((response) => {
+        this.event = response.data;
+        console.log(this.event);
+      })
+      .catch((err) => console.error(err));
+  },
+};
+</script>
+
+<style>
+</style>
