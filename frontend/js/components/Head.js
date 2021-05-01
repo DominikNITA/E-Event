@@ -20,7 +20,6 @@ app.component('head-page', {
     template:
     /*html*/
     `
-    {{update_url}}
     <div class="container-fluid head-page">
         <div class = "row langues">
             <ul class="nav justify-content-end">
