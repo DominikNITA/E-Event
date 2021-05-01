@@ -49,7 +49,7 @@ export default {
 }
 
 body {
-  background-color: #f5a254;
+  background-color: #f5a254 !important;
   font-family: "Rock Salt", cursive;
 }
 

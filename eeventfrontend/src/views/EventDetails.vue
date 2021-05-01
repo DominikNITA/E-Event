@@ -58,11 +58,14 @@ export default {
   },
   mounted() {
     this.$http
-      .get(`http://localhost:3000/events/${this.$props.eventId}`, {
-        params: {
-          include: "place,organizer,participants,categories",
-        },
-      })
+      .get(
+        `${process.env.VUE_APP_BACKEND_ADDRESS}events/${this.$props.eventId}`,
+        {
+          params: {
+            include: "place,organizer,participants,categories",
+          },
+        }
+      )
       .then((response) => {
         this.event = response.data;
         console.log(this.event);
