@@ -121,39 +121,39 @@ router.get("/:id", async (req, res) => {
     }
 });
 
-/**
- * @swagger
- * /users/:
- *  post:
- *      tags: [Users]
- *      summary: Creates new user
- *      security:
- *          - basicAuth: []
- *      requestBody:
- *          required: true
- *          content:
- *              application/json:
- *                  schema:
- *                      $ref: '#/components/schemas/User'
- *      responses:
- *          200:
- *              description: OK
- *              content:
- *                  application/json:
- *                      schema:
- *                          $ref: '#/components/schemas/User'
- */
-router.post("/", async (req, res, next) => {
-    try {
-        if (req.body == null) {
-            throw new ErrorResponse(ErrorResponse.badRequestStatusCode, "Failed to create user : body is null");
-        }
-        const user = await UserService.addUser(req.body);
-        res.json(user);
-    } catch (err) {
-        next(err);
-    }
-});
+// /**
+//  * @swagger
+//  * /users/:
+//  *  post:
+//  *      tags: [Users]
+//  *      summary: Creates new user
+//  *      security:
+//  *          - basicAuth: []
+//  *      requestBody:
+//  *          required: true
+//  *          content:
+//  *              application/json:
+//  *                  schema:
+//  *                      $ref: '#/components/schemas/User'
+//  *      responses:
+//  *          200:
+//  *              description: OK
+//  *              content:
+//  *                  application/json:
+//  *                      schema:
+//  *                          $ref: '#/components/schemas/User'
+//  */
+// router.post("/", async (req, res, next) => {
+//     try {
+//         if (req.body == null) {
+//             throw new ErrorResponse(ErrorResponse.badRequestStatusCode, "Failed to create user : body is null");
+//         }
+//         const user = await UserService.addUser(req.body);
+//         res.json(user);
+//     } catch (err) {
+//         next(err);
+//     }
+// });
 
 /**
  * @swagger
