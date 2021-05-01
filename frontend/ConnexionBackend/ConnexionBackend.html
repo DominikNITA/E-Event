@@ -134,6 +134,9 @@
     const eventIdResponse = document.getElementById("response-eventId");
 
     function requestEventById(formEvent) {
+        formEvent.preventDefault();
+        console.warn("WHAT!");
+        console.log(formEvent.target.elements);
         fetch(`${serverAddress}/events/${formEvent.target.elements.eventId.value}`, {
             method: "GET",
             headers: {
@@ -150,8 +153,6 @@
             })
             .then(data => eventIdResponse.textContent = `Event name: ${data.name}`)
             .catch((error) => eventIdResponse.textContent = error);
-
-        formEvent.preventDefault();
     }
 
     eventIdForm.addEventListener("submit", requestEventById);
@@ -215,12 +216,12 @@
     eventSearchForm.addEventListener("submit", searchEvent);
 
     /*
-      5)  Obtenir un evenement specifique par ID
+      5)  Obtenir un utilisateur specifique par ID
     */
     const userIdForm = document.getElementById("userId-form");
     const userIdResponse = document.getElementById("response-userId");
 
-    function requestEventById(formEvent) {
+    function requestUserById(formEvent) {
         fetch(`${serverAddress}/users/${formEvent.target.elements.userId.value}`, {
             method: "GET",
             headers: {
@@ -241,7 +242,7 @@
         formEvent.preventDefault();
     }
 
-    userIdForm.addEventListener("submit", requestEventById);
+    userIdForm.addEventListener("submit", requestUserById);
 
 </script>
 
