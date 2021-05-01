@@ -11,5 +11,8 @@
   "bugs": {
     "url": "https://github.com/DominikNITA/E-Event/issues"
   },
-  "homepage": "https://github.com/DominikNITA/E-Event#readme"
+  "homepage": "https://github.com/DominikNITA/E-Event#readme",
+  "dependencies": {
+    "axios": "^0.21.1"
+  }
 }
