@@ -24,6 +24,12 @@ const routes = [
         component: () => import("../views/EventDetails.vue"),
         props: ({ params }) => ({ eventId: Number.parseInt(params.eventId, 10) || 0 }),
     },
+    {
+        path: "/events",
+        name: "Events List",
+        component: () => import("../views/EventsList.vue"),
+        props: (route) => ({ search: route.query.search || null }),
+    },
 ];
 
 const router = new VueRouter({

@@ -3,7 +3,7 @@
     <Head
       url_courrant="/"
       url_accueil="/"
-      url_evenements="url_evenements"
+      url_evenements="events"
       url_mes_evenements="url_mes_evenements"
       url_profil="url_profil"
     ></Head>
