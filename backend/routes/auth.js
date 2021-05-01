@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
+const UserService = require("../services/UserService");
 const AuthService = require("../services/AuthService");
 const ErrorResponse = require("../utility/ErrorResponse");
 
@@ -54,12 +55,17 @@ const Middlewares = require("../utility/Middlewares");
  *                          properties:
  *                              authToken:
  *                                  type: string
+ *                              user:
+ *                                  $ref: '#/components/schemas/User'
  */
 router.post("/login", async (req, res, next) => {
     try {
         const userId = await AuthService.verifyCredentials(req.body.email, req.body.password);
         const accessToken = await AuthService.generateAccessToken(userId);
-        res.json({ accessToken: accessToken });
+        let user = await UserService.getUserById(userId);
+        user.memberOf = await UserService.getGroupIdsWhereUserIsMember(userId);
+        user.administratorOf = await UserService.getGroupIdsWhereUserIsAdministrator(userId);
+        res.json({ accessToken: accessToken, user: user });
     } catch (err) {
         next(err);
     }

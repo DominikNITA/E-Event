@@ -3,7 +3,7 @@ const router = express.Router();
 
 const ErrorResponse = require("../utility/ErrorResponse");
 
-const User = require ("../models/user");
+const User = require("../models/user");
 const UserService = require("../services/UserService");
 
 /** 
@@ -43,8 +43,19 @@ const UserService = require("../services/UserService");
  *                  type: string
  *                  format: email
  *                  description: User's email
+ *              memberOf:
+ *                  type: array
+ *                  items:
+ *                      type: integer
+ *                  description: Groups Ids which user is a member
+ *                  readOnly: true
+ *              administratorOf:
+ *                  type: array
+ *                  items:
+ *                      type: integer
+ *                  description: Groups Ids which user is an administrator
+ *                  readOnly: true
  */
-
 
 /**
  * @swagger
@@ -97,7 +108,7 @@ router.get("/", async (req, res) => {
  *            required: true
  *            description: Numeric id of the user to get
  */
- router.get("/:id", async (req, res) => {
+router.get("/:id", async (req, res) => {
     console.log(req.params.id);
     const user = await UserService.getUserById(req.params.id);
     if (user == null) {
@@ -109,7 +120,6 @@ router.get("/", async (req, res) => {
         res.json(user);
     }
 });
-
 
 /**
  * @swagger
@@ -133,7 +143,7 @@ router.get("/", async (req, res) => {
  *                      schema:
  *                          $ref: '#/components/schemas/User'
  */
- router.post("/", async (req, res, next) => {
+router.post("/", async (req, res, next) => {
     try {
         if (req.body == null) {
             throw new ErrorResponse(ErrorResponse.badRequestStatusCode, "Failed to create user : body is null");
@@ -189,7 +199,7 @@ router.put("/:id", async (req, res, next) => {
         return;
     }
 
-    if (await UserService.getUserById(req.params.id) == null) {
+    if ((await UserService.getUserById(req.params.id)) == null) {
         res.statusCode = 400;
         res.statusMessage = "User with id #" + req.params.id + " not found";
         res.end();
@@ -197,13 +207,12 @@ router.put("/:id", async (req, res, next) => {
     }
 
     try {
-        const user = await UserService.modifyUser(req.params.id,req.body);
+        const user = await UserService.modifyUser(req.params.id, req.body);
         res.json(user);
     } catch (err) {
         next(err);
     }
 });
-
 
 /**
  * @swagger
@@ -234,7 +243,7 @@ router.put("/:id", async (req, res, next) => {
  *            required: true
  *            description: Numeric id of the user to anonymise
  */
- router.put("/:id/anonymise", async (req, res) => {
+router.put("/:id/anonymise", async (req, res) => {
     console.log(req.params.id);
     const user = await UserService.anonymizeUser(req.params.id);
     if (user == null) {
@@ -246,6 +255,5 @@ router.put("/:id", async (req, res, next) => {
 
     res.json(user);
 });
-
 
 module.exports = router;

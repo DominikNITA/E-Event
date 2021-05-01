@@ -67,3 +67,15 @@ exports.removeUser = async function (userId) {
 exports.doesUserExist = async function (userId) {
     return (await exports.getUserById(userId)) != null;
 };
+
+exports.getGroupIdsWhereUserIsMember = async function (userId) {
+    return (
+        await DBClient("group").whereIn("id", DBClient("membership").select("group_id").where("user_id", userId))
+    ).map((group) => group.id);
+};
+
+exports.getGroupIdsWhereUserIsAdministrator = async function (userId) {
+    return (
+        await DBClient("group").whereIn("id", DBClient("administration").select("group_id").where("user_id", userId))
+    ).map((group) => group.id);
+};
