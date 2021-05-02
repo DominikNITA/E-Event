@@ -98,8 +98,7 @@ exports.addEventToGroup = async function (groupId, event) {
 };
 
 exports.doesGroupExist = async function (groupId) {
-    checkIfGroupExists(groupId);
-
+    // Do not call checkIfGroupExists -> Infinite call loop :(
     return (await this.getGroupById(groupId)) != null;
 };
 
@@ -119,6 +118,7 @@ exports.isMember = async function (userId, groupId) {
 
 // Validations
 
+/**Maybe move it to the UserService? */
 async function checkIfUserExists(userId) {
     if ((await UserService.doesUserExist(userId)) == false) {
         throw new ErrorResponse(ErrorResponse.badRequestStatusCode, `User with id ${userId} does not exist`);

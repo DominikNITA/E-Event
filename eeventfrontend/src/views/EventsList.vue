@@ -1,6 +1,6 @@
 <template>
   <section>
-    <search-event-bar></search-event-bar>
+    <search-event-bar @searchEvent="searchEvent"></search-event-bar>
     <h1 v-if="search != null">Events with "{{ search }}"</h1>
     <h1 v-else>Your events</h1>
     <div v-for="event in events" v-bind:key="event.id">
@@ -26,13 +26,29 @@ export default {
       events: [],
     };
   },
-
+  methods: {
+    searchEvent(searchTerm) {
+      this.events = [];
+      this.search = searchTerm;
+      this.$http
+        .get(`${process.env.VUE_APP_BACKEND_ADDRESS}/events`, {
+          params: {
+            include: "place,organizer,participants,categories",
+            search: this.search,
+          },
+        })
+        .then((response) => {
+          this.events = response.data;
+        })
+        .catch((err) => console.error(err));
+    },
+  },
   mounted() {
     if (this.search) {
       // Search by text
     } else {
       this.$http
-        .get(`${process.env.VUE_APP_BACKEND_ADDRESS}events`, {
+        .get(`${process.env.VUE_APP_BACKEND_ADDRESS}/events`, {
           params: {
             include: "place,organizer,participants,categories",
           },

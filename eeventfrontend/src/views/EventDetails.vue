@@ -50,7 +50,7 @@ export default {
   mounted() {
     this.$http
       .get(
-        `${process.env.VUE_APP_BACKEND_ADDRESS}events/${this.$props.eventId}`,
+        `${process.env.VUE_APP_BACKEND_ADDRESS}/events/${this.$props.eventId}`,
         {
           params: {
             include: "place,organizer,participants,categories",
