@@ -3,6 +3,10 @@ app.component('profil', {
         url_mes_evenements: {
             type: String,
             required: true
+        },
+        idUser: {
+            type: String,
+            required: true
         }
     },
     template:
@@ -22,15 +26,15 @@ app.component('profil', {
         <div class="row">
             <form class="row g-3">
                 <div class="col-md-6">
-                    <label for="prenom" class="form-label">Prenom</label>
+                    <label for="prenom" class="form-label">{{user.firstName}}</label>
                     <input type="name" class="form-control" id="prenom">
                 </div>
                 <div class="col-md-6">
-                <label for="nom" class="form-label">{{nameUser}}</label>
+                <label for="nom" class="form-label">{{user.lastName}}</label>
                 <input type="surname" class="form-control" id="nom" placeholder="nameUser">
                 </div>
                 <div class="col-12">
-                    <label for="mail" class="form-label">E-mail</label>
+                    <label for="mail" class="form-label">{{user.email}}</label>
                     <input type="mail" class="form-control" id="mail">
                 </div>
                 <div class="col-12">
@@ -54,24 +58,16 @@ app.component('profil', {
     `,
     data() {
         return {
-            id: 1,
-            modif: false,
-            nameUser: "",
-            prenom: "",
-            email: "",
+            user: [],
             localisation: [],
             centreInteret: []
         }
     },
     methods: {
-        setModif() {
-            this.modif=!this.modif
-        },
         loadUser(){
             axios.get('http://localhost:3000/users/2')
-                .then(reponse => this.nameUser = reponse.data.lastName)
-
-            alert(this.nameUser)
+                .then(reponse => this.user = reponse.data )
+                .catch(erreur => console.log(erreur))
         }
     }
 })
