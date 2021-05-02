@@ -41,7 +41,7 @@
           >
         </li>
         <li class="nav-item">
-          <router-link class="nav-link" :to="url_evenements"
+          <router-link class="nav-link" :to="{ name: 'Events List' }"
             >Evenements</router-link
           >
         </li>

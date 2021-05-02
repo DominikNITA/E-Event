@@ -33,6 +33,7 @@
 
 <script>
 import SearchEventBar from "../components/SearchEventBar.vue";
+import axios from "axios";
 
 export default {
   components: { SearchEventBar },
@@ -48,7 +49,7 @@ export default {
     };
   },
   mounted() {
-    this.$http
+    axios
       .get(
         `${process.env.VUE_APP_BACKEND_ADDRESS}/events/${this.$props.eventId}`,
         {
