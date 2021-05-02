@@ -30,7 +30,10 @@ export default {
       if (this.searchTerm == null || this.searchTerm == "") {
         return;
       }
-      this.$router.push({ path: "events" });
+
+      this.$router
+        .push({ path: "events" })
+        .catch(() => this.$emit("searchEvent", this.searchTerm));
     },
   },
 };
