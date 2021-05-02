@@ -30,6 +30,12 @@ const routes = [
         component: () => import("../views/EventsList.vue"),
         props: (route) => ({ search: route.query.search || null }),
     },
+    {
+        path: "/profile/:userId",
+        name: "User Profile",
+        component: () => import("../views/Profile.vue"),
+        props: ({ params }) => ({ userId: Number.parseInt(params.userId, 10) || 0 }),
+    },
 ];
 
 const router = new VueRouter({
