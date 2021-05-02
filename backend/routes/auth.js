@@ -63,8 +63,6 @@ router.post("/login", async (req, res, next) => {
         const userId = await AuthService.verifyCredentials(req.body.email, req.body.password);
         const accessToken = await AuthService.generateAccessToken(userId);
         let user = await UserService.getUserById(userId);
-        user.memberOf = await UserService.getGroupIdsWhereUserIsMember(userId);
-        user.administratorOf = await UserService.getGroupIdsWhereUserIsAdministrator(userId);
         res.json({ accessToken: accessToken, user: user });
     } catch (err) {
         next(err);

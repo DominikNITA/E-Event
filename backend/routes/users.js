@@ -46,14 +46,20 @@ const UserService = require("../services/UserService");
  *              memberOf:
  *                  type: array
  *                  items:
- *                      type: integer
- *                  description: Groups Ids which user is a member
+ *                      $ref: '#/components/schemas/Group'
+ *                  description: Groups where user is a member
  *                  readOnly: true
  *              administratorOf:
  *                  type: array
  *                  items:
- *                      type: integer
- *                  description: Groups Ids which user is an administrator
+ *                      $ref: '#/components/schemas/Group'
+ *                  description: Groups where user is an administrator
+ *                  readOnly: true
+ *              categories:
+ *                  type: array
+ *                  items:
+ *                      $ref: '#/components/schemas/Category'
+ *                  description: Favourite user's categories
  *                  readOnly: true
  */
 

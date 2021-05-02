@@ -5,7 +5,10 @@
     <h1 v-else>Your events</h1>
     <div v-for="event in events" v-bind:key="event.id">
       {{ event.name }} in {{ event.place.place_name }}
-      <button>More info</button>
+      <router-link
+        :to="{ name: 'Event Details', params: { eventId: event.id } }"
+        ><button>More info</button></router-link
+      >
     </div>
   </section>
 </template>
@@ -31,8 +34,9 @@ export default {
   methods: {
     searchEvent(searchTerm) {
       this.events = [];
+      //TODO: should not mutate property => push to route?
       this.search = searchTerm;
-      this.$http
+      axios
         .get(`${process.env.VUE_APP_BACKEND_ADDRESS}/events`, {
           params: {
             include: "place,organizer,participants,categories",
@@ -44,11 +48,7 @@ export default {
         })
         .catch((err) => console.error(err));
     },
-  },
-  mounted() {
-    if (this.search) {
-      // Search by text
-    } else {
+    getAllEvents() {
       axios
         .get(`${process.env.VUE_APP_BACKEND_ADDRESS}/events`, {
           params: {
@@ -60,6 +60,13 @@ export default {
           this.events = response.data;
         })
         .catch((err) => console.error(err));
+    },
+  },
+  mounted() {
+    if (this.search) {
+      this.searchEvent(this.search);
+    } else {
+      this.getAllEvents();
     }
   },
 };
