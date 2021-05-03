@@ -37,27 +37,27 @@ const routes = [
         name: "Event Details",
         component: () => import("../views/EventDetails.vue"),
         props: ({ params }) => ({ eventId: Number.parseInt(params.eventId, 10) || 0 }),
-        meta: {
-            requiresAuth: true,
-        },
+        // meta: {
+        //     requiresAuth: true,
+        // },
     },
     {
         path: "/events",
         name: "Events List",
         component: () => import("../views/EventsList.vue"),
         props: (route) => ({ search: route.query.search || null }),
-        meta: {
-            requiresAuth: true,
-        },
+        // meta: {
+        //     requiresAuth: true,
+        // },
     },
     {
         path: "/profile/:userId",
         name: "User Profile",
         component: () => import("../views/Profile.vue"),
         props: ({ params }) => ({ userId: Number.parseInt(params.userId, 10) || 0 }),
-        meta: {
-            requiresAuth: true,
-        },
+        // meta: {
+        //     requiresAuth: true,
+        // },
     },
 ];
 
