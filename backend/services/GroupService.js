@@ -1,5 +1,7 @@
 const DBClient = require("./DBConnection");
 
+const Group = require("../models/Groupe");
+
 const EventService = require("./EventService");
 
 const UserService = require("./UserService");
@@ -11,7 +13,7 @@ const ErrorResponse = require("../utility/ErrorResponse");
 exports.getGroupById = async function (groupId) {
     //Do not do group validation here with checkIfGroupExists(), because it would create infinite loop
 
-    const groupResponse = await DBClient("group").where({ id: groupId });
+    const groupResponse = await DBClient("group").where({ id: groupId }).select(Group.select);
     return groupResponse.length == 0 ? null : groupResponse[0];
 };
 

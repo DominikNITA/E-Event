@@ -6,6 +6,7 @@
     <div class="form-container">
       <div class="form-inner">
         <form class="login">
+          <div v-if="error != null" class="alert alert-danger">{{ error }}</div>
           <div class="field">
             <input
               type="text"
@@ -47,12 +48,14 @@ export default {
     return {
       email: "",
       password: "",
+      error: null,
     };
   },
   methods: {
     login() {
       //TODO: Validate format
 
+      this.error = null;
       axios
         .post(`${process.env.VUE_APP_BACKEND_ADDRESS}/auth/login`, {
           email: this.email,
@@ -74,7 +77,7 @@ export default {
             this.$router.push({ name: "Home" });
           }
         })
-        .catch((err) => console.error(err));
+        .catch((err) => (this.error = err.response.data));
     },
   },
 };
