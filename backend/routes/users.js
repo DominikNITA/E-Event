@@ -3,7 +3,6 @@ const router = express.Router();
 
 const ErrorResponse = require("../utility/ErrorResponse");
 
-const User = require("../models/user");
 const UserService = require("../services/UserService");
 
 /** 

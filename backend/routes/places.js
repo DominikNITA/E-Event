@@ -3,7 +3,6 @@ const router = express.Router();
 
 const ErrorResponse = require("../utility/ErrorResponse");
 
-const Place = require ("../models/place");
 const PlaceService = require("../services/PlaceService");
 
 /** 
@@ -40,7 +39,6 @@ const PlaceService = require("../services/PlaceService");
  *                  description: Place address
  */
 
-
 /**
  * @swagger
  * /places/:
@@ -60,7 +58,7 @@ const PlaceService = require("../services/PlaceService");
  *                      $ref: '#/components/schemas/Place'
  */
 router.get("/", async (req, res) => {
-  res.json(await PlaceService.getAllPlaces());
+    res.json(await PlaceService.getAllPlaces());
 });
 
 /**
@@ -92,19 +90,18 @@ router.get("/", async (req, res) => {
  *            required: true
  *            description: Numeric id of the place to get
  */
- router.get("/:id", async (req, res) => {
-  console.log(req.params.id);
-  const place = await PlaceService.getPlaceById(req.params.id);
-  if (place == null) {
-      res.statusCode = 400;
-      res.statusMessage = "Place with id #" + req.params.id + " not found";
-      res.end();
-      return;
-  } else {
-      res.json(place);
-  }
+router.get("/:id", async (req, res) => {
+    console.log(req.params.id);
+    const place = await PlaceService.getPlaceById(req.params.id);
+    if (place == null) {
+        res.statusCode = 400;
+        res.statusMessage = "Place with id #" + req.params.id + " not found";
+        res.end();
+        return;
+    } else {
+        res.json(place);
+    }
 });
-
 
 /**
  * @swagger
@@ -128,16 +125,19 @@ router.get("/", async (req, res) => {
  *                      schema:
  *                          $ref: '#/components/schemas/Place'
  */
- router.post("/", async (req, res, next) => {
-  try {
-      if (req.body == null) {
-          throw new ErrorResponse(ErrorResponse.badRequestStatusCode, "Failed to create place : request body is null");
-      }
-      const user = await PlaceService.addPlace(req.body);
-      res.json(user);
-  } catch (err) {
-      next(err);
-  }
+router.post("/", async (req, res, next) => {
+    try {
+        if (req.body == null) {
+            throw new ErrorResponse(
+                ErrorResponse.badRequestStatusCode,
+                "Failed to create place : request body is null"
+            );
+        }
+        const user = await PlaceService.addPlace(req.body);
+        res.json(user);
+    } catch (err) {
+        next(err);
+    }
 });
 
 /**
@@ -175,28 +175,27 @@ router.get("/", async (req, res) => {
  *            required: true
  *            description: Numeric id of the place to modify
  */
- router.put("/:id", async (req, res, next) => {
-  console.log(req.params.id);
-  if (req.body == null) {
-      res.statusCode = 400;
-      res.statusMessage = "Failed to modify place : request body is null";
-      res.end();
-      return;
-  }
-  if (await PlaceService.getPlaceById(req.params.id) == null) {
-    res.statusCode = 400;
-    res.statusMessage = "Place with id #" + req.params.id + " not found";
-    res.end();
-    return;
-  }
+router.put("/:id", async (req, res, next) => {
+    console.log(req.params.id);
+    if (req.body == null) {
+        res.statusCode = 400;
+        res.statusMessage = "Failed to modify place : request body is null";
+        res.end();
+        return;
+    }
+    if ((await PlaceService.getPlaceById(req.params.id)) == null) {
+        res.statusCode = 400;
+        res.statusMessage = "Place with id #" + req.params.id + " not found";
+        res.end();
+        return;
+    }
 
-  try {
-    const user = await PlaceService.modifyPlace(req.params.id,req.body);
-    res.json(user);
-  } catch (err) {
-    next(err);
-  }
+    try {
+        const user = await PlaceService.modifyPlace(req.params.id, req.body);
+        res.json(user);
+    } catch (err) {
+        next(err);
+    }
 });
-
 
 module.exports = router;
