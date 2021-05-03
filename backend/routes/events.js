@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 
-const Event = require("../models/Event");
 const EventService = require("../services/EventService");
 const GroupService = require("../services/GroupService");
 const ErrorResponse = require("../utility/ErrorResponse");
