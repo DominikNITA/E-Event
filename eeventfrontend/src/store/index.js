@@ -9,7 +9,14 @@ export default new Vuex.Store({
         user: null,
     },
     getters: {},
-    mutations: {},
+    mutations: {
+        setAuthToken(state, newAuthToken) {
+            state.authToken = newAuthToken;
+        },
+        setUser(state, newUser) {
+            state.user = newUser;
+        },
+    },
     actions: {},
     modules: {},
 });
