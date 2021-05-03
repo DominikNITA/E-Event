@@ -43,12 +43,6 @@
 import "@/assets/styles/authViews.css";
 import axios from "axios";
 export default {
-  //   params: {
-  //     nextUrl: {
-  //       type: String,
-  //       required: false,
-  //     },
-  //   },
   data() {
     return {
       email: "",
@@ -65,7 +59,6 @@ export default {
           password: this.password,
         })
         .then((response) => {
-          //TODO: add to VueX store
           this.$store.commit("setAuthToken", response.data.accessToken);
           this.$store.commit("setUser", response.data.user);
 
