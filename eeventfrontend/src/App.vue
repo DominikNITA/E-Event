@@ -75,6 +75,7 @@ h2 {
 
 .langues {
   padding-top: 0.8%;
+  padding-left : 0.8%;
 }
 
 .langues a {
@@ -87,7 +88,7 @@ h2 {
 }
 
 .logo {
-  padding-left: 140%;
+  padding-left: 10%;
 }
 
 /*Raccourci*/

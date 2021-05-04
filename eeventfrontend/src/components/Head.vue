@@ -8,15 +8,18 @@
             aria-current="page"
             :href="url_courrant"
             @click="langue('fr')"
-            >FR</a
-          >
+            >
+              <img class="lg-img" src="../assets/fr.png" alt="FR">
+          </a>
         </li>
         <li class="nav-item">
           <router-link
             class="nav-link"
             :to="url_courrant"
             @click="langue('eng')"
-            >ENG</router-link
+            >
+              <img class="lg-img" src="../assets/eng.png" alt="ENG">
+            </router-link
           >
         </li>
       </ul>
@@ -85,4 +88,9 @@ export default {
 </script>
 
 <style>
+.lg-img {
+  width:30px;
+  height:25px;
+  border: 1px solid;
+}
 </style>
