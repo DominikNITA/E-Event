@@ -6,7 +6,8 @@
       <div class="container">
         <div class="row">
           <div class="col-12">
-            <h1>{{ event.name }}</h1>
+            <h2>{{ event.name }}</h2>
+            <br>
           </div>
 
           <!-- carré avec le centre d'intérêt de l'événement -->
@@ -15,36 +16,49 @@
           </div>
 
 
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+          <div class="col-7">
             <p>
               Description : {{ event.information }} <br />
-              Nombre de places disponibles : {{event.availablePlaces}} <br />
-              Lieu : {{event.place.address}}. {{event.place.place_name}}. {{event.place.description}} <br />
+              Places disponibles : {{event.availablePlaces}} <br />
+              Lieu : {{event.place.address}} <br />
               Organisateur : {{event.organizer.name}} <br />
 
             </p>
           </div>
 
-          <div>
+           <!-- <div class="col-3">
 
+           
             <p id="linkPlace">
-              <a href="https://www.google.fr/maps/">Lieu</a>
+            <a href="https://www.google.fr/maps/">Lieu</a>
             </p>
+            
 
+            
+            <p id="map">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11172.599302718305!2d2.3068553458687435!3d48.860675033232255!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e66e2964e34e2d%3A0x8ddca9ee380ef7e0!2sTour%20Eiffel!5e0!3m2!1sfr!2sfr!4v1617726360303!5m2!1sfr!2sfr" width="300" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            </p>
+            
+
+ 
+          </div>-->
+
+          <div class="col-3">
             <p>
-              <!-- REMPLACER LIEN GOOGLE PAR LIEN POUR S'INSCRIRE -->
-              <button
-                onclick="window.location.href = 'https://www.google.com';"
-              > 
+              <!-- S'INSCRIRE fonction TODO -->
+              <button onclick="subscription()"> 
                 S'inscire à l'événement
               </button>
             </p>
+            
           </div>
+          
         </div>
       </div>
     </div>
   </div>
 </template>
+
 
 <script>
 import SearchEventBar from "../components/SearchEventBar.vue";
@@ -81,6 +95,8 @@ export default {
   },
 };
 </script>
+
+
 
 <style>
   .logo
@@ -190,30 +206,6 @@ input:valid ~ span:after {
 }
 
 
-.col-size {
-  width: 100%;
-  padding: 100% 0 0 0 !important;
-  background: #f5a254;
-}
-
-.vert-center {
-	position: absolute !important;
-	top: 0;
-	bottom: 0;
-	right: 0;
-	left: 0;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-.vert-center p {
-	font-size: 24px;
-	color: #fff;
-	text-align: center;
-	padding-left: 30px;
-	padding-right: 30px
-}
-
 
 .circle{
     margin:10px;
@@ -222,7 +214,7 @@ input:valid ~ span:after {
     height:100px;
     text-align:center;
     border-radius:100px;
-    line-height:15px;
+    line-height:30px;
     padding-top:30px;
 }
 
