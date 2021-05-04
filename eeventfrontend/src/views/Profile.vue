@@ -1,8 +1,8 @@
 <template>
   <div class="container informations">
+    <h1>Profil</h1>
     <div class="row retour">
-      <h1>Profil</h1>
-      <button type="button" class="btn btn-outline-dark col-md-2">
+      <button type="button" class="btn btn-outline-dark col-md-2" onclick="window.location.href='mes_evenements.html';">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="16"
@@ -21,7 +21,7 @@
     <div class="row">
       <form class="row g-3" v-if="user != null">
         <div class="col-md-6">
-          <label for="prenom" class="form-label">First Name</label>
+          <label for="prenom" class="form-label">Nom</label>
           <input
             type="name"
             class="form-control"
@@ -30,7 +30,7 @@
           />
         </div>
         <div class="col-md-6">
-          <label for="nom" class="form-label">Last Name</label>
+          <label for="nom" class="form-label">Prénom</label>
           <input
             type="surname"
             class="form-control"
@@ -114,6 +114,15 @@ export default {
   },
 };
 </script>
-
 <style>
+.retour {
+  padding: 2%;
+}
+h1 {
+  text-align: center;
+  font-size: 400%;
+}
+.informations {
+  text-align: left;
+}
 </style>
