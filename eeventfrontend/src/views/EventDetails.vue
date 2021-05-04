@@ -10,25 +10,32 @@
           </div>
 
           <!-- carré avec le centre d'intérêt de l'événement -->
-          <div class="col-size">
-            <div class="vert-center">
-              <p> Centre d'intérêt </p>
-            </div>
-          </div> 
+          <div class="circle">
+          {{event.categories[0].title}}
+          </div>
 
 
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
-            <p>{{ event }}</p>
+            <p>
+              Description : {{ event.information }} <br />
+              Nombre de places disponibles : {{event.availablePlaces}} <br />
+              Lieu : {{event.place.address}}. {{event.place.place_name}}. {{event.place.description}} <br />
+              Organisateur : {{event.organizer.name}} <br />
+
+            </p>
+          </div>
+
+          <div>
 
             <p id="linkPlace">
-              <a href="https://google.com/maps">Lieu</a>
+              <a href="https://www.google.fr/maps/">Lieu</a>
             </p>
 
             <p>
-              <!-- Inscription link button -->
+              <!-- REMPLACER LIEN GOOGLE PAR LIEN POUR S'INSCRIRE -->
               <button
                 onclick="window.location.href = 'https://www.google.com';"
-              >
+              > 
                 S'inscire à l'événement
               </button>
             </p>
@@ -205,6 +212,18 @@ input:valid ~ span:after {
 	text-align: center;
 	padding-left: 30px;
 	padding-right: 30px
+}
+
+
+.circle{
+    margin:10px;
+    width:100px;
+    background:white;
+    height:100px;
+    text-align:center;
+    border-radius:100px;
+    line-height:15px;
+    padding-top:30px;
 }
 
 </style>
