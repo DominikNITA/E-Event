@@ -1,6 +1,5 @@
 <template>
   <div>
-    <search-event-bar></search-event-bar>
 
     <div class="container-fluid" v-if="event != null">
       <div class="container">
@@ -61,11 +60,10 @@
 
 
 <script>
-import SearchEventBar from "../components/SearchEventBar.vue";
 import axios from "axios";
 
 export default {
-  components: { SearchEventBar },
+  components: {},
   props: {
     eventId: {
       type: Number,
