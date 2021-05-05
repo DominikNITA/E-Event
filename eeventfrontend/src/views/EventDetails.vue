@@ -42,7 +42,7 @@
             </p>
 
           <div>
-
+            <br><br>
             <h4> Lieu : </h4>
             <p>
               {{event.place.address}} <br />
