@@ -42,6 +42,12 @@ const routes = [
         // },
     },
     {
+        path: "/events/:eventId",
+        name: "Event Details Register",
+        component: () => import("../views/EventDetailsRegister.vue"),
+        props: ({ params }) => ({ eventId: Number.parseInt(params.eventId, 10) || 0 }),
+    },
+    {
         path: "/events",
         name: "Events List",
         component: () => import("../views/EventsList.vue"),

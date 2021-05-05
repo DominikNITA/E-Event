@@ -21,7 +21,7 @@
           <div class="col-2">
             <br><br>
             <router-link
-            :to="{ name: 'Event Details', params: { eventId: event.id } }"
+            :to="{ name: 'Event Details Register', params: { eventId: event.id } }"
             ><button>Plus d'infos</button></router-link
             > 
           </div>
