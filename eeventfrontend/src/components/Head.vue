@@ -43,7 +43,7 @@
         </li>
         <li class="nav-item">
           <router-link class="nav-link" :to="{ name: 'Events List' }"
-            >Mes évenements</router-link
+            >Mes événements</router-link
           >
         </li>
         <li class="nav-item">
