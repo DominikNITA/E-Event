@@ -2,7 +2,7 @@
   <section>
     <search-event-bar @searchEvent="searchEvent"></search-event-bar>
     <h1 v-if="search != null">Recherche d'événements avec "{{ search }}"</h1>
-    <h1 v-else>Les événements</h1> <br>
+    <h1 v-else>Prochains événements</h1> <br>
     <div v-for="event in events" v-bind:key="event.id">
       
       <div class="container-fluid" v-if="event != null">
