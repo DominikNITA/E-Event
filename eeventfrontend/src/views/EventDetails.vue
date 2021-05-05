@@ -26,22 +26,7 @@
             </p>
           </div>
 
-           <!-- <div class="col-3">
 
-           
-            <p id="linkPlace">
-            <a href="https://www.google.fr/maps/">Lieu</a>
-            </p>
-            
-
-            
-            <p id="map">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11172.599302718305!2d2.3068553458687435!3d48.860675033232255!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e66e2964e34e2d%3A0x8ddca9ee380ef7e0!2sTour%20Eiffel!5e0!3m2!1sfr!2sfr!4v1617726360303!5m2!1sfr!2sfr" width="300" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-            </p>
-            
-
- 
-          </div>-->
 
           <div class="col-3">
             <p>
@@ -50,6 +35,16 @@
                 S'inscire à l'événement
               </button>
             </p>
+
+          <div class="col-3">
+            
+            <p id="map">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11172.599302718305!2d2.3068553458687435!3d48.860675033232255!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e66e2964e34e2d%3A0x8ddca9ee380ef7e0!2sTour%20Eiffel!5e0!3m2!1sfr!2sfr!4v1617726360303!5m2!1sfr!2sfr" width="300" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            </p>
+            
+
+ 
+          </div>
             
           </div>
           
