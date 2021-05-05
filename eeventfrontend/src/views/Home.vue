@@ -1,17 +1,16 @@
 <template>
   <div>
     <h1>Bienvenue sur E-Event !</h1>
-  </div>
-  <ul>
+    <ul>
     <li v-for ="event in events">{{ event }}</li>
   </ul>
+  </div>
  </template>
 
 <script>
   import axios from "axios";
 
   export default {
-    el: '#app',
     data(){
         events: ["e","e1","e3"]
     },
