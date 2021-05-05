@@ -1,7 +1,5 @@
 <template>
   <div>
-    <search-event-bar></search-event-bar>
-
     <div class="container-fluid" v-if="event != null">
       <div class="container">
         <div class="row">
@@ -37,8 +35,7 @@
 
           <div class="col-3">
             <p>
-              <!-- S'INSCRIRE fonction TODO -->
-              <button type="button" class="btn btn-secondary btn-lg" v-on:click="say('Vous êtes bien inscrit')"> S'inscire à l'événement </button>
+              Vous êtes inscrit !
             </p>
 
           <div>
@@ -61,11 +58,9 @@
 
 
 <script>
-import SearchEventBar from "../components/SearchEventBar.vue";
 import axios from "axios";
 
 export default {
-  components: { SearchEventBar },
   props: {
     eventId: {
       type: Number,
@@ -99,23 +94,31 @@ export default {
     say: function (message) {
       alert(message)
     },
-
-    subscription() { //TODO : inscrire un utilisateur = ajouter l'user à la liste des participants + ajouter l'event à la liste d'events de l'user
-      axios
-        .set(
-          `${process.env.VUE_APP_BACKEND_ADDRESS}/users/${this.$props.userId}`
-        )
-        .then((response) => (
-          this.user = response.data))
-        .catch((err) => console.log(err));
-
-    },
   },
 };
 </script>
 
 
+
 <style>
+  .logo
+{
+    width:2em;
+    float:left;
+
+    color: black;
+    font-size: 1.5em;
+    font-family: 'MaPolice','Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    display:flex;
+    justify-content: space-around;
+    
+}
+
+.im2
+{
+    width:40em;
+    float:left;
+}
 
 h1
 {

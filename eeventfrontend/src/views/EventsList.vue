@@ -1,8 +1,6 @@
 <template>
   <section>
-    <search-event-bar @searchEvent="searchEvent"></search-event-bar>
-    <h1 v-if="search != null">Recherche d'événements avec "{{ search }}"</h1>
-    <h1 v-else>Mes événements</h1> <br>
+    <h1>Mes événements</h1> <br>
     <div v-for="event in events" v-bind:key="event.id">
       
       <div class="container-fluid" v-if="event != null">
@@ -23,7 +21,7 @@
           <div class="col-2">
             <br><br>
             <router-link
-            :to="{ name: 'Event Details', params: { eventId: event.id } }"
+            :to="{ name: 'Event Details Register', params: { eventId: event.id } }"
             ><button>Plus d'infos</button></router-link
             > 
           </div>
@@ -45,11 +43,9 @@
 </template>
 
 <script>
-import SearchEventBar from "../components/SearchEventBar.vue";
 import axios from "axios";
 
 export default {
-  components: { SearchEventBar },
   name: "EventsList",
   props: {
     search: {
@@ -64,22 +60,6 @@ export default {
     };
   },
   methods: {
-    searchEvent(searchTerm) {
-      this.events = [];
-      //TODO: should not mutate property => push to route?
-      this.search = searchTerm;
-      axios
-        .get(`${process.env.VUE_APP_BACKEND_ADDRESS}/events`, {
-          params: {
-            include: "place,organizer,participants,categories",
-            search: this.search,
-          },
-        })
-        .then((response) => {
-          this.events = response.data;
-        })
-        .catch((err) => console.error(err));
-    },
     getAllEvents() {
       axios
         .get(`${process.env.VUE_APP_BACKEND_ADDRESS}/events`, {
@@ -95,11 +75,7 @@ export default {
     },
   },
   mounted() {
-    if (this.search) {
-      this.searchEvent(this.search);
-    } else {
       this.getAllEvents();
-    }
   },
 };
 </script>
