@@ -18,6 +18,11 @@
         Retour
       </button>
     </div>-->
+    <ul class="nav justify-content-end">
+      <li class="nav-item">
+        <a class="nav-link active" aria-current="page" v-on:click="setModif()" href="#">Supprimer le profil</a>
+      </li>
+    </ul>
     <div class="row">
       <form class="row g-3" v-if="user != null" >
         <div class="col-md-6">
@@ -25,7 +30,6 @@
           <input
             type="name"
             class="form-control"
-            id="prenom"
             v-model="user.firstName"
             :readonly=this.modif
           />
@@ -36,7 +40,6 @@
             type="surname"
             class="form-control"
             id="nom"
-            placeholder="nameUser"
             v-model="user.lastName"
             :readonly=this.modif
           />
@@ -112,7 +115,7 @@ export default {
           `${process.env.VUE_APP_BACKEND_ADDRESS}/users/${this.$props.userId}`
         )
         .then((response) => (this.user = response.data))
-        .catch((err) => console.log(err));
+        .catch((err) => console.log(err))
     },
     setModif() {
       this.modif = !this.modif
@@ -121,6 +124,15 @@ export default {
     valider() {
       this.modif = !this.modif
       this.isHidden = !this.isHidden
+      axios.put(`${process.env.VUE_APP_BACKEND_ADDRESS}/users/${this.$props.userId}`,
+          {
+            firstName: this.user.firstName,
+            lastName: this.user.lastName,
+            nick: this.user.nick,
+            email: this.user.email
+          })
+                .then(reponse => console.log(reponse))
+                .catch(erreur => console.log(erreur))
     }
   },
   watch: {
@@ -144,5 +156,8 @@ h1 {
 }
 .form-label, .submit-btn {
   padding-top: 2%;
+}
+.nav-link {
+  color: black;
 }
 </style>
