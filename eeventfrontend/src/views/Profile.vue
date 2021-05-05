@@ -1,8 +1,8 @@
 <template>
   <div class="container informations">
-    <div class="row retour">
-      <h1>Profil</h1>
-      <button type="button" class="btn btn-outline-dark col-md-2">
+    <h1>Profil</h1>
+    <!--<div class="row retour">
+      <button type="button" class="btn btn-outline-dark col-md-2" onclick="window.location.href='mes_evenements.html';">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="16"
@@ -17,26 +17,31 @@
         </svg>
         Retour
       </button>
-    </div>
+    </div>-->
+    <ul class="nav justify-content-end">
+      <li class="nav-item">
+        <a class="nav-link active" aria-current="page" v-on:click="setModif()" href="#">Supprimer le profil</a>
+      </li>
+    </ul>
     <div class="row">
-      <form class="row g-3" v-if="user != null">
+      <form class="row g-3" v-if="user != null" >
         <div class="col-md-6">
-          <label for="prenom" class="form-label">First Name</label>
+          <label for="prenom" class="form-label">Prénom</label>
           <input
             type="name"
             class="form-control"
-            id="prenom"
             v-model="user.firstName"
+            :readonly=this.modif
           />
         </div>
         <div class="col-md-6">
-          <label for="nom" class="form-label">Last Name</label>
+          <label for="nom" class="form-label">Nom</label>
           <input
             type="surname"
             class="form-control"
             id="nom"
-            placeholder="nameUser"
             v-model="user.lastName"
+            :readonly=this.modif
           />
         </div>
         <div class="col-12">
@@ -46,26 +51,35 @@
             class="form-control"
             id="mail"
             v-model="user.email"
+            :readonly=this.modif
           />
         </div>
         <div class="col-12">
           <label for="adresse" class="form-label">Localisation</label>
-          <input type="address" class="form-control" id="adresse" />
+          <input 
+            type="address" 
+            class="form-control" 
+            id="adresse"
+            :readonly=this.modif />
         </div>
         <div class="col-md-6">
           <label for="centres-interet" class="form-label"
-            >Mes Centre(s) d'intérêt</label
-          >
-          <input type="text" class="form-control" id="centres-interet" />
+            >Mes Centre(s) d'intérêt</label>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="centres-interet"
+            :readonly=this.modif />
         </div>
         <div class="col-md-6">
           <label for="mes_groupes" class="form-label">Mes Groupes</label>
-          <input type="text" class="form-control" id="mes_groupes" />
+          <input type="text" class="form-control" id="mes_groupes" :readonly=this.modif />
         </div>
-        <div class="col-12">
-          <button type="submit" class="btn btn-primary position-absolute end-0">
-            Sign in
-          </button>
+        <div class="col-6 submit-btn">
+          <button type="button" class="btn btn-outline-dark position-absolute end-0" v-on:click="setModif()" v-if="isHidden">Modifier mes infos</button>
+        </div>
+        <div class="col-6 submit-btn">
+          <button type="button" class="btn btn-outline-success position-absolute end-0" v-if="!isHidden" v-on:click="valider()">Valider</button>
         </div>
       </form>
     </div>
@@ -90,6 +104,8 @@ export default {
       user: [],
       localisation: [],
       centreInteret: [],
+      modif: true,
+      isHidden: true,
     };
   },
   methods: {
@@ -99,12 +115,25 @@ export default {
           `${process.env.VUE_APP_BACKEND_ADDRESS}/users/${this.$props.userId}`
         )
         .then((response) => (this.user = response.data))
-        .catch((err) => console.log(err));
+        .catch((err) => console.log(err))
     },
-  },
-  mounted() {
-    this.loadUser();
-    console.log(this.user);
+    setModif() {
+      this.modif = !this.modif
+      this.isHidden = !this.isHidden
+    },
+    valider() {
+      this.modif = !this.modif
+      this.isHidden = !this.isHidden
+      axios.put(`${process.env.VUE_APP_BACKEND_ADDRESS}/users/${this.$props.userId}`,
+          {
+            firstName: this.user.firstName,
+            lastName: this.user.lastName,
+            nick: this.user.nick,
+            email: this.user.email
+          })
+                .then(reponse => console.log(reponse))
+                .catch(erreur => console.log(erreur))
+    }
   },
   watch: {
     $route(to, from) {
@@ -114,6 +143,21 @@ export default {
   },
 };
 </script>
-
 <style>
+.retour {
+  padding: 2%;
+}
+h1 {
+  text-align: center;
+  font-size: 400%;
+}
+.informations {
+  text-align: left;
+}
+.form-label, .submit-btn {
+  padding-top: 2%;
+}
+.nav-link {
+  color: black;
+}
 </style>

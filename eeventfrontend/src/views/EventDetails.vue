@@ -6,38 +6,59 @@
       <div class="container">
         <div class="row">
           <div class="col-12">
-            <h1>{{ event.name }}</h1>
+            <h1>{{ event.name }} </h1> 
+            <br>
+          
           </div>
 
           <!-- carré avec le centre d'intérêt de l'événement -->
-          <div class="col-size">
-            <div class="vert-center">
-              <p> Centre d'intérêt </p>
-            </div>
-          </div> 
-
-
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
-            <p>{{ event }}</p>
-
-            <p id="linkPlace">
-              <a href="https://google.com/maps">Lieu</a>
-            </p>
-
-            <p>
-              <!-- Inscription link button -->
-              <button
-                onclick="window.location.href = 'https://www.google.com';"
-              >
-                S'inscire à l'événement
-              </button>
-            </p>
+          <div class="circle">
+          {{event.categories[0].title}}
           </div>
+
+
+          <div class="col-7">
+            <h4> Description de l'événement : </h4>
+            <p>
+              {{ event.information }} <br />
+            </p>
+
+            <h4> Nombre de places disponibles : </h4>
+            <p>
+              {{event.availablePlaces}} <br />
+            </p> 
+
+            <h4> Organisateur : </h4>
+            <p>
+              {{event.organizer.name}} <br />
+            </p> 
+
+          </div>
+
+          <div class="col-3">
+            <p>
+              <!-- S'INSCRIRE fonction TODO -->
+              <button type="button" class="btn btn-secondary btn-lg" onclick="subscription()"> S'inscire à l'événement </button>
+            </p>
+
+          <div>
+            <br><br>
+            <h4> Lieu : </h4>
+            <p>
+              {{event.place.address}} <br />
+            </p>
+ 
+          </div>
+          
+            
+          </div>
+          
         </div>
       </div>
     </div>
   </div>
 </template>
+
 
 <script>
 import SearchEventBar from "../components/SearchEventBar.vue";
@@ -53,7 +74,9 @@ export default {
   },
   data() {
     return {
+      user: [],
       event: null,
+      eventName : [],
     };
   },
   mounted() {
@@ -72,8 +95,22 @@ export default {
       })
       .catch((err) => console.error(err));
   },
+  methods: {
+    subscription() { //TODO : inscrire un utilisateur = ajouter l'user à la liste des participants + ajouter l'event à la liste d'events de l'user
+      axios
+        .set(
+          `${process.env.VUE_APP_BACKEND_ADDRESS}/users/${this.$props.userId}`
+        )
+        .then((response) => (
+          this.user = response.data))
+        .catch((err) => console.log(err));
+
+    }
+  },
 };
 </script>
+
+
 
 <style>
   .logo
@@ -183,28 +220,16 @@ input:valid ~ span:after {
 }
 
 
-.col-size {
-  width: 100%;
-  padding: 100% 0 0 0 !important;
-  background: #f5a254;
-}
 
-.vert-center {
-	position: absolute !important;
-	top: 0;
-	bottom: 0;
-	right: 0;
-	left: 0;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-.vert-center p {
-	font-size: 24px;
-	color: #fff;
-	text-align: center;
-	padding-left: 30px;
-	padding-right: 30px
+.circle{
+    margin:10px;
+    width:100px;
+    background:white;
+    height:100px;
+    text-align:center;
+    border-radius:100px;
+    line-height:30px;
+    padding-top:30px;
 }
 
 </style>

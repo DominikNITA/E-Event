@@ -4,8 +4,7 @@
       url_courrant="/"
       url_accueil="/"
       url_evenements="events"
-      url_mes_evenements="url_mes_evenements"
-      url_profil="url_profil"
+      url_profil="/profile/2"
     ></Head>
     <!-- <div id="nav">
       <router-link to="/">Home</router-link> |

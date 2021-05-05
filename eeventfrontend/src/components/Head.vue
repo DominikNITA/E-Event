@@ -1,13 +1,12 @@
 <template>
   <div class="container-fluid head-page">
-    <div class="row langues">
+    <div class="row justify-content-end">
       <ul class="nav justify-content-end">
         <li class="nav-item">
           <a
             class="nav-link"
             aria-current="page"
             :href="url_courrant"
-            @click="langue('fr')"
             >
               <img class="lg-img" src="../assets/fr.png" alt="FR">
           </a>
@@ -16,7 +15,6 @@
           <router-link
             class="nav-link"
             :to="url_courrant"
-            @click="langue('eng')"
             >
               <img class="lg-img" src="../assets/eng.png" alt="ENG">
             </router-link
@@ -26,12 +24,12 @@
     </div>
     <nav class="navbar navbar-light">
       <div class="container-fluid">
-        <router-link class="navbar-brand fs-2" :to="url_accueil">
+        <router-link class="navbar-brand fs-2 title" :to="url_accueil">
           E-Event
           <img
             src="../assets/logo copy.png"
             height="50"
-            class="d-inline-block align-text-center justify-content-center logo"
+            class="d-inline-block align-text-center logo"
           />
         </router-link>
       </div>
@@ -49,8 +47,8 @@
           >
         </li>
         <li class="nav-item">
-          <router-link class="nav-link" :to="url_mes_evenements"
-            >Mes évènements</router-link
+          <router-link class="nav-link" :to="url_profil"
+            >Profil</router-link
           >
         </li>
       </ul>
@@ -74,16 +72,11 @@ export default {
       type: String,
       required: true,
     },
-    url_mes_evenements: {
+    url_profil: {
       type: String,
       required: true,
     },
-  },
-  methods: {
-    langue(lg) {
-      this.$emit("changerLangage", lg);
-    },
-  },
+  }
 };
 </script>
 
@@ -92,5 +85,8 @@ export default {
   width:30px;
   height:25px;
   border: 1px solid;
+}
+.title {
+  font-size: 40px;
 }
 </style>
