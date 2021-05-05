@@ -2,13 +2,13 @@
   <section>
     <search-event-bar @searchEvent="searchEvent"></search-event-bar>
     <h1 v-if="search != null">Events with "{{ search }}"</h1>
-    <h1 v-else>Your events</h1>
+    <h1 v-else>Your events</h1> <br>
     <div v-for="event in events" v-bind:key="event.id">
       {{ event.name }} in {{ event.place.place_name }}
       <router-link
         :to="{ name: 'Event Details', params: { eventId: event.id } }"
         ><button>More info</button></router-link
-      >
+      > <br> <br>
     </div>
   </section>
 </template>
@@ -29,6 +29,7 @@ export default {
   data() {
     return {
       events: [],
+      user: [],
     };
   },
   methods: {
