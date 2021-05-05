@@ -6,8 +6,9 @@
       <div class="container">
         <div class="row">
           <div class="col-12">
-            <h2>{{ event.name }}</h2>
+            <h1>{{ event.name }} </h1> 
             <br>
+          
           </div>
 
           <!-- carré avec le centre d'intérêt de l'événement -->
@@ -17,34 +18,38 @@
 
 
           <div class="col-7">
+            <h4> Description de l'événement : </h4>
             <p>
-              Description : {{ event.information }} <br />
-              Places disponibles : {{event.availablePlaces}} <br />
-              Lieu : {{event.place.address}} <br />
-              Organisateur : {{event.organizer.name}} <br />
-
+              {{ event.information }} <br />
             </p>
+
+            <h4> Nombre de places disponibles : </h4>
+            <p>
+              {{event.availablePlaces}} <br />
+            </p> 
+
+            <h4> Organisateur : </h4>
+            <p>
+              {{event.organizer.name}} <br />
+            </p> 
+
           </div>
-
-
 
           <div class="col-3">
             <p>
               <!-- S'INSCRIRE fonction TODO -->
-              <button onclick="subscription()"> 
-                S'inscire à l'événement
-              </button>
+              <button type="button" class="btn btn-secondary btn-lg" onclick="subscription()"> S'inscire à l'événement </button>
             </p>
 
-          <div class="col-3">
-            
-            <p id="map">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11172.599302718305!2d2.3068553458687435!3d48.860675033232255!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e66e2964e34e2d%3A0x8ddca9ee380ef7e0!2sTour%20Eiffel!5e0!3m2!1sfr!2sfr!4v1617726360303!5m2!1sfr!2sfr" width="300" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-            </p>
-            
+          <div>
 
+            <h4> Lieu : </h4>
+            <p>
+              {{event.place.address}} <br />
+            </p>
  
           </div>
+          
             
           </div>
           
@@ -69,7 +74,9 @@ export default {
   },
   data() {
     return {
+      user: [],
       event: null,
+      eventName : [],
     };
   },
   mounted() {
@@ -87,6 +94,18 @@ export default {
         console.log(this.event);
       })
       .catch((err) => console.error(err));
+  },
+  methods: {
+    subscription() { //TODO : inscrire un utilisateur = ajouter l'user à la liste des participants + ajouter l'event à la liste d'events de l'user
+      axios
+        .set(
+          `${process.env.VUE_APP_BACKEND_ADDRESS}/users/${this.$props.userId}`
+        )
+        .then((response) => (
+          this.user = response.data))
+        .catch((err) => console.log(err));
+
+    }
   },
 };
 </script>
