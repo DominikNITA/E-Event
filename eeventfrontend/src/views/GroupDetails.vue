@@ -25,7 +25,7 @@
 
             <h4>Evènements du groupes</h4>
 
-            <div v-for="event in groupEvents" v-bind:key="event.id">
+            <div v-for="event in groupEvents" v-bind:key="event.id+'A'"> <!-- 'A' is to avoid duplicate keys warning-->
                 <p>
                   {{ event.event_name }} 
                 </p>
