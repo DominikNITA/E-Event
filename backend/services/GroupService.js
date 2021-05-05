@@ -10,6 +10,10 @@ const { minimalView } = require("../models/User");
 
 const ErrorResponse = require("../utility/ErrorResponse");
 
+exports.getAllGroups() = async function () {
+    return await DBClient("group");
+};
+
 exports.getGroupById = async function (groupId) {
     //Do not do group validation here with checkIfGroupExists(), because it would create infinite loop
 

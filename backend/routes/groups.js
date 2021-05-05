@@ -66,6 +66,28 @@ router.use("/:groupId", checkGroupExistence);
 
 /**
  * @swagger
+ * /groups/:
+ *   get:
+ *     tags: [Groups]
+ *     summary: Get all groups
+ *     security:
+ *          - basicAuth: []
+ *     responses:
+ *       200:
+ *         description: Returns all groups
+ *         content:
+ *          application/json:
+ *              schema:
+ *                  type: array
+ *                  items:
+ *                      $ref: '#/components/schemas/Group'
+ */
+router.get("/", async (req, res) => {
+    res.json(await GroupService.getAllGroups());
+});
+
+/**
+ * @swagger
  * /groups/{id}:
  *  get:
  *      tags: [Groups]
