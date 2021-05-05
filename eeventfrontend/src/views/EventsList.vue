@@ -2,13 +2,44 @@
   <section>
     <search-event-bar @searchEvent="searchEvent"></search-event-bar>
     <h1 v-if="search != null">Events with "{{ search }}"</h1>
-    <h1 v-else>Your events</h1> <br>
+    <h1 v-else>Mes événements</h1> <br>
     <div v-for="event in events" v-bind:key="event.id">
-      {{ event.name }} in {{ event.place.place_name }}
-      <router-link
-        :to="{ name: 'Event Details', params: { eventId: event.id } }"
-        ><button>More info</button></router-link
-      > <br> <br>
+      
+      <div class="container-fluid" v-if="event != null">
+      <div class="container">
+        <div class="row">
+
+          <!-- carré avec le centre d'intérêt de l'événement -->
+          <div class="circle">
+          {{event.categories[0].title}}
+          </div>
+
+          <div class="col-8">
+            <br><br>
+            <big>{{ event.name }}  in {{ event.place.place_name }}</big>
+
+          </div>
+
+          <div class="col-2">
+            <br><br>
+            <router-link
+            :to="{ name: 'Event Details', params: { eventId: event.id } }"
+            ><button>Plus d'infos</button></router-link
+            > 
+          </div>
+
+
+          
+
+        </div>
+      </div>
+      </div>
+      
+      
+      
+      
+      
+      
     </div>
   </section>
 </template>
@@ -74,4 +105,14 @@ export default {
 </script>
 
 <style>
+.circle{
+    margin:10px;
+    width:100px;
+    background:white;
+    height:100px;
+    text-align:center;
+    border-radius:100px;
+    line-height:30px;
+    padding-top:30px;
+}
 </style>
