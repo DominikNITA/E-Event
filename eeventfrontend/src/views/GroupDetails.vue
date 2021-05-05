@@ -41,7 +41,16 @@
             <div v-if="groupEvents.length == 0">
                 <p> Ce groupe n'a pas encore d'évènement :'( </p>
             </div>
+
+            <br><br>
             
+            <div v-if="group">
+                    <router-link
+                    :to="{ name: 'Create Event', params: { groupId: group.id } }"
+                    ><button>Créer un événement</button></router-link
+                    > 
+            </div>
+
           </div>
           
         </div>

@@ -11,8 +11,8 @@
           </div>
 
           <!-- carré avec le centre d'intérêt de l'événement -->
-          <div class="circle">
-          {{event.categories[0].title}}
+          <div v-if="event.categories.length != 0" class="circle">
+            {{event.categories[0].title}}
           </div>
 
 

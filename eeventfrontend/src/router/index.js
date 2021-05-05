@@ -82,6 +82,15 @@ const routes = [
         //     requiresAuth: true,
         // },
     },
+    {
+        path: "/groups/:groupId/createEvent",
+        name: "Create Event",
+        component: () => import("../views/CreateEvent.vue"),
+        props: ({ params }) => ({ groupId: Number.parseInt(params.groupId, 10) || 0 }),
+        // meta: {
+        //     requiresAuth: true,
+        // },
+    },
 ];
 
 const router = new VueRouter({
