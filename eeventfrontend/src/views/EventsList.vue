@@ -16,7 +16,7 @@
 
           <div class="col-8">
             <br><br>
-            <big>{{ event.name }}  à {{ event.place.place_name }}</big>
+            <big>{{ event.name }}  à {{ event.place.place_name }}, {{ event.place.address }}</big>
 
           </div>
 
