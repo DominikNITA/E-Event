@@ -59,6 +59,23 @@ const routes = [
         //     requiresAuth: true,
         // },
     },
+    {
+        path: "/groups",
+        name: "Groups",
+        component: () => import("../views/Groups.vue"),
+        // meta: {
+        //     requiresAuth: true,
+        // },
+    },
+    {
+        path: "/groups/:groupId",
+        name: "Group Details",
+        component: () => import("../views/GroupDetails.vue"),
+        props: ({ params }) => ({ groupId: Number.parseInt(params.groupId, 10) || 0 }),
+        // meta: {
+        //     requiresAuth: true,
+        // },
+    },
 ];
 
 const router = new VueRouter({
