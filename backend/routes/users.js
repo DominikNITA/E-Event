@@ -261,4 +261,90 @@ router.put("/:id/anonymise", async (req, res) => {
     res.json(user);
 });
 
+/**
+ * @swagger
+ * /users/{id}/groupsMember:
+ *  get:
+ *      tags: [Users]
+ *      summary: Get user groups
+ *      security:
+ *          - basicAuth: []
+ *      responses:
+ *          200:
+ *              description: OK
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Group'
+ *          400:
+ *              description: Get User groups error
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Group'
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: integer
+ *            required: true
+ *            description: Numeric id of the user to get groups
+ */
+ router.get("/:id/groupsMember", async (req, res) => {
+    console.log(req.params.id);
+    const groups = await UserService.getGroupsWhereUserIsMember(req.params.id);
+    if (groups == null) {
+        res.statusCode = 400;
+        res.statusMessage = "Can't find user id";
+        res.end();
+        return;
+    }
+
+    res.json(groups);
+});
+
+
+/**
+ * @swagger
+ * /users/{id}/groupsAdmin:
+ *  get:
+ *      tags: [Users]
+ *      summary: Get user groups as admin
+ *      security:
+ *          - basicAuth: []
+ *      responses:
+ *          200:
+ *              description: OK
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Group'
+ *          400:
+ *              description: Get User groups as admin error
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Group'
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: integer
+ *            required: true
+ *            description: Numeric id of the user to get groups as admin
+ */
+ router.get("/:id/groupsAdmin", async (req, res) => {
+    console.log(req.params.id);
+    const groups = await UserService.getGroupsWhereUserIsAdministrator(req.params.id);
+    if (groups == null) {
+        res.statusCode = 400;
+        res.statusMessage = "Can't find user id";
+        res.end();
+        return;
+    }
+
+    res.json(groups);
+});
+
+
 module.exports = router;
