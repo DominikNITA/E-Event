@@ -50,6 +50,15 @@
               required
             />
           </div>
+          <div class="field">
+            <multiselect
+              label="title"
+              v-model="category"
+              :options="categoryOptions"
+              :multiple="true"
+              placeholder="Favourites Categories"
+            ></multiselect>
+          </div>
           <div class="field btn">
             <div class="btn-layer"></div>
             <input type="submit" value="Signup" @click="register" />
@@ -67,8 +76,10 @@
 <script>
 import "@/assets/styles/authViews.css";
 import axios from "axios";
+import Multiselect from "vue-multiselect";
 
 export default {
+  components: { Multiselect },
   data() {
     return {
       email: "",
@@ -78,10 +89,35 @@ export default {
       password: "",
       passwordConfirm: "",
       error: null,
+      groupOptions: [],
+      categoryOptions: [{ title: "kappa" }],
+      category: [],
     };
   },
+  mounted() {
+    this.getCategoryOptions();
+  },
   methods: {
+    getGroupOptions() {
+      axios
+        .get(`${process.env.VUE_APP_BACKEND_ADDRESS}/groups`)
+        .then((response) => {
+          this.groupOptions = response.data;
+        })
+        .catch((err) => (this.error = err.response.data));
+    },
+    getCategoryOptions() {
+      axios
+        .get(`${process.env.VUE_APP_BACKEND_ADDRESS}/categories`)
+        .then((response) => {
+          this.categoryOptions = response.data.categories;
+          console.log(response.data.categories);
+        })
+        .catch((err) => (this.error = err.response.data));
+    },
     register() {
+      console.log(this.category);
+
       this.error = null;
       if (this.password !== this.passwordConfirm) {
         this.error = "Passwords do not match!";
@@ -107,6 +143,8 @@ export default {
   },
 };
 </script>
+
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 
 <style>
 </style>
