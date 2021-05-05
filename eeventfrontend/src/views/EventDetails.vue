@@ -38,11 +38,11 @@
           <div class="col-3">
             <p>
               <!-- S'INSCRIRE fonction TODO -->
-              <button type="button" class="btn btn-secondary btn-lg" onclick="subscription()"> S'inscire à l'événement </button>
+              <button type="button" class="btn btn-secondary btn-lg" v-on:click="say('Vous êtes bien inscrit')"> S'inscire à l'événement </button>
             </p>
 
           <div>
-            <br><br>
+
             <h4> Lieu : </h4>
             <p>
               {{event.place.address}} <br />
@@ -96,6 +96,10 @@ export default {
       .catch((err) => console.error(err));
   },
   methods: {
+    say: function (message) {
+      alert(message)
+    },
+
     subscription() { //TODO : inscrire un utilisateur = ajouter l'user à la liste des participants + ajouter l'event à la liste d'events de l'user
       axios
         .set(
