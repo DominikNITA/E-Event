@@ -10,7 +10,7 @@ const { minimalView } = require("../models/User");
 
 const ErrorResponse = require("../utility/ErrorResponse");
 
-exports.getAllGroups() = async function () {
+exports.getAllGroups = async function () {
     return await DBClient("group");
 };
 
