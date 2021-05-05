@@ -109,32 +109,13 @@ export default {
           this.user = response.data))
         .catch((err) => console.log(err));
 
-    }
+    },
   },
 };
 </script>
 
 
-
 <style>
-  .logo
-{
-    width:2em;
-    float:left;
-
-    color: black;
-    font-size: 1.5em;
-    font-family: 'MaPolice','Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    display:flex;
-    justify-content: space-around;
-    
-}
-
-.im2
-{
-    width:40em;
-    float:left;
-}
 
 h1
 {
