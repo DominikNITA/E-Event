@@ -9,7 +9,7 @@
             <br>
           </div>
 
-          <div class="col-7">
+          <div class="col-12">
 
             <h4>Membres du groupe</h4>
 

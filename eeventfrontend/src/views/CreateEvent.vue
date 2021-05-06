@@ -1,6 +1,6 @@
 <template>
   <div class="container informations">
-      <h1 v-if="group!=null"> Create your event for the group {{ group.name }} </h1>
+      <h1 v-if="group!=null"> Création d'un événement pour le groupe {{ group.name }} </h1>
 
         <div>
 
