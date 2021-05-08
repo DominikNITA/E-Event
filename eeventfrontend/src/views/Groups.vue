@@ -46,7 +46,7 @@ export default {
   methods: {
     getAllGroupsAsMember() {
       axios
-        .get(`${process.env.VUE_APP_BACKEND_ADDRESS}/users/2/groupsMember`) //RETIRER LE 2 CETAIT POUR TEST
+        .get(`${process.env.VUE_APP_BACKEND_ADDRESS}/users/2/groupsMember`) //RETIRER LE 2 CETAIT POUR TEST -> this.$store.state.user.id
         .then((response) => {
           this.groups = response.data
         })
@@ -54,7 +54,7 @@ export default {
     },
     getAllGroupsAsAdmin() {
       axios
-        .get(`${process.env.VUE_APP_BACKEND_ADDRESS}/users/2/groupsAdmin`) //RETIRER LE 2 CETAIT POUR TEST
+        .get(`${process.env.VUE_APP_BACKEND_ADDRESS}/users/2/groupsAdmin`) //RETIRER LE 2 CETAIT POUR TEST -> this.$store.state.user.id
         .then((response) => {
           this.groupsAdmin = response.data
         })

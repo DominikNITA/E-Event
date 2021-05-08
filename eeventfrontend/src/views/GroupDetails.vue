@@ -11,12 +11,31 @@
 
           <div class="col-12">
 
+            <h4>Administrateurs du groupe</h4>
+
+            <div v-for="admin in groupAdmins" v-bind:key="admin.id+'A'"> <!-- 'A' is to avoid duplicate keys warning-->
+                <p>
+                     {{ admin.nick }} 
+                     <i v-if="isCurrentUser(admin.id)">(Vous)</i>
+                     <button v-if="isCurrentUserAdmin()" @click="removeUserAdminRole(admin.id)">Retirer le rôle d'admin</button>
+                </p>
+                <br> 
+            </div>
+            
+            <div v-if="groupAdmins.length == 0">
+                <p> Ce groupe n'a pas d'admin :'( </p>
+            </div>
+
             <h4>Membres du groupe</h4>
 
             <div v-for="member in groupMembers" v-bind:key="member.id">
                 <p>
-                     {{ member.nick }} <br> 
+                     {{ member.nick }} 
+                     <i v-if="isCurrentUser(member.id)">(Vous)</i>
+                     <button v-if="isCurrentUserAdmin()" @click="removeUserFromGroup(member.id)">Retirer le membre du groupe</button>
+                     <button v-if="isCurrentUserAdmin()" @click="giveUserAdminRole(member.id)">Donner le rôle d'admin</button>
                 </p>
+                <br> 
             </div>
             
             <div v-if="groupMembers.length == 0">
@@ -44,10 +63,17 @@
 
             <br><br>
             
-            <div v-if="group">
+            <div v-if="group && isCurrentUserAdmin()">
                     <router-link
                     :to="{ name: 'Create Event', params: { groupId: group.id } }"
                     ><button>Créer un événement</button></router-link
+                    > 
+            </div>
+
+            <div>
+                    <router-link
+                    :to="{ name: 'Groups' }"
+                    ><button @click="removeCurrentUserFromGroup()">Quitter le groupe</button></router-link
                     > 
             </div>
 
@@ -76,6 +102,7 @@ export default {
       group: null,
       groupMembers: [],
       groupEvents: [],
+      groupAdmins: []
     };
   },
   
@@ -100,10 +127,90 @@ export default {
         .then((response) => 
           this.groupEvents = response.data)
         .catch((err) => console.log(err));
+    },
+    getGroupAdmins() {
+        axios
+        .get(`${process.env.VUE_APP_BACKEND_ADDRESS}/groups/${this.$props.groupId}/administrators`)
+        .then((response) => 
+          this.groupAdmins = response.data)
+        .catch((err) => console.log(err));
+    },
+    giveUserAdminRole(userId) {
+        axios
+        .post(`${process.env.VUE_APP_BACKEND_ADDRESS}/groups/${this.$props.groupId}/administrators`,
+        {
+          userId: userId
+        }
+        )
+        .catch((err) => {
+          console.log(err)
+          return;
+        });
+        alert("L'utilisateur a bien été promu administrateur du groupe")
+    },
+    removeUserAdminRole(userId) {
+      axios
+        .delete(`${process.env.VUE_APP_BACKEND_ADDRESS}/groups/${this.$props.groupId}/administrators`,
+        {
+          userId: userId
+        }
+        )
+        .then((response) => {
+          if (response) //CHECK IF RESPONSE IS OK
+            alert("L'utilisateur a bien été rétiré comme administrateur du groupe")})
+        .catch((err) => {
+          console.log(err)
+          return;
+        });
+       
+    },
+    isCurrentUserAdmin() {
+      return this.groupAdmins.some((admin) => /*this.$store.state.user.id*/ 2 == admin.id) //RETIRER LE 2 C'ETAIT POUR TEST
+    },
+    isUserAdmin(user) {
+      return this.groupAdmins.some((admin) => user.id == admin.id)
+    },
+    isCurrentUser(userId) {
+      return (2 == userId) //RETIRER LE 2 C'ETAIT POUR TEST -> this.$store.state.user.id
+    },
+    removeUserFromGroup(userId) {
+      if(this.isUserAdmin(userId)) {
+        alert("L'utilisateur est admin, veuillez retirez son rôle d'admin avant de pouvoir le supprimer du groupe")
+        return
+      }
+      axios
+        .delete(`${process.env.VUE_APP_BACKEND_ADDRESS}/groups/${this.$props.groupId}/members`,
+        {
+          userId: userId
+        }
+        )
+        .catch((err) => {
+          console.log(err)
+          return;
+        });
+        alert("L'utilisateur a bien été rétiré comme membre du groupe")
+    },
+    removeCurrentUserFromGroup() {
+      if(this.isCurrentUserAdmin()) {
+        alert("Vous êtes administrateur, veuillez retirez votre rôle d'admin avant de pouvoir quitter le groupe")
+        return
+      }
+      axios
+        .delete(`${process.env.VUE_APP_BACKEND_ADDRESS}/groups/${this.$props.groupId}/members`,
+        {
+          userId: 2 /*this.$store.state.user.id*/  //RETIRER LE 2 C'ETAIT POUR TEST
+        }
+        )
+        .catch((err) => {
+          console.log(err)
+          return;
+        });
+        alert("Vous avez bien quitté le groupe")
     }
   },
   mounted() {
     this.getGroupName();
+    this.getGroupAdmins();
     this.getGroupMembers();
     this.getGroupEvents();
   },
