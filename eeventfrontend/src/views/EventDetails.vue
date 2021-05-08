@@ -37,7 +37,7 @@
           <div class="col-3">
             <p>
               <!-- S'INSCRIRE fonction TODO -->
-              <button type="button" class="btn btn-secondary btn-lg" v-on:click="say('Vous êtes bien inscrit')" onclick="subscription()"> S'inscire à l'événement </button>
+              <button type="button" class="btn btn-secondary btn-lg" v-on:click="subscription()"> S'inscire à l'événement </button>
             </p>
 
           <div>
@@ -45,6 +45,11 @@
             <h4> Lieu : </h4>
             <p>
               {{event.place.address}} <br />
+            </p>
+
+            <h4> Date : </h4>
+            <p>
+              {{event.startDate}} - {{event.endDate}} <br />
             </p>
  
           </div>
@@ -73,8 +78,10 @@ export default {
   data() {
     return {
       user: [],
-      event: null,
+      event: [],
       eventName : [],
+      subscribedEvents: [],
+      participants: [],
     };
   },
   mounted() {
@@ -94,23 +101,29 @@ export default {
       .catch((err) => console.error(err));
   },
   methods: {
-    say: function (message) {
-      alert(message)
-    },
 
     subscription() { //TODO : inscrire un utilisateur = ajouter l'utilisateur à la liste des participants 
                                 // + ajouter l'événement à la liste d'événements de l'utilisateur
-      axios.put(`${process.env.VUE_APP_BACKEND_ADDRESS}/users/${this.$props.userId}`,
-                `${process.env.VUE_APP_BACKEND_ADDRESS}/events/${this.$props.eventId}`,
+      alert('Vous êtes inscrit à l`événement')
+      axios
+        .post(
+          `${process.env.VUE_APP_BACKEND_ADDRESS}/events/${this.$props.eventId}/participants`,
           {
-            subscribedEvents: this.event.eventId,
-            participants: this.user.userId
-          })
-          .then(reponse => console.log(reponse))
-          .catch(erreur => console.log(erreur))
+            userId: this.$props.userId
+          }
+        )
+        .then(
+          (response) => {
+            this.subscribedEvents = response.data.subscribedEvents;
+            this.participants = response.data.participants;
+          }
+        )
+        .catch((err) => console.log(err));
+
     },
   },
 };
+
 
 </script>
 
