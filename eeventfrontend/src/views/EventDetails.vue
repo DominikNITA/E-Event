@@ -37,7 +37,7 @@
           <div class="col-3">
             <p>
               <!-- S'INSCRIRE fonction TODO -->
-              <button type="button" class="btn btn-secondary btn-lg" v-on:click="say('Vous êtes bien inscrit')"> S'inscire à l'événement </button>
+              <button type="button" class="btn btn-secondary btn-lg" v-on:click="say('Vous êtes bien inscrit')" onclick="subscription()"> S'inscire à l'événement </button>
             </p>
 
           <div>
@@ -98,7 +98,8 @@ export default {
       alert(message)
     },
 
-    subscription() { //TODO : inscrire un utilisateur = ajouter l'user à la liste des participants + ajouter l'event à la liste d'events de l'user
+    subscription() { //TODO : inscrire un utilisateur = ajouter l'utilisateur à la liste des participants 
+                                // + ajouter l'événement à la liste d'événements de l'utilisateur
       axios
         .set(
           `${process.env.VUE_APP_BACKEND_ADDRESS}/users/${this.$props.userId}`
