@@ -105,6 +105,11 @@ export default {
 </script>
 
 <style>
+body{
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+
+}
+
 .circle{
     margin:10px;
     width:100px;

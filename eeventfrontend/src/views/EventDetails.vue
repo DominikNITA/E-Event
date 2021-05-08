@@ -100,17 +100,18 @@ export default {
 
     subscription() { //TODO : inscrire un utilisateur = ajouter l'utilisateur à la liste des participants 
                                 // + ajouter l'événement à la liste d'événements de l'utilisateur
-      axios
-        .set(
-          `${process.env.VUE_APP_BACKEND_ADDRESS}/users/${this.$props.userId}`
-        )
-        .then((response) => (
-          this.user = response.data))
-        .catch((err) => console.log(err));
-
+      axios.put(`${process.env.VUE_APP_BACKEND_ADDRESS}/users/${this.$props.userId}`,
+                `${process.env.VUE_APP_BACKEND_ADDRESS}/events/${this.$props.eventId}`,
+          {
+            subscribedEvents: this.event.eventId,
+            participants: this.user.userId
+          })
+          .then(reponse => console.log(reponse))
+          .catch(erreur => console.log(erreur))
     },
   },
 };
+
 </script>
 
 

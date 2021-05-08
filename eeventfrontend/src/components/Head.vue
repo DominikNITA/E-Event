@@ -24,11 +24,11 @@
     </div>
     <nav class="navbar navbar-light">
       <div class="container-fluid">
-        <router-link class="navbar-brand fs-2 title" :to="url_accueil">
+        <router-link id="title" class="navbar-brand fs-2" :to="url_accueil">
           E-Event
           <img
             src="../assets/logo copy.png"
-            height="50"
+            height="60"
             class="d-inline-block align-text-center logo"
           />
         </router-link>
@@ -95,7 +95,7 @@ export default {
   height:25px;
   border: 1px solid;
 }
-.title {
-  font-size: 40px;
+#title {
+  font-size:45px;
 }
 </style>
