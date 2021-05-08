@@ -1,8 +1,10 @@
 const express = require("express");
+const { User } = require("../models/User");
 const router = express.Router();
 
 const EventService = require("../services/EventService");
 const GroupService = require("../services/GroupService");
+const UserService = require("../services/UserService");
 const ErrorResponse = require("../utility/ErrorResponse");
 
 const checkEventExistence = async (req, res, next) => {
@@ -391,8 +393,14 @@ router.get("/:eventId/categories", checkEventExistence, async (req, res, next) =
  *                          required:
  *                              - userId
  *                          properties:
- *                              userId:
- *                                  type: integer
+ *                              participants:
+ *                                  type: array
+ *                                  items:
+ *                                      $ref: '#/components/schemas/User'
+ *                              subscribedEvents:
+ *                                  type: array
+ *                                  items:
+ *                                      $ref: '#/components/schemas/Events'
  *          400:
  *              description: Authorization error
  *      parameters:
@@ -401,14 +409,17 @@ router.get("/:eventId/categories", checkEventExistence, async (req, res, next) =
 router.post("/:eventId/participants", checkEventExistence, async (req, res, next) => {
     try {
         const organizer = await EventService.getOrganizer((await EventService.getEventById(req.params.eventId)).id);
-        if (!(await GroupService.isAdministrator(req.body.userId, organizer.id))) {
+        if (!(await GroupService.isAdministrator(req.body.userId, organizer.id)) || req.body.userId == req.user.id) {
             throw new ErrorResponse(ErrorResponse.forbiddenStatusCode, "You are not an administrator of this event!");
         }
         const participants = await EventService.addParticipant(req.params.eventId, req.body.userId);
         if (participants == null) {
             throw new ErrorResponse(ErrorResponse.notFoundStatusCode, "Couldn't add user as participant!");
         } else {
-            res.json(participants);
+            res.json({
+                participants: participants,
+                subscribedEvents: await UserService.getSubscribedEvents(rqe, body.userId),
+            });
         }
     } catch (err) {
         next(err);

@@ -91,3 +91,7 @@ exports.getCategories = async function (userId) {
         DBClient("user_category").select("category_id").where("user_id", userId)
     );
 };
+
+exports.getSubscribedEvents = async function (userId) {
+    return await DBClient("event").whereIn("id", DBClient("participation").select("event_id").where("user_id", userId));
+};

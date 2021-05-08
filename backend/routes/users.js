@@ -278,10 +278,6 @@ router.put("/:id/anonymise", async (req, res) => {
  *                          $ref: '#/components/schemas/Group'
  *          400:
  *              description: Get User groups error
- *              content:
- *                  application/json:
- *                      schema:
- *                          $ref: '#/components/schemas/Group'
  *      parameters:
  *          - in: path
  *            name: id
@@ -290,7 +286,7 @@ router.put("/:id/anonymise", async (req, res) => {
  *            required: true
  *            description: Numeric id of the user to get groups
  */
- router.get("/:id/groupsMember", async (req, res) => {
+router.get("/:id/groupsMember", async (req, res) => {
     console.log(req.params.id);
     const groups = await UserService.getGroupsWhereUserIsMember(req.params.id);
     if (groups == null) {
@@ -302,7 +298,6 @@ router.put("/:id/anonymise", async (req, res) => {
 
     res.json(groups);
 });
-
 
 /**
  * @swagger
@@ -333,8 +328,7 @@ router.put("/:id/anonymise", async (req, res) => {
  *            required: true
  *            description: Numeric id of the user to get groups as admin
  */
- router.get("/:id/groupsAdmin", async (req, res) => {
-    console.log(req.params.id);
+router.get("/:id/groupsAdmin", async (req, res) => {
     const groups = await UserService.getGroupsWhereUserIsAdministrator(req.params.id);
     if (groups == null) {
         res.statusCode = 400;
@@ -346,5 +340,34 @@ router.put("/:id/anonymise", async (req, res) => {
     res.json(groups);
 });
 
+/**
+ * @swagger
+ * /users/{id}/subscribedEvents:
+ *  get:
+ *      tags: [Users]
+ *      summary: Get subscribed events
+ *      security:
+ *          - basicAuth: []
+ *      responses:
+ *          200:
+ *              description: OK
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: array
+ *                          items:
+ *                              $ref: '#/components/schemas/Event'
+ *          400:
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: integer
+ *            required: true
+ *            description: Numeric id of the user to get subscrived events
+ */
+router.get("/:id/subscribedEvents", async (req, res) => {
+    res.json(await UserService.getSubscribedEvents(req.params.id));
+});
 
 module.exports = router;

@@ -22,7 +22,7 @@ exports.getGroupById = async function (groupId) {
 };
 
 exports.getMembers = async function (groupId) {
-    checkIfGroupExists(groupId);
+    await checkIfGroupExists(groupId);
 
     return await DBClient("user")
         .whereIn("id", DBClient("membership").select("user_id").where("group_id", groupId))
@@ -30,9 +30,9 @@ exports.getMembers = async function (groupId) {
 };
 
 exports.addMember = async function (userId, groupId) {
-    checkIfUserExists(userId);
-    checkIfGroupExists(groupId);
-    if (this.isMember(userId, groupId)) {
+    await checkIfUserExists(userId);
+    await checkIfGroupExists(groupId);
+    if (await this.isMember(userId, groupId)) {
         throw new ErrorResponse(ErrorResponse.badRequestStatusCode, "User already in the group");
     }
 
@@ -41,8 +41,8 @@ exports.addMember = async function (userId, groupId) {
 };
 
 exports.removeMember = async function (userId, groupId) {
-    checkIfUserExists(userId);
-    checkIfGroupExists(groupId);
+    await checkIfUserExists(userId);
+    await checkIfGroupExists(groupId);
     if (!this.isMember(userId, groupId)) {
         throw new ErrorResponse(ErrorResponse.badRequestStatusCode, "User is not in the group");
     }
@@ -55,7 +55,7 @@ exports.removeMember = async function (userId, groupId) {
 };
 
 exports.getAdministrators = async function (groupId) {
-    checkIfGroupExists(groupId);
+    await checkIfGroupExists(groupId);
 
     return await DBClient("user")
         .whereIn("id", DBClient("administration").select("user_id").where("group_id", groupId))
@@ -63,9 +63,9 @@ exports.getAdministrators = async function (groupId) {
 };
 
 exports.addAdministrator = async function (userId, groupId) {
-    checkIfUserExists(userId);
-    checkIfGroupExists(groupId);
-    if (this.isAdministrator(userId, groupId)) {
+    await checkIfUserExists(userId);
+    await checkIfGroupExists(groupId);
+    if (await exports.isAdministrator(userId, groupId)) {
         throw new ErrorResponse(ErrorResponse.badRequestStatusCode, "User is already an administrator");
     }
 
@@ -76,9 +76,9 @@ exports.addAdministrator = async function (userId, groupId) {
 };
 
 exports.removeAdministrator = async function (userId, groupId) {
-    checkIfUserExists(userId);
-    checkIfGroupExists(groupId);
-    if (!this.isAdministrator(userId, groupId)) {
+    await checkIfUserExists(userId);
+    await checkIfGroupExists(groupId);
+    if (await !this.isAdministrator(userId, groupId)) {
         throw new ErrorResponse(ErrorResponse.badRequestStatusCode, "User is not the administrator of the group");
     }
 
@@ -89,14 +89,14 @@ exports.removeAdministrator = async function (userId, groupId) {
 };
 
 exports.getGroupsEvents = async function (groupId) {
-    checkIfGroupExists(groupId);
+    await checkIfGroupExists(groupId);
 
     const groupsEvents = await DBClient("event").where({ organizer_id: groupId });
     return groupsEvents;
 };
 
 exports.addEventToGroup = async function (groupId, event) {
-    checkIfGroupExists(groupId);
+    await checkIfGroupExists(groupId);
 
     // I don't like it... to check again @Dom
     event.organizer.id = groupId;
@@ -109,15 +109,14 @@ exports.doesGroupExist = async function (groupId) {
 };
 
 exports.isAdministrator = async function (userId, groupId) {
-    checkIfUserExists(userId);
-    checkIfGroupExists(groupId);
-
-    return (await DBClient("administration").where({ user_id: userId, group_id: groupId })).length > 0;
+    await checkIfUserExists(userId);
+    await checkIfGroupExists(groupId);
+    return (await DBClient("administration").where({ user_id: userId, group_id: groupId }).length) > 0;
 };
 
 exports.isMember = async function (userId, groupId) {
-    checkIfUserExists(userId);
-    checkIfGroupExists(groupId);
+    await checkIfUserExists(userId);
+    await checkIfGroupExists(groupId);
 
     return (await DBClient("membership").where({ user_id: userId, group_id: groupId })).length > 0;
 };
