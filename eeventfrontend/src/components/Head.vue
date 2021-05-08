@@ -47,6 +47,11 @@
           >
         </li>
         <li class="nav-item">
+          <router-link class="nav-link" :to="url_groups"
+            >Groupes</router-link
+          >
+        </li>
+        <li class="nav-item">
           <router-link class="nav-link" :to="url_profil"
             >Mon profil</router-link
           >
@@ -69,6 +74,10 @@ export default {
       required: true,
     },
     url_evenements: {
+      type: String,
+      required: true,
+    },
+    url_groups: {
       type: String,
       required: true,
     },

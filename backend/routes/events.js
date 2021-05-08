@@ -167,10 +167,10 @@ router.get("/", async (req, res, next) => {
  */
 router.post("/", async (req, res, next) => {
     try {
-        if (req.body.event == null) {
+        if (req.body == null) {
             throw new ErrorResponse(ErrorResponse.badRequestStatusCode, "No event passed in body!");
         }
-        const event = await EventService.addEvent(req.body.event);
+        const event = await EventService.addEvent(req.body);
         res.json(event);
     } catch (err) {
         next(err);

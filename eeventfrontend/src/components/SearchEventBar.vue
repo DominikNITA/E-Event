@@ -32,7 +32,7 @@ export default {
       }
 
       this.$router
-        .push({ path: "events" })
+        .push({ path: "/" })
         .catch(() => this.$emit("searchEvent", this.searchTerm));
     },
   },

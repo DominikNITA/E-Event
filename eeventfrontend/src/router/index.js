@@ -42,6 +42,12 @@ const routes = [
         // },
     },
     {
+        path: "/events/:eventId",
+        name: "Event Details Register",
+        component: () => import("../views/EventDetailsRegister.vue"),
+        props: ({ params }) => ({ eventId: Number.parseInt(params.eventId, 10) || 0 }),
+    },
+    {
         path: "/events",
         name: "Events List",
         component: () => import("../views/EventsList.vue"),
@@ -55,6 +61,32 @@ const routes = [
         name: "User Profile",
         component: () => import("../views/Profile.vue"),
         props: ({ params }) => ({ userId: Number.parseInt(params.userId, 10) || 0 }),
+        // meta: {
+        //     requiresAuth: true,
+        // },
+    },
+    {
+        path: "/groups",
+        name: "Groups",
+        component: () => import("../views/Groups.vue"),
+        // meta: {
+        //     requiresAuth: true,
+        // },
+    },
+    {
+        path: "/groups/:groupId",
+        name: "Group Details",
+        component: () => import("../views/GroupDetails.vue"),
+        props: ({ params }) => ({ groupId: Number.parseInt(params.groupId, 10) || 0 }),
+        // meta: {
+        //     requiresAuth: true,
+        // },
+    },
+    {
+        path: "/groups/:groupId/createEvent",
+        name: "Create Event",
+        component: () => import("../views/CreateEvent.vue"),
+        props: ({ params }) => ({ groupId: Number.parseInt(params.groupId, 10) || 0 }),
         // meta: {
         //     requiresAuth: true,
         // },

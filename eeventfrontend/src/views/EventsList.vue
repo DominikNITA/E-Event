@@ -1,7 +1,7 @@
 <template>
   <section>
     <h1>Mes événements</h1> <br>
-    <div v-for="event in events" v-bind:key="event.id">
+    <div v-for="event in user.subscribedEvents" v-bind:key="event.id">
       
       <div class="container-fluid" v-if="event != null">
       <div class="container">
@@ -21,7 +21,7 @@
           <div class="col-2">
             <br><br>
             <router-link
-            :to="{ name: 'Event Details', params: { eventId: event.id } }"
+            :to="{ name: 'Event Details Register', params: { eventId: event.id } }"
             ><button>Plus d'infos</button></router-link
             > 
           </div>

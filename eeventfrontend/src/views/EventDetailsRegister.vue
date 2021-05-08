@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <div class="container-fluid" v-if="event != null">
       <div class="container">
         <div class="row">
@@ -11,8 +10,8 @@
           </div>
 
           <!-- carré avec le centre d'intérêt de l'événement -->
-          <div v-if="event.categories.length != 0" class="circle">
-            {{event.categories[0].title}}
+          <div class="circle">
+          {{event.categories[0].title}}
           </div>
 
 
@@ -36,8 +35,7 @@
 
           <div class="col-3">
             <p>
-              <!-- S'INSCRIRE fonction TODO -->
-              <button type="button" class="btn btn-secondary btn-lg" v-on:click="say('Vous êtes bien inscrit')" onclick="subscription()"> S'inscire à l'événement </button>
+              Vous êtes inscrit !
             </p>
 
           <div>
@@ -63,7 +61,6 @@
 import axios from "axios";
 
 export default {
-  components: {},
   props: {
     eventId: {
       type: Number,
@@ -97,24 +94,31 @@ export default {
     say: function (message) {
       alert(message)
     },
-
-    subscription() { //TODO : inscrire un utilisateur = ajouter l'utilisateur à la liste des participants 
-                                // + ajouter l'événement à la liste d'événements de l'utilisateur
-      axios
-        .set(
-          `${process.env.VUE_APP_BACKEND_ADDRESS}/users/${this.$props.userId}`
-        )
-        .then((response) => (
-          this.user = response.data))
-        .catch((err) => console.log(err));
-
-    },
   },
 };
 </script>
 
 
+
 <style>
+  .logo
+{
+    width:2em;
+    float:left;
+
+    color: black;
+    font-size: 1.5em;
+    font-family: 'MaPolice','Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    display:flex;
+    justify-content: space-around;
+    
+}
+
+.im2
+{
+    width:40em;
+    float:left;
+}
 
 h1
 {

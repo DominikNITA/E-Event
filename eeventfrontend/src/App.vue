@@ -5,6 +5,7 @@
       url_accueil="/"
       url_evenements="events"
       url_profil="/profile/2"
+      url_groups="/groups"
     ></Head>
     <!-- <div id="nav">
       <router-link to="/">Home</router-link> |
