@@ -1,3 +1,4 @@
+<!-- interface d'authentification et d'inscription -->
 <template>
   <div class="wrapper">
     <div class="title-text">

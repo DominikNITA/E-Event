@@ -1,4 +1,4 @@
-
+<!-- page d'accueil affichant les prochains événements et une barre de recherche -->
 <template>
   <section>
     <search-event-bar @searchEvent="searchEvent"></search-event-bar>
@@ -65,6 +65,7 @@ export default {
     };
   },
   methods: {
+    // méthode pmour rechercher un événement
     searchEvent(searchTerm) {
       this.events = [];
       //TODO: should not mutate property => push to route?
@@ -81,6 +82,7 @@ export default {
         })
         .catch((err) => console.error(err));
     },
+    // méthodes pour récuperer tous les événements de la base de données
     getAllEvents() {
       axios
         .get(`${process.env.VUE_APP_BACKEND_ADDRESS}/events`, {
