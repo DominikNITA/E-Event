@@ -404,7 +404,7 @@ router.get("/:eventId/categories", checkEventExistence, async (req, res, next) =
  *                              subscribedEvents:
  *                                  type: array
  *                                  items:
- *                                      $ref: '#/components/schemas/Events'
+ *                                      $ref: '#/components/schemas/Event'
  *          400:
  *              description: Authorization error
  *      parameters:

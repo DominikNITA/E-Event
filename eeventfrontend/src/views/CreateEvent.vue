@@ -4,11 +4,14 @@
 
         <div>
 
+            <br><br>
+
             <form>
 
                 <label for="Nom de l'événement" class="form-label">Nom de l'événement</label><br>
                 <input
                     type="text"
+                    class="form-control"
                     v-model="event.name"
                 />
 
@@ -17,6 +20,7 @@
                 <label for="Nombre de places" class="form-label">Nombre de places</label><br>
                 <input
                     type="number"
+                    class="form-control"
                     v-model="event.availablePlaces"
                 />
 
@@ -25,6 +29,7 @@
                 <label for="Date de début" class="form-label">Date de début</label><br>
                 <input
                     type="date"
+                    class="form-control"
                     v-model="event.startDate"
                 />
 
@@ -33,6 +38,7 @@
                 <label for="Date de fin" class="form-label">Date de fin</label><br>
                 <input
                     type="date"
+                    class="form-control"
                     v-model="event.endDate"
                 />
 
@@ -41,6 +47,7 @@
                 <label for="Prix" class="form-label">Prix</label><br>
                 <input
                     type="number"
+                    class="form-control"
                     v-model="event.price"
                 />
 
@@ -49,6 +56,7 @@
                 <label for="Infos" class="form-label">Infos</label><br>
                 <input
                     type="text"
+                    class="form-control"
                     v-model="event.information"
                 />
 
@@ -57,6 +65,7 @@
                 <label for="Nom du lieu" class="form-label">Nom du lieu</label><br>
                 <input
                     type="text"
+                    class="form-control"
                     v-model="place.name"
                 />
 
@@ -65,14 +74,16 @@
                 <label for="Adresse du lieu" class="form-label">Adresse du lieu</label><br>
                 <input
                     type="text"
+                    class="form-control"
                     v-model="place.address"
                 />
 
                 <br><br>
 
                 <div>
-                    <button type="button" v-on:click="createEvent()">Créer l'événement</button>
+                    <button type="button" class="btn btn-secondary" v-on:click="createEvent()">Créer l'événement</button>
                 </div>
+                <br><br>
 
                 <!--
                 <label for="Catégories" class="form-label">Catégories</label>

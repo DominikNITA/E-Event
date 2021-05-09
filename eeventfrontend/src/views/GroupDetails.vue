@@ -3,8 +3,9 @@
     <div class="container-fluid">
       <div class="container">
         <div class="row">
-
+          
           <div v-if="group" class="col-12">
+            <br>
             <h1> {{ group.name }} </h1>
             <br>
           </div>
@@ -15,46 +16,49 @@
 
             <div v-for="admin in groupAdmins" v-bind:key="admin.id+'A'"> <!-- 'A' is to avoid duplicate keys warning-->
                 <p>
-                     {{ admin.nick }} 
-                     <i v-if="isCurrentUser(admin.id)">(Vous)</i>
-                     <button v-if="isCurrentUserAdmin()" @click="removeUserAdminRole(admin.id)">Retirer le rôle d'admin</button>
+                     - {{ admin.nick }} 
+                     <i v-if="isCurrentUser(admin.id)"> (Vous) </i>
+                     &nbsp;
+                     <button type="button" class="btn btn-secondary binfo" v-if="isCurrentUserAdmin()" @click="removeUserAdminRole(admin.id)">Retirer le rôle d'admin</button>
                 </p>
-                <br> 
             </div>
             
             <div v-if="groupAdmins.length == 0">
                 <p> Ce groupe n'a pas d'admin :'( </p>
             </div>
 
+            <br>
+
             <h4>Membres du groupe</h4>
 
             <div v-for="member in groupMembers" v-bind:key="member.id">
                 <p>
-                     {{ member.nick }} 
-                     <i v-if="isCurrentUser(member.id)">(Vous)</i>
-                     <button v-if="isCurrentUserAdmin()" @click="removeUserFromGroup(member.id)">Retirer le membre du groupe</button>
-                     <button v-if="isCurrentUserAdmin()" @click="giveUserAdminRole(member.id)">Donner le rôle d'admin</button>
+                     - {{ member.nick }} 
+                     <i v-if="isCurrentUser(member.id)"> (Vous) </i>
+                     &nbsp;
+                     <button type="button" class="btn btn-secondary binfo" v-if="isCurrentUserAdmin()" @click="removeUserFromGroup(member.id)">Retirer le membre du groupe</button>
+                     &nbsp;
+                     <button type="button" class="btn btn-secondary binfo" v-if="isCurrentUserAdmin()" @click="giveUserAdminRole(member.id)">Donner le rôle d'admin</button>
                 </p>
-                <br> 
             </div>
             
             <div v-if="groupMembers.length == 0">
                 <p> Ce groupe n'a pas encore de membre :'( </p>
             </div>
 
+            <br>
+
             <h4>Evènements du groupes</h4>
 
             <div v-for="event in groupEvents" v-bind:key="event.id+'A'"> <!-- 'A' is to avoid duplicate keys warning-->
                 <p>
-                  {{ event.event_name }} 
-                </p>
-
-                <div class="col-12">
+                  - {{ event.event_name }} : &nbsp;
+                
                     <router-link
                     :to="{ name: 'Event Details', params: { eventId: event.id } }"
-                    ><button>Plus d'infos</button></router-link
+                    ><button type="button" class="btn btn-secondary binfo">Plus d'infos</button></router-link
                     > 
-                </div>
+                </p>
             </div>
 
             <div v-if="groupEvents.length == 0">
@@ -66,14 +70,14 @@
             <div v-if="group && isCurrentUserAdmin()">
                     <router-link
                     :to="{ name: 'Create Event', params: { groupId: group.id } }"
-                    ><button>Créer un événement</button></router-link
+                    ><button type="button" class="btn btn-secondary">Créer un événement</button></router-link
                     > 
             </div>
 
             <div>
                     <router-link
                     :to="{ name: 'Groups' }"
-                    ><button @click="removeCurrentUserFromGroup()">Quitter le groupe</button></router-link
+                    ><button type="button" class="btn btn-secondary" @click="removeCurrentUserFromGroup()">Quitter le groupe</button></router-link
                     > 
             </div>
 
@@ -165,13 +169,13 @@ export default {
        
     },
     isCurrentUserAdmin() {
-      return this.groupAdmins.some((admin) => /*this.$store.state.user.id*/ 2 == admin.id) //RETIRER LE 2 C'ETAIT POUR TEST
+      return this.groupAdmins.some((admin) => /*this.$store.state.user.id*/ 3 == admin.id) //RETIRER LE 2 C'ETAIT POUR TEST
     },
     isUserAdmin(user) {
       return this.groupAdmins.some((admin) => user.id == admin.id)
     },
     isCurrentUser(userId) {
-      return (2 == userId) //RETIRER LE 2 C'ETAIT POUR TEST -> this.$store.state.user.id
+      return (3 == userId) //RETIRER LE 2 C'ETAIT POUR TEST -> this.$store.state.user.id
     },
     removeUserFromGroup(userId) {
       if(this.isUserAdmin(userId)) {
@@ -220,4 +224,8 @@ export default {
 
 
 <style>
+.binfo {
+  font-size: 100%; 
+  line-height: 100%; 
+}
 </style>

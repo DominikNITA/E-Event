@@ -9,7 +9,7 @@
 
             <div class="col-8">
                 <br><br>
-                <big>{{ group.group_name }}</big>
+                <big> - {{ group.group_name }}</big>
                 <p v-if="isAdmin(group)">(Vous êtes administrateur de ce groupe)</p>
             </div>
 
@@ -17,8 +17,8 @@
                 <br><br>
                 <router-link
                 :to="{ name: 'Group Details', params: { groupId: group.id } }"
-                ><button>Plus d'infos</button></router-link
-                > 
+                ><button type="button" class="btn btn-secondary">Plus d'infos</button>
+                </router-link> 
             </div>
 
 
