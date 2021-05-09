@@ -65,11 +65,7 @@ export default {
           this.$store.commit("setAuthToken", response.data.accessToken);
           this.$store.commit("setUser", response.data.user);
 
-          console.log(
-            "Auth data saved to VueX:",
-            this.$store.state.authToken,
-            this.$store.state.user
-          );
+          axios.defaults.headers.common["auth"] = response.data.accessToken;
 
           if (this.$route.params.nextUrl != null) {
             this.$router.push(this.$route.params.nextUrl);
