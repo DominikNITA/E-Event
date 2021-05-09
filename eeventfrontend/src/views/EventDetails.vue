@@ -23,6 +23,9 @@
             <h4>Nombre de places disponibles :</h4>
             <p>{{ event.availablePlaces }} <br /></p>
 
+            <h4>Prix :</h4>
+            <p>{{ event.price }} € <br /></p>
+
             <h4>Organisateur :</h4>
             <p>{{ event.organizer.name }} <br /></p>
           </div>
