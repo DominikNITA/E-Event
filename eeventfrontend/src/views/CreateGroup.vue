@@ -12,13 +12,17 @@
                 <input
                     type="text"
                     class="form-control"
-                    v-model="group.name"
+                    v-model="groupName"
                 />
 
                 <br><br>
-            
+
                 <div>
-                    <button type="button" class="btn btn-secondary" @click.prevent="group.name == ''" @click="createGroup()">Créer l'événement</button>
+                    <router-link
+                    :to="{ name: 'Group Details' , params: { groupId: group.id } }"
+                    >
+                    <button type="button" class="btn btn-secondary" :disabled="checkInput()" @click="createGroup()">Créer le groupe</button>
+                    </router-link>
                 </div>
                 <br><br>
 
@@ -43,7 +47,8 @@ import axios from "axios";
 export default {
     data() {
         return {
-            group : null,
+            groupName : '',
+            group : [],
         }
     },
     methods: {
@@ -53,14 +58,20 @@ export default {
                 .put(`${process.env.VUE_APP_BACKEND_ADDRESS}/groups`,
                 {
                     userId: 2, //RETIRER LE 2 C'EST POUR TEST -> this.$store.state.user.id
-                    groupName: this.group.name,
+                    groupName: this.groupName,
+                })
+                .then((response) => {
+                    this.group = response.data
+                    alert("Le groupe a bien été créé")
                 })
                 .catch((err) => {
                     console.log(err)
                     return;
                 })
-                alert("Votre groupe a bien été créé")
         },
+        checkInput() {
+            return this.groupName == ''
+        }
     },
 }
 </script>

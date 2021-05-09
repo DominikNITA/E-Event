@@ -81,7 +81,11 @@
                 <br><br>
 
                 <div>
+                    <router-link
+                    :to="{ name: 'Event Details' , params: { eventId: event.id } }"
+                    >
                     <button type="button" class="btn btn-secondary" v-on:click="createEvent()">Créer l'événement</button>
+                    </router-link>
                 </div>
                 <br><br>
 
@@ -134,11 +138,13 @@ export default {
                     placeId: this.place.id,
                     organizerId: this.$props.groupId,
                 })
+                .then((response) => {
+                    this.event = response.data
+                    alert("L'événement a bien été créé")
+                })
                 .catch((err) => {
                     console.log(err)
-                    return;
                 })
-                alert("L'événement a bien été créé")
         },
 
         getGroupName() {
