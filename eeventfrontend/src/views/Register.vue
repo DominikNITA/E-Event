@@ -1,3 +1,4 @@
+<!-- Inscription d'un utilisateur -->
 <template>
   <div class="wrapper">
     <div class="title-text">
