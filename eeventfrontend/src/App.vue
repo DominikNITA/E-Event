@@ -35,14 +35,14 @@ export default {
   color: #2c3e50;
 }
 
-#nav {
-  padding: 30px;
+/*#nav {
+  padding: 10px;
 }
 
 #nav a {
   font-weight: bold;
   color: #2c3e50;
-}
+}*/
 
 #nav a.router-link-exact-active {
   color: #42b983;
@@ -70,7 +70,7 @@ h2 {
 .head-page {
   /*background-image: linear-gradient(to bottom, rgba(255,255,0,0.5), #f5a254), url('./images/city.png');*/
   background-color: white;
-  height: 180px;
+  height:163px;;
 }
 
 .langues {
@@ -91,7 +91,6 @@ h2 {
   padding-left: 10%;
 }
 
-/*Raccourci*/
 .raccourci a {
   color: black;
   font-size: 120%;
@@ -101,13 +100,13 @@ h2 {
   background-color: #d8d8d8;
 }
 
-.retour {
+/*.retour {
   padding: 2%;
 }
 
 .retour path {
   padding: 5%;
-}
+}*/
 
 .les_evenements {
   padding: 2% 15%;
@@ -117,7 +116,7 @@ h2 {
   cursor: pointer;
 }
 
-table {
+/*table {
   table-layout: fixed;
   width: 100%;
   border-spacing: 80%;
@@ -128,7 +127,7 @@ table {
 td {
   text-align: left;
   padding: 2%;
-}
+}*/
 
 #image_event {
   text-align: right;
