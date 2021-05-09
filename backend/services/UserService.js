@@ -1,8 +1,11 @@
 const DBClient = require("./DBConnection");
 
 const UserModel = require("../models/User");
+const Event = require("../models/Event");
 
 const ErrorResponse = require("../utility/ErrorResponse");
+
+const EventService = require("./EventService");
 
 const isUserOk = function (user) {
     return user.lastName.length != 0 && user.firstName.length != 0 && user.email.length != 0;
@@ -93,5 +96,9 @@ exports.getCategories = async function (userId) {
 };
 
 exports.getSubscribedEvents = async function (userId) {
-    return await DBClient("event").whereIn("id", DBClient("participation").select("event_id").where("user_id", userId));
+    return await EventService.applyIncludeFilterToManyEvents(
+        await DBClient("event")
+            .whereIn("id", DBClient("participation").select("event_id").where("user_id", userId))
+            .select(Event.select)
+    );
 };
