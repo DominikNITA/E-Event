@@ -32,7 +32,9 @@
           </div>
           <div class="signup-link">
             Pas encore de compte ?
-            <router-link :to="{ name: 'Register' }">Inscrivez-vous !</router-link>
+            <router-link :to="{ name: 'Register' }"
+              >Inscrivez-vous !</router-link
+            >
           </div>
         </form>
       </div>
@@ -79,7 +81,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 @import url("https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap");
 * {
   margin: 0;
