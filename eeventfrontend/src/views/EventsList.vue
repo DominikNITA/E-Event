@@ -9,7 +9,7 @@
         <div class="row">
 
           <!-- carré avec le centre d'intérêt de l'événement -->
-          <div class="circle">
+          <div class="circle" v-if="event.categories.length > 0">
           {{event.categories.title}}
           </div>
 
