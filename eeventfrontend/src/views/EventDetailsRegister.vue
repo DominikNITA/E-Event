@@ -1,3 +1,4 @@
+<!-- détail des événements auquel l'utilisateur est inscrit -->
 <template>
   <div>
     <div class="container-fluid" v-if="event != null">
@@ -59,7 +60,7 @@
 
 <script>
 import axios from "axios";
-
+//récupère les détails de l'événement dans la base de donnée
 export default {
   props: {
     eventId: {

@@ -1,3 +1,4 @@
+<!-- Profil de l'utilisateur -->
 <template>
   <div class="container informations">
       <h1>Profil</h1>
@@ -74,7 +75,7 @@
         </form>
     </div>
 
-    <div class="row">
+    <div class="col-12">
       <br />
       <br />
       <br />
@@ -120,6 +121,7 @@ export default {
     };
   },
   methods: {
+    // récupère les données de l'utilisateur
     loadUser() {
       axios
         .get(
@@ -132,6 +134,7 @@ export default {
       this.modif = !this.modif
       this.isHidden = !this.isHidden
     },
+    // mets à jour les données de l'utilsateur avec les nouvelles
     valider() {
       this.modif = !this.modif
       this.isHidden = !this.isHidden
@@ -145,6 +148,7 @@ export default {
                 .then(reponse => console.log(reponse))
                 .catch(erreur => console.log(erreur))
     },
+    // permet de supprimer l'utilisateur
     deletUser() {
       axios.put(`${process.env.VUE_APP_BACKEND_ADDRESS}/users/${this.$props.userId}/anonymise`)
             .then(reponse => console.log(reponse))

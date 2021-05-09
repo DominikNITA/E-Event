@@ -1,3 +1,4 @@
+<!-- détails d'un groupe -->
 <template>
   <div>
     <div class="container-fluid">
@@ -113,6 +114,7 @@ export default {
   },
   
   methods: {
+    // méthodes qui récupérent les détails du groupe
     getGroupName() {
         axios
         .get(`${process.env.VUE_APP_BACKEND_ADDRESS}/groups/${this.$props.groupId}`)
@@ -141,6 +143,7 @@ export default {
           this.groupAdmins = response.data)
         .catch((err) => console.log(err));
     },
+    // méthodes pour retirer et ajouter le rôle administrateur à l'utilisateur
     giveUserAdminRole(userId) {
         axios
         .post(`${process.env.VUE_APP_BACKEND_ADDRESS}/groups/${this.$props.groupId}/administrators`,
@@ -176,6 +179,7 @@ export default {
         });
        
     },
+    
     isCurrentUserAdmin() {
       return this.groupAdmins.some((admin) => /*this.$store.state.user.id*/ 3 == admin.id) //RETIRER LE 2 C'ETAIT POUR TEST
     },
