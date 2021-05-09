@@ -188,6 +188,9 @@ router.get("/:groupId/members", async (req, res, next) => {
  */
 router.post("/:groupId/members", async (req, res, next) => {
     try {
+        if (req.user.id != req.body.userId) {
+            throw new ErrorResponse(ErrorResponse.badRequestStatusCode, "You cannot add someone else to the group!");
+        }
         const members = await GroupService.addMember(req.body.userId, req.params.groupId);
         res.json(members);
     } catch (err) {
@@ -227,6 +230,12 @@ router.post("/:groupId/members", async (req, res, next) => {
  */
 router.delete("/:groupId/members", async (req, res, next) => {
     try {
+        if (!(await GroupService.isAdministrator(req.user.id, req.params.groupId)) && req.body.userId != req.user.id) {
+            throw new ErrorResponse(
+                ErrorResponse.forbiddenStatusCode,
+                "You cannot remove this person from this group (permission denied)!"
+            );
+        }
         const members = await GroupService.removeMember(req.body.userId, req.params.groupId);
         res.json(members);
     } catch (err) {
@@ -304,6 +313,12 @@ router.get("/:groupid/administrators", async (req, res, next) => {
  */
 router.post("/:groupId/administrators", async (req, res, next) => {
     try {
+        if (!(await GroupService.isAdministrator(req.user.id, organizer.id))) {
+            throw new ErrorResponse(
+                ErrorResponse.forbiddenStatusCode,
+                "You cannot add this person as the administrator (permission denied)!"
+            );
+        }
         const administrators = await GroupService.addAdministrator(req.body.userId, req.params.groupId);
         res.json(administrators);
     } catch (err) {
@@ -343,6 +358,12 @@ router.post("/:groupId/administrators", async (req, res, next) => {
  */
 router.delete("/:groupId/administrators", async (req, res, next) => {
     try {
+        if (!(await GroupService.isAdministrator(req.user.id, req.params.groupId)) && req.body.userId != req.user.id) {
+            throw new ErrorResponse(
+                ErrorResponse.forbiddenStatusCode,
+                "You cannot remove this person from this group's admins (permission denied)!"
+            );
+        }
         const administrators = await GroupService.removeAdministrator(req.body.userId, req.params.groupId);
         res.json(administrators);
     } catch (err) {
@@ -413,6 +434,12 @@ router.get("/:groupId/events", async (req, res, next) => {
  */
 router.post("/:groupId/events", async (req, res, next) => {
     try {
+        if (!(await GroupService.isAdministrator(req.user.id, req.params.groupId))) {
+            throw new ErrorResponse(
+                ErrorResponse.forbiddenStatusCode,
+                "You cannot add new event to this group (permission denied)!"
+            );
+        }
         const event = await GroupService.addEventToGroup(req.params.groupId, req.body.event);
         res.json(event);
     } catch (err) {

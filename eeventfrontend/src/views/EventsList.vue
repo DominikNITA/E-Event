@@ -1,7 +1,7 @@
 <template>
   <section>
     <h1>Mes événements</h1> <br>
-    <div v-for="event in user.subscribedEvents" v-bind:key="event.id">
+    <div v-for="event in subscribedEvents" v-bind:key="event.id">
       
       <div class="container-fluid" v-if="event != null">
       <div class="container">
@@ -9,12 +9,12 @@
 
           <!-- carré avec le centre d'intérêt de l'événement -->
           <div class="circle">
-          {{event.categories[0].title}}
+          {{event.categories.title}}
           </div>
 
           <div class="col-8">
             <br><br>
-            <big>{{ event.name }}  à {{ event.place.place_name }}, {{ event.place.address }}</big>
+            <big>{{ event.event_name }}  à {{ event.place.place_name }}</big>
 
           </div>
 
@@ -57,25 +57,24 @@ export default {
     return {
       events: [],
       user: [],
+      subscribedEvents: [],
     };
   },
   methods: {
-    getAllEvents() {
+
+    getSubscribedEvents() {
       axios
-        .get(`${process.env.VUE_APP_BACKEND_ADDRESS}/events`, {
-          params: {
-            include: "place,organizer,participants,categories",
-          },
-        })
+        .get(`${process.env.VUE_APP_BACKEND_ADDRESS}/users/${this.$store.state.user.id}/subscribedEvents`)
         .then((response) => {
           console.log(response.data);
-          this.events = response.data;
+          this.subscribedEvents = response.data;
         })
         .catch((err) => console.error(err));
     },
+
   },
   mounted() {
-      this.getAllEvents();
+    this.getSubscribedEvents();
   },
 };
 </script>

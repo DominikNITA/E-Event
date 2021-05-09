@@ -8,6 +8,7 @@ const ErrorResponse = require("../utility/ErrorResponse");
 
 const GroupService = require("./GroupService");
 const PlaceService = require("./PlaceService");
+const UserService = require("./UserService");
 
 exports.applyIncludeFilter = async function (event, includeFilter) {
     if (includeFilter.includes("place")) {
@@ -42,14 +43,14 @@ exports.getEventById = async function (id, includeFilter = []) {
         return null;
     }
     let event = res[0];
-    event = await this.applyIncludeFilter(event, includeFilter);
+    event = await exports.applyIncludeFilter(event, includeFilter);
     return event;
 };
 
 exports.getAllEvents = async function (includeFilter = []) {
     //TODO: Send only events from groups to which user is subscribed
     let events = await DBClient("event").select(Event.select);
-    events = await this.applyIncludeFilterToManyEvents(events, includeFilter);
+    events = await exports.applyIncludeFilterToManyEvents(events, includeFilter);
     return events;
 };
 
@@ -67,17 +68,18 @@ exports.addEvent = async function (event) {
             information: event.information,
         })
         .returning("id");
-    const eventResponse = await this.getEventById(eventId[0]);
+    const eventResponse = await exports.getEventById(eventId[0], Event.availableQueryFilters);
     return eventResponse;
 };
 
 exports.searchEvents = async function (searchQuery, includeFilter = []) {
+    //TODO: add searching via categories (centres d'interet)
     let foundEvents = await DBClient("event")
         .where("event_name", "ILIKE", `%${searchQuery}%`)
         .orWhere("information", "ILIKE", `%${searchQuery}%`)
         .select(Event.select);
     // `ILIKE` in Postgres means case Insensitive
-    foundEvents = await this.applyIncludeFilterToManyEvents(foundEvents, includeFilter);
+    foundEvents = await exports.applyIncludeFilterToManyEvents(foundEvents, includeFilter);
     return foundEvents;
 };
 
@@ -86,7 +88,7 @@ exports.doesEventExist = async function (eventId) {
 };
 
 exports.removeEvent = async function (eventId) {
-    if (!this.doesEventExist(id)) {
+    if (!exports.doesEventExist(id)) {
         throw new ErrorResponse(ErrorResponse.notFoundStatusCode, "Event not found!");
     }
     await DBClient("event").where({ id: eventId }).del();
@@ -103,14 +105,16 @@ exports.addParticipant = async function (eventId, userId) {
     if (relationAlreadyExisting.length > 0) {
         throw new ErrorResponse(ErrorResponse.badRequestStatusCode, "User already participating in the event!");
     }
-    //TODO: Check if user exists
+    if (!(await UserService.doesUserExist(userId))) {
+        throw new ErrorResponse(ErrorResponse.badRequestStatusCode, "User does not exist!");
+    }
     await DBClient("participation").insert({ user_id: userId, event_id: eventId });
-    return await this.getParticipants(eventId);
+    return await exports.getParticipants(eventId);
 };
 
 exports.getOrganizer = async function (eventId, includeQuery = []) {
     //TODO: Refactor
-    let event = await this.getEventById(eventId);
+    let event = await exports.getEventById(eventId);
     let organizer = await GroupService.getGroupById(event.organizerId);
     return organizer;
 };

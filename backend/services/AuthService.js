@@ -9,6 +9,7 @@ const jwt = require("jsonwebtoken");
 const UserService = require("./UserService");
 
 function getHash(password) {
+    //TODO: maybe use salt?
     return crypto.createHmac("sha256", process.env.HASHING_SECRET).update(password).digest("hex");
 }
 
@@ -40,10 +41,9 @@ exports.verifyCredentials = async function (email, password) {
         throw new ErrorResponse(ErrorResponse.badRequestStatusCode, "Password or email not valid!");
     }
 
-    const userId = user.id;
     const hash = getHash(password);
     const userHash = await DBClient("authdata")
-        .where({ user_id: userId })
+        .where({ user_id: user.id })
         .select("password_hash as passwordHash")
         .first();
 
@@ -53,12 +53,11 @@ exports.verifyCredentials = async function (email, password) {
             "Password not found! Contact administrator for help"
         );
     }
-    console.log(hash);
-    console.log(userHash);
+
     if (hash != userHash.passwordHash) {
         throw new ErrorResponse(ErrorResponse.badRequestStatusCode, "Password or email not valid!");
     }
-    return userId;
+    return user.id;
 };
 
 exports.registerUser = async function (user, password) {

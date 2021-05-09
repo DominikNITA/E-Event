@@ -23,6 +23,9 @@
             <h4>Nombre de places disponibles :</h4>
             <p>{{ event.availablePlaces }} <br /></p>
 
+            <h4>Prix :</h4>
+            <p>{{ event.price }} € <br /></p>
+
             <h4>Organisateur :</h4>
             <p>{{ event.organizer.name }} <br /></p>
           </div>
@@ -44,7 +47,7 @@
               <p>{{ event.place.address }} <br /></p>
 
               <h4>Date :</h4>
-              <p>{{ event.startDate }} - {{ event.endDate }} <br /></p>
+              <p>{{ event.startDate }} <br /></p>
             </div>
           </div>
         </div>
@@ -94,7 +97,7 @@ export default {
     subscription() {
       //TODO : inscrire un utilisateur = ajouter l'utilisateur à la liste des participants
       // + ajouter l'événement à la liste d'événements de l'utilisateur
-      alert("UserId" + this.$store.state.userId);
+      alert("Vous êtes bien inscrit " + this.$store.state.user.id);
       axios
         .post(
           `${process.env.VUE_APP_BACKEND_ADDRESS}/events/${this.$props.eventId}/participants`,

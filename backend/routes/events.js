@@ -226,6 +226,10 @@ router.get("/:eventId", async (req, res, next) => {
  */
 router.delete("/:eventId", checkEventExistence, async (req, res, next) => {
     try {
+        const eventToDelete = await EventService.getEventById(req.params.eventId);
+        if (!(await GroupService.isAdministrator(req.user.id, eventToDelete.organizerId))) {
+            throw new ErrorResponse(ErrorResponse.forbiddenStatusCode, "You cannot delete this event!");
+        }
         await EventService.removeEvent(req.params.eventId);
         res.status(200).end();
     } catch (err) {
@@ -400,7 +404,7 @@ router.get("/:eventId/categories", checkEventExistence, async (req, res, next) =
  *                              subscribedEvents:
  *                                  type: array
  *                                  items:
- *                                      $ref: '#/components/schemas/Events'
+ *                                      $ref: '#/components/schemas/Event'
  *          400:
  *              description: Authorization error
  *      parameters:
@@ -409,18 +413,20 @@ router.get("/:eventId/categories", checkEventExistence, async (req, res, next) =
 router.post("/:eventId/participants", checkEventExistence, async (req, res, next) => {
     try {
         const organizer = await EventService.getOrganizer((await EventService.getEventById(req.params.eventId)).id);
-        if (!(await GroupService.isAdministrator(req.body.userId, organizer.id)) && req.body.userId != req.user.id) {
-            throw new ErrorResponse(ErrorResponse.forbiddenStatusCode, "You cannot add this person to this event (permission denied)!");
+        if (!(await GroupService.isAdministrator(req.user.id, organizer.id)) && req.body.userId != req.user.id) {
+            throw new ErrorResponse(
+                ErrorResponse.forbiddenStatusCode,
+                "You cannot add this person to this event (permission denied)!"
+            );
         }
         const participants = await EventService.addParticipant(req.params.eventId, req.body.userId);
         if (participants == null) {
             throw new ErrorResponse(ErrorResponse.notFoundStatusCode, "Couldn't add user as participant!");
-        } else {
-            res.json({
-                participants: participants,
-                subscribedEvents: await UserService.getSubscribedEvents(rqe, body.userId),
-            });
         }
+        res.json({
+            participants: participants,
+            subscribedEvents: await UserService.getSubscribedEvents(req.body.userId),
+        });
     } catch (err) {
         next(err);
     }
