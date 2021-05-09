@@ -17,7 +17,7 @@
                 <br><br>
                 <router-link
                 :to="{ name: 'Group Details', params: { groupId: group.id } }"
-                ><button>Plus d'infos</button></router-link
+                ><button type="button" class="btn btn-secondary btn-sm">Plus d'infos</button></router-link
                 > 
             </div>
 

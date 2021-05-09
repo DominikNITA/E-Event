@@ -94,7 +94,7 @@ export default {
     subscription() {
       //TODO : inscrire un utilisateur = ajouter l'utilisateur à la liste des participants
       // + ajouter l'événement à la liste d'événements de l'utilisateur
-      alert("UserId" + this.$store.state.user.id);
+      alert("UserId" + this.$store.state.userId);
       axios
         .post(
           `${process.env.VUE_APP_BACKEND_ADDRESS}/events/${this.$props.eventId}/participants`,
