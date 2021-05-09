@@ -9,7 +9,7 @@
             <br />
           </div>
 
-          <!-- carré avec le centre d'intérêt de l'événement -->
+          <!-- cercle avec le centre d'intérêt de l'événement -->
           <div
             v-if="event.categories && event.categories.length != 0"
             class="circle"
@@ -33,7 +33,7 @@
 
           <div class="col-3">
             <p>
-              <!-- S'INSCRIRE fonction TODO -->
+              <!-- button pour s'inscrire -> il y a un bug d'affichage que nous n'avons pas réussi à résoudre alors que la fonctionnalité marche sur le backend -->
               <button
                 type="button"
                 class="btn btn-secondary btn-lg"
@@ -96,7 +96,7 @@ export default {
   },
   methods: {
     subscription() {
-      //TODO : inscrire un utilisateur = ajouter l'utilisateur à la liste des participants
+      // inscrire un utilisateur = ajouter l'utilisateur à la liste des participants
       // + ajouter l'événement à la liste d'événements de l'utilisateur
       alert("Vous êtes bien inscrit " + this.$store.state.user.id);
       axios

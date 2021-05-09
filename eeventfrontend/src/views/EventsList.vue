@@ -2,7 +2,7 @@
 <template>
   <section>
     <h1>Mes événements</h1> <br>
-    <div v-for="event in subscribedEvents" v-bind:key="event.id">
+    <div v-for="event in user.subscribedEvents" v-bind:key="event.id">
       
       <div class="container-fluid" v-if="event != null">
       <div class="container">
