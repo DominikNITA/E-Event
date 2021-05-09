@@ -1,7 +1,8 @@
+<!-- liste des événements auxquels l'utilisateur est inscrit -->
 <template>
   <section>
     <h1>Mes événements</h1> <br>
-    <div v-for="event in subscribedEvents" v-bind:key="event.id">
+    <div v-for="event in user.subscribedEvents" v-bind:key="event.id">
       
       <div class="container-fluid" v-if="event != null">
       <div class="container">
@@ -14,7 +15,7 @@
 
           <div class="col-8">
             <br><br>
-            <big>{{ event.name }}  à {{ event.place.name }}</big>
+            <big>{{ event.event_name }}  à {{ event.place.place_name }}</big>
 
           </div>
 

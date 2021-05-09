@@ -99,7 +99,7 @@ exports.addEventToGroup = async function (groupId, event) {
     await checkIfGroupExists(groupId);
 
     // I don't like it... to check again @Dom
-    event.organizer.id = groupId;
+    event.organizerId = groupId;
     return await EventService.addEvent(event);
 };
 
@@ -120,6 +120,23 @@ exports.isMember = async function (userId, groupId) {
 
     return (await DBClient("membership").where({ user_id: userId, group_id: groupId })).length > 0;
 };
+
+exports.createGroup = async function (userId,groupName) {
+    await checkIfUserExists(userId);
+
+    if (groupName == "")
+        throw new ErrorResponse(ErrorResponse.badRequestStatusCode, " Failed to create group : bad group construction");
+    const groupId = await DBClient("group")
+        .insert({
+            group_name: groupName
+        })
+        .returning("id");
+
+    await this.addAdministrator(userId,groupId[0]);
+    await this.addMember(userId,groupId[0]);
+    
+    return await this.getGroupById(groupId[0]);
+}
 
 // Validations
 

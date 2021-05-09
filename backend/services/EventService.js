@@ -59,8 +59,8 @@ exports.addEvent = async function (event) {
     const eventId = await DBClient("event")
         .insert({
             event_name: event.name,
-            place_id: event.place.id,
-            organizer_id: event.organizer.id,
+            place_id: event.placeId,
+            organizer_id: event.organizerId,
             available_places: event.availablePlaces,
             start_date: event.startDate,
             end_date: event.endDate,

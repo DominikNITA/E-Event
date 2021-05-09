@@ -1,3 +1,4 @@
+<!-- Composant principal -->
 <template>
   <div id="app">
     <Head

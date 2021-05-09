@@ -1,3 +1,4 @@
+<!-- détails d'un groupe -->
 <template>
   <div>
     <div class="container-fluid">
@@ -74,6 +75,8 @@
                     > 
             </div>
 
+            <br>
+
             <div>
                     <router-link
                     :to="{ name: 'Groups' }"
@@ -111,6 +114,7 @@ export default {
   },
   
   methods: {
+    // méthodes qui récupérent les détails du groupe
     getGroupName() {
         axios
         .get(`${process.env.VUE_APP_BACKEND_ADDRESS}/groups/${this.$props.groupId}`)
@@ -139,6 +143,7 @@ export default {
           this.groupAdmins = response.data)
         .catch((err) => console.log(err));
     },
+    // méthodes pour retirer et ajouter le rôle administrateur à l'utilisateur
     giveUserAdminRole(userId) {
         axios
         .post(`${process.env.VUE_APP_BACKEND_ADDRESS}/groups/${this.$props.groupId}/administrators`,
@@ -146,13 +151,19 @@ export default {
           userId: userId
         }
         )
+        .then((response) => {
+          if (response) //CHECK IF RESPONSE IS OK
+            alert("L'utilisateur a bien été promu administrateur du groupe")})
         .catch((err) => {
           console.log(err)
           return;
         });
-        alert("L'utilisateur a bien été promu administrateur du groupe")
     },
     removeUserAdminRole(userId) {
+      if (this.groupAdmins.length == 1) {
+        alert("Impossible de retirer le rôle d'admin, un groupe doit toujours avoir au minimum 1 administrateur")
+        return;
+      }
       axios
         .delete(`${process.env.VUE_APP_BACKEND_ADDRESS}/groups/${this.$props.groupId}/administrators`,
         {
@@ -168,6 +179,7 @@ export default {
         });
        
     },
+    
     isCurrentUserAdmin() {
       return this.groupAdmins.some((admin) => /*this.$store.state.user.id*/ 3 == admin.id) //RETIRER LE 2 C'ETAIT POUR TEST
     },
@@ -188,11 +200,13 @@ export default {
           userId: userId
         }
         )
+        .then((response) => {
+          if (response) //CHECK IF RESPONSE IS OK
+            alert("L'utilisateur a bien été rétiré comme membre du groupe")})
         .catch((err) => {
           console.log(err)
           return;
         });
-        alert("L'utilisateur a bien été rétiré comme membre du groupe")
     },
     removeCurrentUserFromGroup() {
       if(this.isCurrentUserAdmin()) {
@@ -205,11 +219,13 @@ export default {
           userId: 2 /*this.$store.state.user.id*/  //RETIRER LE 2 C'ETAIT POUR TEST
         }
         )
+        .then((response) => {
+          if (response) //CHECK IF RESPONSE IS OK
+            alert("Vous avez bien quitté le groupe")})
         .catch((err) => {
           console.log(err)
           return;
         });
-        alert("Vous avez bien quitté le groupe")
     }
   },
   mounted() {

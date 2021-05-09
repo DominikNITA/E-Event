@@ -1,7 +1,9 @@
+<!-- en-tête de nos pages permettant de les unifier -->
 <template>
   <div class="container-fluid head-page">
     <div class="row justify-content-end">
       <ul class="nav justify-content-end">
+        <!-- boutons permettant de choisir la langue de navigation -->
         <li class="nav-item">
           <a
             class="nav-link"
@@ -23,6 +25,7 @@
       </ul>
     </div>
     <nav class="navbar navbar-light">
+      <!-- logo du site et son nom -->
       <div class="container-fluid">
         <router-link id="title" class="navbar-brand fs-2" :to="url_accueil">
           E-Event
@@ -34,6 +37,8 @@
         </router-link>
       </div>
     </nav>
+    
+    <!-- définition des onglets de navigation -->
     <div class="raccourci">
       <ul class="nav nav-tabs justify-content-end">
         <li class="nav-item">
@@ -48,7 +53,7 @@
         </li>
         <li class="nav-item">
           <router-link class="nav-link" :to="url_groups"
-            >Groupes</router-link
+            >Mes Groupes</router-link
           >
         </li>
         <li class="nav-item">
@@ -62,6 +67,7 @@
 </template>
 
 <script>
+// exportation des urls des onglets de navigation
 export default {
   name: "Head",
   props: {
@@ -85,6 +91,14 @@ export default {
       type: String,
       required: true,
     },
+  },
+  data() {
+    return {
+      currentUserName: ''
+    }
+  },
+  mounted() {
+    // currentUserName = this.$store.user.firstName
   }
 };
 </script>

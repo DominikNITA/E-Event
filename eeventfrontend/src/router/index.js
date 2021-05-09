@@ -74,6 +74,14 @@ const routes = [
         // },
     },
     {
+        path: "/groups/createGroup",
+        name: "Create Group",
+        component: () => import("../views/CreateGroup.vue"),
+        // meta: {
+        //     requiresAuth: true,
+        // },
+    },
+    {
         path: "/groups/:groupId",
         name: "Group Details",
         component: () => import("../views/GroupDetails.vue"),
