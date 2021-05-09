@@ -9,12 +9,12 @@
 
           <!-- carré avec le centre d'intérêt de l'événement -->
           <div class="circle">
-          {{event.categories[0].title}}
+          {{event.categories.title}}
           </div>
 
           <div class="col-8">
             <br><br>
-            <big>{{ event.name }}  à {{ event.place.place_name }}, {{ event.place.address }}</big>
+            <big>{{ event.name }}  à {{ event.place.name }}</big>
 
           </div>
 
@@ -64,14 +64,10 @@ export default {
 
     getSubscribedEvents() {
       axios
-        .get(`${process.env.VUE_APP_BACKEND_ADDRESS}/events/${this.$props.eventId}/participants`, {
-          params: {
-            include: "place,organizer,participants,categories,subscribedEvents",
-          },
-        })
+        .get(`${process.env.VUE_APP_BACKEND_ADDRESS}/users/${this.$store.state.user.id}/subscribedEvents`)
         .then((response) => {
           console.log(response.data);
-          this.subscribedEvents = response.data.subscribedEvents;
+          this.subscribedEvents = response.data;
         })
         .catch((err) => console.error(err));
     },
