@@ -409,8 +409,8 @@ router.get("/:eventId/categories", checkEventExistence, async (req, res, next) =
 router.post("/:eventId/participants", checkEventExistence, async (req, res, next) => {
     try {
         const organizer = await EventService.getOrganizer((await EventService.getEventById(req.params.eventId)).id);
-        if (!(await GroupService.isAdministrator(req.body.userId, organizer.id)) || req.body.userId == req.user.id) {
-            throw new ErrorResponse(ErrorResponse.forbiddenStatusCode, "You are not an administrator of this event!");
+        if (!(await GroupService.isAdministrator(req.body.userId, organizer.id)) && req.body.userId != req.user.id) {
+            throw new ErrorResponse(ErrorResponse.forbiddenStatusCode, "You cannot add this person to this event (permission denied)!");
         }
         const participants = await EventService.addParticipant(req.params.eventId, req.body.userId);
         if (participants == null) {
