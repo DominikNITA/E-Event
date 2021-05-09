@@ -1,3 +1,4 @@
+<!-- affiche les détails de l'événement sélectionné -->
 <template>
   <div>
     <div class="container-fluid" v-if="event != null">
