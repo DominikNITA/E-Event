@@ -1,8 +1,7 @@
-<!-- interface d'authentification et d'inscription -->
 <template>
   <div class="wrapper">
     <div class="title-text">
-      <div class="title login">Login Form</div>
+      <div class="title login">E-Event</div>
     </div>
     <div class="form-container">
       <div class="form-inner">
@@ -11,7 +10,7 @@
           <div class="field">
             <input
               type="text"
-              placeholder="Email Address"
+              placeholder="Adresse mail"
               v-model="email"
               required
             />
@@ -19,21 +18,21 @@
           <div class="field">
             <input
               type="password"
-              placeholder="Password"
+              placeholder="Mot de passe"
               v-model="password"
               required
             />
           </div>
           <div class="pass-link">
-            <a href="#">Forgot password?</a>
+            <a href="#">Mot de passe oublié ?</a>
           </div>
           <div class="field btn">
             <div class="btn-layer"></div>
-            <input type="submit" @click="login" value="Login" />
+            <input type="submit" @click="login" value="Connexion" />
           </div>
           <div class="signup-link">
-            Not a member?
-            <router-link :to="{ name: 'Register' }">Signup now!</router-link>
+            Pas encore de compte ?
+            <router-link :to="{ name: 'Register' }">Inscrivez-vous !</router-link>
           </div>
         </form>
       </div>

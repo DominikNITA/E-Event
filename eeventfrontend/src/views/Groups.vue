@@ -26,9 +26,17 @@
             </div>
         </div>
       </div>
-    <div class="container-fluid" v-else> Vous ne faîtes partie d'aucun groupe...</div>
+      <div class="container-fluid" v-else> Vous ne faîtes partie d'aucun groupe...</div>
       
     </div>
+
+    <div>
+        <router-link
+        :to="{ name: 'Create Group' }"
+        ><button type="button" class="btn btn-secondary">Créer un groupe</button></router-link
+        > 
+    </div>
+
   </section>
 </template>
 
