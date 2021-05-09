@@ -1,7 +1,7 @@
 <template>
   <section>
     <h1>Mes événements</h1> <br>
-    <div v-for="event in user.subscribedEvents" v-bind:key="event.id">
+    <div v-for="event in subscribedEvents" v-bind:key="event.id">
       
       <div class="container-fluid" v-if="event != null">
       <div class="container">
@@ -57,25 +57,28 @@ export default {
     return {
       events: [],
       user: [],
+      subscribedEvents: [],
     };
   },
   methods: {
-    getAllEvents() {
+
+    getSubscribedEvents() {
       axios
-        .get(`${process.env.VUE_APP_BACKEND_ADDRESS}/events`, {
+        .get(`${process.env.VUE_APP_BACKEND_ADDRESS}/events/${this.$props.eventId}/participants`, {
           params: {
-            include: "place,organizer,participants,categories",
+            include: "place,organizer,participants,categories,subscribedEvents",
           },
         })
         .then((response) => {
           console.log(response.data);
-          this.events = response.data;
+          this.subscribedEvents = response.data.subscribedEvents;
         })
         .catch((err) => console.error(err));
     },
+
   },
   mounted() {
-      this.getAllEvents();
+    this.getSubscribedEvents();
   },
 };
 </script>
