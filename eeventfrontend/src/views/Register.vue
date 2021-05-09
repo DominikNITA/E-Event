@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <div class="title-text">
-      <div class="title signup">Signup Form</div>
+      <div class="title signup">Inscription</div>
     </div>
     <div class="form-container">
       <div class="form-inner">
@@ -10,7 +10,7 @@
           <div class="field">
             <input
               type="text"
-              placeholder="Email Address"
+              placeholder="Adresse mail"
               v-model="email"
               required
             />
@@ -18,7 +18,7 @@
           <div class="field">
             <input
               type="text"
-              placeholder="First Name"
+              placeholder="Prénom"
               v-model="firstName"
               required
             />
@@ -26,18 +26,18 @@
           <div class="field">
             <input
               type="text"
-              placeholder="Last Name"
+              placeholder="Nom"
               v-model="lastName"
               required
             />
           </div>
           <div class="field">
-            <input type="text" placeholder="Nick" v-model="nick" required />
+            <input type="text" placeholder="Surnom" v-model="nick" required />
           </div>
           <div class="field">
             <input
               type="password"
-              placeholder="Password"
+              placeholder="Mot de passe"
               v-model="password"
               required
             />
@@ -45,7 +45,7 @@
           <div class="field">
             <input
               type="password"
-              placeholder="Confirm password"
+              placeholder="Confirmez le mot de passe"
               v-model="passwordConfirm"
               required
             />
@@ -56,7 +56,7 @@
               v-model="categories"
               :options="categoryOptions"
               :multiple="true"
-              placeholder="Favourites Categories"
+              placeholder="Centre(s) d'intérêts"
             ></multiselect>
           </div>
           <div class="field">
@@ -65,16 +65,16 @@
               v-model="groups"
               :options="groupOptions"
               :multiple="true"
-              placeholder="Groups"
+              placeholder="Groupes"
             ></multiselect>
           </div>
           <div class="field btn">
             <div class="btn-layer"></div>
-            <input type="submit" value="Signup" @click="register" />
+            <input type="submit" value="Suivant" @click="register" />
           </div>
           <div class="signup-link">
-            Already have an account?
-            <router-link :to="{ name: 'Login' }">Login in!</router-link>
+            Déjà inscrit ?
+            <router-link :to="{ name: 'Login' }">Connectez-vous !</router-link>
           </div>
         </form>
       </div>
