@@ -17,13 +17,9 @@
 
                 <br><br>
 
-                <div>
-                    <router-link
-                    :to="{ name: 'Group Details' , params: { groupId: group.id } }"
-                    >
-                    <button type="button" class="btn btn-secondary" :disabled="checkInput()" @click="createGroup()">Créer le groupe</button>
-                    </router-link>
-                </div>
+
+                <button type="button" class="btn btn-secondary" :disabled="checkInput()" @click="createGroup()">Créer le groupe</button>
+
                 <br><br>
 
                 <!--

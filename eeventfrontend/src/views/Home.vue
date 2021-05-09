@@ -13,6 +13,9 @@
             <div class="circle" v-if="event.categories.length > 0">
               {{ event.categories[0].title }}
             </div>
+            <div class="circle" v-else>
+              None
+            </div>
 
             <div class="col-8">
               <br /><br />
@@ -26,7 +29,7 @@
               <br /><br />
               <router-link
                 :to="{ name: 'Event Details', params: { eventId: event.id } }"
-                ><button>Plus d'infos</button></router-link
+                ><button class="btn btn-secondary">Plus d'infos</button></router-link
               >
             </div>
           </div>

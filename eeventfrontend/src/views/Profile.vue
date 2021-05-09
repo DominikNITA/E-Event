@@ -76,9 +76,6 @@
     </div>
 
     <div class="col-12">
-      <br />
-      <br />
-      <br />
       <h2 class ="col-12" id="myGroups">Mes Groupes</h2>
 
       <div class="row group" v-for="group in user.memberOf" v-bind:key="group.id">
@@ -105,10 +102,6 @@ export default {
     url_mes_evenements: {
       type: String,
     },
-    userId: {
-      type: Number,
-      required: true,
-    },
   },
   data() {
     return {
@@ -125,12 +118,13 @@ export default {
     loadUser() {
       axios
         .get(
-          `${process.env.VUE_APP_BACKEND_ADDRESS}/users/${this.$props.userId}`
+          `${process.env.VUE_APP_BACKEND_ADDRESS}/users/${this.$store.state.user.id}`
         )
         .then((response) => (this.user = response.data))
         .catch((err) => console.log(err))
             },
     setModif() {
+
       this.modif = !this.modif;
       this.isHidden = !this.isHidden;
     },
@@ -140,7 +134,7 @@ export default {
       this.isHidden = !this.isHidden;
       axios
         .put(
-          `${process.env.VUE_APP_BACKEND_ADDRESS}/users/${this.$props.userId}`,
+          `${process.env.VUE_APP_BACKEND_ADDRESS}/users/${this.$store.state.user.id}`,
           {
             firstName: this.user.firstName,
             lastName: this.user.lastName,
@@ -152,7 +146,7 @@ export default {
     },
     // permet de supprimer l'utilisateur
     deletUser() {
-      axios.put(`${process.env.VUE_APP_BACKEND_ADDRESS}/users/${this.$props.userId}/anonymise`)
+      axios.put(`${process.env.VUE_APP_BACKEND_ADDRESS}/users/${this.$store.state.user.id}/anonymise`)
             .then(reponse => console.log(reponse))
             .catch(erreur => console.log(erreur))
       this.deleted = true
@@ -193,6 +187,7 @@ h1 {
   color: black;
 }
 #myGroups {
+  margin-top: 5%;
   padding-right: 4%;
 }
 .form-select {

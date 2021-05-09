@@ -97,7 +97,6 @@ export default {
     subscription() {
       // inscrire un utilisateur = ajouter l'utilisateur à la liste des participants
       // + ajouter l'événement à la liste d'événements de l'utilisateur
-      alert("Vous êtes bien inscrit " + this.$store.state.user.id);
       axios
         .post(
           `${process.env.VUE_APP_BACKEND_ADDRESS}/events/${this.$props.eventId}/participants`,
@@ -108,6 +107,7 @@ export default {
         .then((response) => {
           this.subscribedEvents = response.data.subscribedEvents;
           this.participants = response.data.participants;
+          alert("Vous êtes bien inscrit ");
         })
         .catch((err) => console.log(err));
     },

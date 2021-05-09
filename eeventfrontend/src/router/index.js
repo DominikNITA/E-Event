@@ -49,10 +49,9 @@ const routes = [
         },
     },
     {
-        path: "/profile/:userId",
+        path: "/profile",
         name: "User Profile",
         component: () => import("../views/Profile.vue"),
-        props: ({ params }) => ({ userId: Number.parseInt(params.userId, 10) || 0 }),
         meta: {
             requiresAuth: true,
         },

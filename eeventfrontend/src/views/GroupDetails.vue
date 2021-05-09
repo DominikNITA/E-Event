@@ -39,7 +39,7 @@
                      &nbsp;
                      <button type="button" class="btn btn-secondary binfo" v-if="isCurrentUserAdmin()" @click="removeUserFromGroup(member.id)">Retirer le membre du groupe</button>
                      &nbsp;
-                     <button type="button" class="btn btn-secondary binfo" v-if="isCurrentUserAdmin()" @click="giveUserAdminRole(member.id)">Donner le rôle d'admin</button>
+                     <button type="button" class="btn btn-secondary binfo" v-if="!isUserAdmin(member)" @click="giveUserAdminRole(member.id)">Donner le rôle d'admin</button>
                 </p>
             </div>
             

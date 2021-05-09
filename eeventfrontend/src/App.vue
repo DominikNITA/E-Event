@@ -1,11 +1,11 @@
 <!-- Composant principal -->
 <template>
   <div id="app">
-    <Head
+    <Head v-if="this.$store.state.user != null"
       url_courrant="/"
       url_accueil="/"
       url_evenements="events"
-      url_profil="/profile/" + {{ this.$store.state.user.id }} 
+      url_profil="/profile"
       url_groups="/groups"
     ></Head>
   
