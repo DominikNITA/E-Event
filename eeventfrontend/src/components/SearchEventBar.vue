@@ -1,3 +1,4 @@
+<!-- définition de la barre de recherche des événements utilisée dans l'onglet accueil -->
 <template>
   <div class="navbar navbar-light bg-light">
     <div class="container-fluid recherche">
@@ -26,6 +27,7 @@ export default {
     };
   },
   methods: {
+    // méthode de recherche des événements correspondants à la recherche 
     searchEvent() {
       if (this.searchTerm == null || this.searchTerm == "") {
         return;

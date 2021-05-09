@@ -1,3 +1,4 @@
+
 <template>
   <section>
     <search-event-bar @searchEvent="searchEvent"></search-event-bar>
