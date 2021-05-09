@@ -9,8 +9,7 @@ async function authenticateToken(req, res, next) {
         const authHeader = req.headers["auth"];
         const token = authHeader; // && authHeader.split(' ')[1] //uncomment when using Bearer token
         if (token == null || token === "" || token === "null") {
-            console.log("AuthToken not passed. TODO: uncomment error section");
-            return next();
+            throw new ErrorResponse(ErrorResponse.forbiddenStatusCode, "Please provide auth token!");
         }
         let userFromToken;
         try {
