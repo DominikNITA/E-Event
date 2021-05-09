@@ -1,3 +1,4 @@
+<!-- groupes de l'utilisateur -->
 <template>
   <section>
     <h1>Mes groupes</h1> <br>
@@ -44,6 +45,7 @@ export default {
     };
   },
   methods: {
+    //méthode pour récupérer les groupes dont l'utilisateur est membre
     getAllGroupsAsMember() {
       axios
         .get(`${process.env.VUE_APP_BACKEND_ADDRESS}/users/2/groupsMember`) //RETIRER LE 2 CETAIT POUR TEST -> this.$store.state.user.id
@@ -52,6 +54,7 @@ export default {
         })
         .catch((err) => console.error(err))
     },
+    //méthode pour récupérer les groupes dont l'utilisateur est administrateur
     getAllGroupsAsAdmin() {
       axios
         .get(`${process.env.VUE_APP_BACKEND_ADDRESS}/users/2/groupsAdmin`) //RETIRER LE 2 CETAIT POUR TEST -> this.$store.state.user.id
@@ -60,6 +63,7 @@ export default {
         })
         .catch((err) => console.error(err));
     },
+    //méthode pour vérifier si l'utilisateur est l'administrateur du groupe
     isAdmin(group) {
         return this.groupsAdmin.some((grAdmin) => group.id == grAdmin.id)
     }
