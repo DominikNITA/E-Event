@@ -125,7 +125,7 @@ export default {
     loadUser() {
       axios
         .get(
-          `${process.env.VUE_APP_BACKEND_ADDRESS}/users/1`
+          `${process.env.VUE_APP_BACKEND_ADDRESS}/users/${this.$props.userId}`
         )
         .then((response) => (this.user = response.data))
         .catch((err) => console.log(err))
