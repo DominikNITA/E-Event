@@ -1,3 +1,4 @@
+<!-- liste des événements auxquels l'utilisateur est inscrit -->
 <template>
   <section>
     <h1>Mes événements</h1> <br>
