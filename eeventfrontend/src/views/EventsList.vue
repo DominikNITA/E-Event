@@ -67,7 +67,6 @@ export default {
       axios
         .get(`${process.env.VUE_APP_BACKEND_ADDRESS}/users/${this.$store.state.user.id}/subscribedEvents`)
         .then((response) => {
-          console.log(response.data);
           this.subscribedEvents = response.data;
         })
         .catch((err) => console.error(err));

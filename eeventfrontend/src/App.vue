@@ -5,13 +5,10 @@
       url_courrant="/"
       url_accueil="/"
       url_evenements="events"
-      url_profil="/profile/2"
+      url_profil="/profile/" + {{ this.$store.state.user.id }} 
       url_groups="/groups"
     ></Head>
-    <!-- <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div> -->
+  
     <router-view />
   </div>
 </template>

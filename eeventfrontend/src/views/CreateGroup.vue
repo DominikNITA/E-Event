@@ -57,7 +57,7 @@ export default {
             axios
                 .put(`${process.env.VUE_APP_BACKEND_ADDRESS}/groups`,
                 {
-                    userId: 2, //RETIRER LE 2 C'EST POUR TEST -> this.$store.state.user.id
+                    userId: this.$store.state.user.id, 
                     groupName: this.groupName,
                 })
                 .then((response) => {

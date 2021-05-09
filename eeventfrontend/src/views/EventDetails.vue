@@ -90,7 +90,6 @@ export default {
       )
       .then((response) => {
         this.event = response.data;
-        console.log(this.event);
       })
       .catch((err) => console.error(err));
   },
@@ -107,7 +106,6 @@ export default {
           }
         )
         .then((response) => {
-          console.log(response.data)
           this.subscribedEvents = response.data.subscribedEvents;
           this.participants = response.data.participants;
         })

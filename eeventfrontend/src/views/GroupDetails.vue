@@ -181,13 +181,13 @@ export default {
     },
     
     isCurrentUserAdmin() {
-      return this.groupAdmins.some((admin) => /*this.$store.state.user.id*/ 3 == admin.id) //RETIRER LE 2 C'ETAIT POUR TEST
+      return this.groupAdmins.some((admin) => this.$store.state.user.id == admin.id) 
     },
     isUserAdmin(user) {
       return this.groupAdmins.some((admin) => user.id == admin.id)
     },
     isCurrentUser(userId) {
-      return (3 == userId) //RETIRER LE 2 C'ETAIT POUR TEST -> this.$store.state.user.id
+      return (this.$store.state.user.id == userId) 
     },
     removeUserFromGroup(userId) {
       if(this.isUserAdmin(userId)) {
@@ -216,7 +216,7 @@ export default {
       axios
         .delete(`${process.env.VUE_APP_BACKEND_ADDRESS}/groups/${this.$props.groupId}/members`,
         {
-          userId: 2 /*this.$store.state.user.id*/  //RETIRER LE 2 C'ETAIT POUR TEST
+          userId: this.$store.state.user.id 
         }
         )
         .then((response) => {

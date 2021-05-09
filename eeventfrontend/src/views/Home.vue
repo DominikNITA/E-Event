@@ -82,7 +82,6 @@ export default {
           },
         })
         .then((response) => {
-          console.log(response.data);
           this.events = response.data;
         })
         .catch((err) => console.error(err));

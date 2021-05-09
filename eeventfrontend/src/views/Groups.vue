@@ -56,7 +56,7 @@ export default {
     //méthode pour récupérer les groupes dont l'utilisateur est membre
     getAllGroupsAsMember() {
       axios
-        .get(`${process.env.VUE_APP_BACKEND_ADDRESS}/users/2/groupsMember`) //RETIRER LE 2 CETAIT POUR TEST -> this.$store.state.user.id
+        .get(`${process.env.VUE_APP_BACKEND_ADDRESS}/users/${this.$store.state.user.id}/groupsMember`)
         .then((response) => {
           this.groups = response.data
         })
@@ -65,7 +65,7 @@ export default {
     //méthode pour récupérer les groupes dont l'utilisateur est administrateur
     getAllGroupsAsAdmin() {
       axios
-        .get(`${process.env.VUE_APP_BACKEND_ADDRESS}/users/2/groupsAdmin`) //RETIRER LE 2 CETAIT POUR TEST -> this.$store.state.user.id
+        .get(`${process.env.VUE_APP_BACKEND_ADDRESS}/users/${this.$store.state.user.id}/groupsAdmin`)
         .then((response) => {
           this.groupsAdmin = response.data
         })
