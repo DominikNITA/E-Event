@@ -5,7 +5,7 @@
         <div>
 
             <br><br>
-
+            <!-- formulaire de création d'un événement -->
             <form>
 
                 <label for="Nom de l'événement" class="form-label">Nom de l'événement</label><br>
@@ -120,7 +120,7 @@ export default {
     },
 
     methods: {
-
+        // méthode permettant de créer le nouvel événement dans la base de données
         createEvent() {
             axios
                 .put(`${process.env.VUE_APP_BACKEND_ADDRESS}/events`,
