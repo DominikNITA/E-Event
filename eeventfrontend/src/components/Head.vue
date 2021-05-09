@@ -37,6 +37,7 @@
         </router-link>
       </div>
     </nav>
+    
     <!-- définition des onglets de navigation -->
     <div class="raccourci">
       <ul class="nav nav-tabs justify-content-end">
@@ -52,7 +53,7 @@
         </li>
         <li class="nav-item">
           <router-link class="nav-link" :to="url_groups"
-            >Groupes</router-link
+            >Mes Groupes</router-link
           >
         </li>
         <li class="nav-item">
@@ -90,6 +91,14 @@ export default {
       type: String,
       required: true,
     },
+  },
+  data() {
+    return {
+      currentUserName: ''
+    }
+  },
+  mounted() {
+    // currentUserName = this.$store.user.firstName
   }
 };
 </script>

@@ -74,6 +74,8 @@
                     > 
             </div>
 
+            <br>
+
             <div>
                     <router-link
                     :to="{ name: 'Groups' }"
@@ -146,13 +148,19 @@ export default {
           userId: userId
         }
         )
+        .then((response) => {
+          if (response) //CHECK IF RESPONSE IS OK
+            alert("L'utilisateur a bien été promu administrateur du groupe")})
         .catch((err) => {
           console.log(err)
           return;
         });
-        alert("L'utilisateur a bien été promu administrateur du groupe")
     },
     removeUserAdminRole(userId) {
+      if (this.groupAdmins.length == 1) {
+        alert("Impossible de retirer le rôle d'admin, un groupe doit toujours avoir au minimum 1 administrateur")
+        return;
+      }
       axios
         .delete(`${process.env.VUE_APP_BACKEND_ADDRESS}/groups/${this.$props.groupId}/administrators`,
         {
@@ -188,11 +196,13 @@ export default {
           userId: userId
         }
         )
+        .then((response) => {
+          if (response) //CHECK IF RESPONSE IS OK
+            alert("L'utilisateur a bien été rétiré comme membre du groupe")})
         .catch((err) => {
           console.log(err)
           return;
         });
-        alert("L'utilisateur a bien été rétiré comme membre du groupe")
     },
     removeCurrentUserFromGroup() {
       if(this.isCurrentUserAdmin()) {
@@ -205,11 +215,13 @@ export default {
           userId: 2 /*this.$store.state.user.id*/  //RETIRER LE 2 C'ETAIT POUR TEST
         }
         )
+        .then((response) => {
+          if (response) //CHECK IF RESPONSE IS OK
+            alert("Vous avez bien quitté le groupe")})
         .catch((err) => {
           console.log(err)
           return;
         });
-        alert("Vous avez bien quitté le groupe")
     }
   },
   mounted() {
