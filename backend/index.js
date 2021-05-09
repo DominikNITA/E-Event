@@ -21,42 +21,6 @@ app.all("*", function (req, res, next) {
 //Parse body json format to js object for each route
 app.use(express.json());
 
-//Routes/Endpoints setup
-const authRouter = require("./routes/auth");
-app.use("/auth", authRouter);
-const { authenticateToken } = require("./utility/Middlewares");
-app.use(authenticateToken);
-
-const eventsRouter = require("./routes/events");
-const groupsRouter = require("./routes/groups");
-const placesRouter = require("./routes/places");
-const usersRouter = require("./routes/users");
-const categoriesRouter = require("./routes/categories");
-app.use("/events", eventsRouter);
-app.use("/groups", groupsRouter);
-app.use("/places", placesRouter);
-app.use("/users", usersRouter);
-app.use("/categories", categoriesRouter);
-
-app.get("/", (req, res) => {
-    // Afficher toutes les endpoints disponibles
-    let htmlResponse = "";
-    res.send(
-        `Go to <a href="http://${hostname}:${port}/api-docs?tryItOutEnabled=true">http://${hostname}:${port}/api-docs</a> to see the server documentation`
-    );
-});
-
-//Error handling
-const ErrorResponse = require("./utility/ErrorResponse");
-app.use((err, req, res, next) => {
-    console.log(err);
-    if (err instanceof ErrorResponse) {
-        res.status(err.statusCode).send(err.message);
-    } else {
-        res.status(500).send("Unknown error on the server");
-    }
-});
-
 //Setup swagger
 const swaggerUi = require("swagger-ui-express");
 const swaggerJsdoc = require("swagger-jsdoc");
@@ -75,6 +39,44 @@ const options = {
 const swaggerSpec = swaggerJsdoc(options);
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+app.get("/", (req, res) => {
+    // Afficher toutes les endpoints disponibles
+    let htmlResponse = "";
+    res.send(
+        `Go to <a href="http://${hostname}:${port}/api-docs?tryItOutEnabled=true">http://${hostname}:${port}/api-docs</a> to see the server documentation`
+    );
+});
+
+//Routes/Endpoints setup
+const authRouter = require("./routes/auth");
+app.use("/auth", authRouter);
+const { authenticateToken } = require("./utility/Middlewares");
+app.use(authenticateToken);
+
+const eventsRouter = require("./routes/events");
+const groupsRouter = require("./routes/groups");
+const placesRouter = require("./routes/places");
+const usersRouter = require("./routes/users");
+const categoriesRouter = require("./routes/categories");
+app.use("/events", eventsRouter);
+app.use("/groups", groupsRouter);
+app.use("/places", placesRouter);
+app.use("/users", usersRouter);
+app.use("/categories", categoriesRouter);
+
+//Error handling
+const ErrorResponse = require("./utility/ErrorResponse");
+app.use((err, req, res, next) => {
+    console.log(err);
+    if (err instanceof ErrorResponse) {
+        res.status(err.statusCode).send(err.message);
+    } else {
+        res.status(500).send("Unknown error on the server");
+    }
+});
+
+
 
 // Launch server
 app.listen(port, hostname, () => {
