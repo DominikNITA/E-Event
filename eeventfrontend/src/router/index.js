@@ -10,9 +10,9 @@ const routes = [
         path: "/",
         name: "Home",
         component: Home,
-        // meta: {
-        //     requiresAuth: true,
-        // },
+        meta: {
+            requiresAuth: true,
+        },
     },
     {
         path: "/login",
@@ -37,9 +37,9 @@ const routes = [
         name: "Event Details",
         component: () => import("../views/EventDetails.vue"),
         props: ({ params }) => ({ eventId: Number.parseInt(params.eventId, 10) || 0 }),
-        // meta: {
-        //     requiresAuth: true,
-        // },
+        meta: {
+            requiresAuth: true,
+        },
     },
     {
         path: "/events/:eventId",
@@ -52,52 +52,52 @@ const routes = [
         name: "Events List",
         component: () => import("../views/EventsList.vue"),
         props: (route) => ({ search: route.query.search || null }),
-        // meta: {
-        //     requiresAuth: true,
-        // },
+        meta: {
+            requiresAuth: true,
+        },
     },
     {
         path: "/profile/:userId",
         name: "User Profile",
         component: () => import("../views/Profile.vue"),
         props: ({ params }) => ({ userId: Number.parseInt(params.userId, 10) || 0 }),
-        // meta: {
-        //     requiresAuth: true,
-        // },
+        meta: {
+            requiresAuth: true,
+        },
     },
     {
         path: "/groups",
         name: "Groups",
         component: () => import("../views/Groups.vue"),
-        // meta: {
-        //     requiresAuth: true,
-        // },
+        meta: {
+            requiresAuth: true,
+        },
     },
     {
         path: "/groups/createGroup",
         name: "Create Group",
         component: () => import("../views/CreateGroup.vue"),
-        // meta: {
-        //     requiresAuth: true,
-        // },
+        meta: {
+            requiresAuth: true,
+        },
     },
     {
         path: "/groups/:groupId",
         name: "Group Details",
         component: () => import("../views/GroupDetails.vue"),
         props: ({ params }) => ({ groupId: Number.parseInt(params.groupId, 10) || 0 }),
-        // meta: {
-        //     requiresAuth: true,
-        // },
+        meta: {
+            requiresAuth: true,
+        },
     },
     {
         path: "/groups/:groupId/createEvent",
         name: "Create Event",
         component: () => import("../views/CreateEvent.vue"),
         props: ({ params }) => ({ groupId: Number.parseInt(params.groupId, 10) || 0 }),
-        // meta: {
-        //     requiresAuth: true,
-        // },
+        meta: {
+            requiresAuth: true,
+        },
     },
 ];
 
